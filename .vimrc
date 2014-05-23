@@ -29,6 +29,7 @@ filetype plugin indent on    " required
 " Colors
 set background=dark
 colorscheme solarized
+syntax on
 
 " General Settings
 let mapleader = ','
