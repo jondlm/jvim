@@ -125,6 +125,10 @@ endif
 
 
 
+" Airline
+let g:airline_powerline_fonts=1
+let g:airline_theme = 'solarized'
+
 " NerdTree
 map <C-e> :NERDTreeToggle<CR>
 map <leader>e :NERDTreeFind<CR>
@@ -173,6 +177,18 @@ nnoremap <silent> <leader>ge :Gedit<CR>
 " Mnemonic _i_nteractive
 nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
+
+
+
+" Neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_auto_delimiter = 1
+let g:neocomplcache_max_list = 15
+let g:neocomplcache_force_overwrite_completefunc = 1
+" <TAB>: completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
 
 
 " Functions
