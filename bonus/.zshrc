@@ -12,6 +12,7 @@ ZSH_THEME="cloud"
 # alias ohmyzsh="vim ~/.oh-my-zsh"
 alias grep='ggrep'
 alias ll='ls -lah'
+alias grepp='ps -ef | grep $1'
 
 
 # Uncomment the following line to use case-sensitive completion.
