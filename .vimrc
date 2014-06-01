@@ -74,6 +74,11 @@ set spell                       " Spell checking on
 
 
 
+" Syntax highlighting based on file extensions
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+
+
+
 " Custom mappings
 
 " Easy normal mode
