@@ -7,13 +7,6 @@ export ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="cloud"
 
-# Aliases
-# alias zshconfig="vim ~/.zshrc"
-# alias ohmyzsh="vim ~/.oh-my-zsh"
-alias grep='ggrep'
-alias ll='ls -lah'
-alias grepp='ps -ef | grep $1'
-
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -55,6 +48,16 @@ alias grepp='ps -ef | grep $1'
 plugins=(git osx)
 
 source $ZSH/oh-my-zsh.sh
+
+# Aliases
+alias grep='ggrep'
+alias ll='ls -lah'
+alias grepp='ps -ef | grep $1'
+alias gs='git status'
+alias ga='git add -A'
+alias gc='git commit'
+alias gp='git push'
+
 
 # User configuration
 

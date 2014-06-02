@@ -23,6 +23,8 @@ Plugin 'mbbill/undotree'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
+Plugin 'mattn/emmet-vim'
+
 
 " All plugins must be added before the following line
 call vundle#end()            " required
