@@ -56,12 +56,16 @@ alias grepp='ps -ef | grep $1'
 alias gs='git status'
 alias ga='git add -A'
 alias gc='git commit'
-alias gp='git push'
+alias gpush='git push'
+alias gpull='git pull'
+
+alias vs='cd ~/dev/vendscreen'
 
 
 # User configuration
 
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin"
+export PATH=$(brew --prefix ruby)/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
