@@ -25,6 +25,8 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
+Plugin 'kchmck/vim-coffee-script'
+
 
 
 " All plugins must be added before the following line
