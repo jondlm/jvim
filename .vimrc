@@ -26,6 +26,8 @@ Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'groenewege/vim-less'
+Plugin 'nono/vim-handlebars'
 
 
 
@@ -81,6 +83,8 @@ set spell                       " Spell checking on
 
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.less set filetype=less
+autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 
 
 
