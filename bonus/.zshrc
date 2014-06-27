@@ -65,8 +65,16 @@ alias vs='cd ~/dev/vendscreen'
 # User configuration
 
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin"
-export PATH=$(brew --prefix ruby)/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
+
+# Setup brew paths if it exists
+if hash brew 2>/dev/null; then
+  export PATH=$(brew --prefix ruby)/bin:$PATH
+fi
+
+# Setup rbenv if it exists
+if hash rbenv 2>/dev/null; then
+  eval "$(rbenv init -)"
+fi
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
