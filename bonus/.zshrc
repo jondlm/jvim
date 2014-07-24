@@ -50,7 +50,7 @@ plugins=(git osx)
 source $ZSH/oh-my-zsh.sh
 
 # Aliases
-alias grep='ggrep'
+alias grep='ggrep' # TODO: only on mac...
 alias ll='ls -lah'
 alias grepp='ps -ef | grep $1'
 alias gs='git status'
@@ -58,13 +58,16 @@ alias ga='git add -A'
 alias gc='git commit'
 alias gpush='git push'
 alias gpull='git pull'
+alias gf='git fetch --all'
 
 alias vs='cd ~/dev/vendscreen'
+
+alias c='clear'
 
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin"
 
 # Setup brew paths if it exists
 if hash brew 2>/dev/null; then
@@ -75,6 +78,8 @@ fi
 if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
+
+
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
