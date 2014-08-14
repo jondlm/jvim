@@ -83,6 +83,12 @@ set spell                       " Spell checking on
 
 
 
+
+" CtrlP
+let g:ctrlp_custom_ignore = 'node_modules' " Ignore the node_modules folder for ctrl-p
+
+
+
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less

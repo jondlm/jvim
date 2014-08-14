@@ -61,6 +61,7 @@ alias gpull='git pull'
 alias gf='git fetch --all'
 
 alias vs='cd ~/dev/vendscreen'
+alias ym='cd ~/dev/ym'
 
 alias c='clear'
 
@@ -96,3 +97,5 @@ fi
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
