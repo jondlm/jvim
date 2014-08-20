@@ -59,11 +59,13 @@ alias gc='git commit'
 alias gpush='git push'
 alias gpull='git pull'
 alias gf='git fetch --all'
+alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/$GH/network\""
 
 alias vs='cd ~/dev/vendscreen'
 alias ym='cd ~/dev/ym'
 
 alias c='clear'
+alias ph='history | peco'
 
 
 # User configuration

@@ -80,12 +80,13 @@ set matchpairs+=<:>             " Match, to be used with %
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set history=1000                " Store a ton of history (default is 20)
 set spell                       " Spell checking on
+set cursorcolumn                " Include a vertical line for your cursor
 
 
 
 
 " CtrlP
-let g:ctrlp_custom_ignore = 'node_modules' " Ignore the node_modules folder for ctrl-p
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
 
 
 
