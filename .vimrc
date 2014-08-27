@@ -28,6 +28,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'groenewege/vim-less'
 Plugin 'nono/vim-handlebars'
+Plugin 'heartsentwined/vim-emblem'
 
 
 
@@ -94,6 +95,7 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
 autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
+autocmd BufNewFile,BufRead *.emblem set filetype=emblem
 
 
 
