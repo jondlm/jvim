@@ -29,6 +29,7 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'groenewege/vim-less'
 Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
+Plugin 'Shutnik/jshint2.vim'
 
 
 
@@ -113,6 +114,9 @@ nnoremap Y y$
 
 " Find merge conflict markers
 map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+
+" Run jshint
+map <leader>j :JSHint<CR>
 
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
