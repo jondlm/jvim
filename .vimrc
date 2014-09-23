@@ -30,6 +30,7 @@ Plugin 'groenewege/vim-less'
 Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'Shutnik/jshint2.vim'
+Plugin 'fatih/vim-go'
 
 
 
@@ -98,6 +99,10 @@ autocmd BufNewFile,BufRead *.less set filetype=less
 autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 autocmd BufNewFile,BufRead *.emblem set filetype=emblem
 
+" Relative line number when normal mode
+autocmd InsertEnter * :set norelativenumber
+autocmd InsertLeave * :set relativenumber
+nnoremap <C-n> :call NumberToggle()<cr>
 
 
 " Custom mappings
@@ -232,4 +237,12 @@ function! StripTrailingWhitespace()
   let @/=_s
   call cursor(l, c)
 endfunction
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
 
