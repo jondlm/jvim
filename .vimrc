@@ -84,6 +84,7 @@ set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set history=1000                " Store a ton of history (default is 20)
 set spell                       " Spell checking on
 set cursorcolumn                " Include a vertical line for your cursor
+set relativenumber              " Relative line numbers for easy motion command
 
 
 
