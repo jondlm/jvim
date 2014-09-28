@@ -12,7 +12,9 @@ Mac instuctions:
 1. `git submodule update --init --recursive` downloads vundle
 1. `./install.sh [bonus]` **warning**, will potentially overwrite existing dot files in
    your home directory. The script is a few lines long, just read it :)
-1. Run vim, you'll get some errors, that's okay, and `:BundleInstall`
+1. Make sure your vim version is updated, if you're on mac this would be with `brew install vim` and `sudo mv /usr/bin/vim /usr/bin/vim-old`
+1. Run `brew install reattach-to-user-namespace` to get awesome clipboard support on mac
+1. Run vim, you'll get some errors, that's okay, just run `:BundleInstall`
 1. Quit and restart vim
 1. Enjoy!
 
