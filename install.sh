@@ -1,3 +1,6 @@
+echo "Adding vim backup and swap folders..."
+mkdir -p ~/.vim/{backup,swp}
+
 echo "Symlinking .vimrc ..."
 ln -sf $HOME/.jvim/.vimrc $HOME/.vimrc
 

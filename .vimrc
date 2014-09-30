@@ -85,6 +85,8 @@ set history=1000                " Store a ton of history (default is 20)
 set spell                       " Spell checking on
 set cursorcolumn                " Include a vertical line for your cursor
 set relativenumber              " Relative line numbers for easy motion command
+set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
+set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
 
 
 
