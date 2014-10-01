@@ -2,7 +2,7 @@
 	default = simple
 [user]
 	name = Jon de la Motte
-	email = jon.delamotte@vendscreen.com
+	email = jdelamotte@appnexus.com
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true
