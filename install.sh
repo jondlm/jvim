@@ -15,6 +15,9 @@ if [ "$1" = "bonus" ] ; then
   echo "Symlinking .zshrc ..."
   ln -sf $HOME/.jvim/bonus/.zshrc $HOME/.zshrc
 
+	echo "Symlinking jeeef zsh theme..."
+	ln -sf $HOME/.jvim/bonus/jeeef.zsh-theme $HOME/.oh-my-zsh/themes/jeeef.zsh-theme
+
   echo "Symlinking .ctags ..."
   ln -sf $HOME/.jvim/bonus/.ctags $HOME/.ctags
 
