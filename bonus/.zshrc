@@ -1,6 +1,5 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # ZSH_THEME="cloud"
@@ -46,6 +45,11 @@ if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
 
+# Setup boot2docker if it exists
+if hash boot2docker 2>/dev/null; then
+  $(boot2docker shellinit)
+fi
+
 # Uber vi mode
 set -o vi
 
@@ -57,3 +61,4 @@ export EDITOR='vim'
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
