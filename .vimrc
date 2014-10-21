@@ -150,6 +150,8 @@ nmap <silent> <c-l> :wincmd l<CR>
 " Clean trailing whitespace TODO: get this to work
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
+" Insert date and time
+nnoremap <Leader>d "=strftime("%FT%T%z")<CR>P
 
 
 " Status Bar
