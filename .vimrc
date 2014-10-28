@@ -102,6 +102,9 @@ autocmd BufNewFile,BufRead *.less set filetype=less
 autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 autocmd BufNewFile,BufRead *.emblem set filetype=emblem
 
+" Don't highlight special characters such as tabs and whitespace at EOL
+highlight SpecialKey ctermbg=None
+
 " Relative line number when normal mode
 autocmd InsertEnter * :set norelativenumber
 autocmd InsertLeave * :set relativenumber
