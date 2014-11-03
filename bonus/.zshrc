@@ -1,8 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# ZSH_THEME="cloud"
+
+# Load my custom zsh theme
+# Look in ~/.oh-my-zsh/themes/ for more options
 ZSH_THEME="jeeef"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
@@ -23,16 +23,12 @@ alias gpush='git push'
 alias gpull='git pull'
 alias gf='git fetch --all'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
-
-alias vs='cd ~/dev/vendscreen'
-alias ym='cd ~/dev/ym'
-
 alias c='clear'
 alias ph='history | peco'
-
+alias hbui='cd ~/dev/appnexus/hbui/'
+alias an='cd ~/dev/appnexus/'
 
 # User configuration
-
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin"
 
 # Setup brew paths if it exists
@@ -55,10 +51,10 @@ set -o vi
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+
+# Vim is the best editor
 export EDITOR='vim'
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin"
 
