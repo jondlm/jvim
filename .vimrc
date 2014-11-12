@@ -31,7 +31,7 @@ Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'fatih/vim-go'
-
+Plugin 'heavenshell/vim-jsdoc'
 
 
 " All plugins must be added before the following line
@@ -148,6 +148,9 @@ nmap <silent> <c-k> :wincmd k<CR>
 nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
+
+" JsDoc key binding
+nmap <c-l> :JsDoc <CR>
 
 
 " Clean trailing whitespace TODO: get this to work
