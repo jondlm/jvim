@@ -1,3 +1,6 @@
+[user]
+	name = Jon de la Motte
+	email = jdelamotte@appnexus.com
 [push]
 	default = simple
 [mergetool "Kaleidoscope"]

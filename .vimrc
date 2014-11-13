@@ -149,9 +149,6 @@ nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
-" JsDoc key binding
-nmap <c-l> :JsDoc <CR>
-
 
 " Clean trailing whitespace TODO: get this to work
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
