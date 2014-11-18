@@ -129,6 +129,9 @@ map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 " Run jshint
 map <leader>j :JSHint<CR>
 
+" JsDoc
+let g:jsdoc_default_mapping = 0
+
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
