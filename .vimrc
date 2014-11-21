@@ -32,6 +32,7 @@ Plugin 'heartsentwined/vim-emblem'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'fatih/vim-go'
 Plugin 'heavenshell/vim-jsdoc'
+Plugin 'airblade/vim-gitgutter'
 
 
 " All plugins must be added before the following line
@@ -47,7 +48,11 @@ set background=dark
 colorscheme solarized
 syntax on
 
-
+highlight clear SignColumn
+highlight GitGutterAdd           ctermfg=2 ctermbg=None
+highlight GitGutterChange        ctermfg=3 ctermbg=None
+highlight GitGutterDelete        ctermfg=1 ctermbg=None
+highlight GitGutterChangeDelete  ctermfg=3 ctermbg=None
 
 " General Settings
 let mapleader = ','
