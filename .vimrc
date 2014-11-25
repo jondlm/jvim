@@ -1,6 +1,10 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+""""""""""""""""""""""""""""""""""""""""
+" Vundle plugins
+""""""""""""""""""""""""""""""""""""""""
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.jvim/bundle/vundle
 call vundle#begin()
@@ -8,7 +12,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" My plugins
 Plugin 'tpope/vim-fugitive'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'mileszs/ack.vim'
@@ -35,14 +38,14 @@ Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 
-
 " All plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 
-
+""""""""""""""""""""""""""""""""""""""""
 " Colors
+""""""""""""""""""""""""""""""""""""""""
 let g:solarized_termcolors=16
 let g:solarized_termtrans=1
 set background=dark
@@ -55,7 +58,12 @@ highlight GitGutterChange        ctermfg=3 ctermbg=None
 highlight GitGutterDelete        ctermfg=1 ctermbg=None
 highlight GitGutterChangeDelete  ctermfg=3 ctermbg=None
 
+" Don't highlight special characters such as tabs and whitespace at EOL
+highlight SpecialKey ctermbg=None
+
+""""""""""""""""""""""""""""""""""""""""
 " General Settings
+""""""""""""""""""""""""""""""""""""""""
 let mapleader = ' '
 set clipboard=unnamed           " Wire up clipboard
 set cursorline                  " Show line
@@ -94,22 +102,11 @@ set relativenumber              " Relative line numbers for easy motion command
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
 
-
-
-
-" CtrlP
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
-
-
-
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
 autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 autocmd BufNewFile,BufRead *.emblem set filetype=emblem
-
-" Don't highlight special characters such as tabs and whitespace at EOL
-highlight SpecialKey ctermbg=None
 
 " Relative line number when normal mode
 autocmd InsertEnter * :set norelativenumber
@@ -117,7 +114,9 @@ autocmd InsertLeave * :set relativenumber
 nnoremap <C-n> :call NumberToggle()<cr>
 
 
+""""""""""""""""""""""""""""""""""""""""
 " Custom mappings
+""""""""""""""""""""""""""""""""""""""""
 
 " Easy normal mode
 imap ii <Esc>
@@ -158,15 +157,26 @@ nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
+" Execute contents of current line
+nnoremap <Leader>x :exec 'r! ' . getline('.')<CR>
 
-" Clean trailing whitespace TODO: get this to work
+" Clean trailing whitespace
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
 " Insert date and time
 nnoremap <Leader>d "=strftime("%FT%T%z")<CR>P
 
 
+""""""""""""""""""""""""""""""""""""""""
+" CtrlP
+""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
+
+
+""""""""""""""""""""""""""""""""""""""""
 " Status Bar
+""""""""""""""""""""""""""""""""""""""""
+
 if has('statusline')
   set laststatus=2
 
@@ -181,13 +191,17 @@ endif
 
 
 
+""""""""""""""""""""""""""""""""""""""""
 " Airline
+""""""""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts=1
 let g:airline_theme = 'solarized'
 
 
 
+""""""""""""""""""""""""""""""""""""""""
 " EasyMotion
+""""""""""""""""""""""""""""""""""""""""
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
@@ -202,8 +216,9 @@ map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 
 
-
+""""""""""""""""""""""""""""""""""""""""
 " NerdTree
+""""""""""""""""""""""""""""""""""""""""
 map <C-e> :NERDTreeTabsToggle<CR>
 map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
@@ -217,8 +232,9 @@ let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 
 
-
+""""""""""""""""""""""""""""""""""""""""
 " Tabularize
+""""""""""""""""""""""""""""""""""""""""
 nmap <Leader>a& :Tabularize /&<CR>
 vmap <Leader>a& :Tabularize /&<CR>
 nmap <Leader>a= :Tabularize /=<CR>
@@ -237,8 +253,9 @@ nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 
-
+""""""""""""""""""""""""""""""""""""""""
 " Fugitive
+""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -253,8 +270,9 @@ nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
 
 
-
+""""""""""""""""""""""""""""""""""""""""
 " Neocomplcache
+""""""""""""""""""""""""""""""""""""""""
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_auto_delimiter = 1
@@ -265,7 +283,9 @@ inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
 
 
+""""""""""""""""""""""""""""""""""""""""
 " Functions
+""""""""""""""""""""""""""""""""""""""""
 function! StripTrailingWhitespace()
   " Save last search, and cursor position.
   let _s=@/
