@@ -33,6 +33,7 @@ Plugin 'Shutnik/jshint2.vim'
 Plugin 'fatih/vim-go'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'Lokaltog/vim-easymotion'
 
 
 " All plugins must be added before the following line
@@ -55,7 +56,7 @@ highlight GitGutterDelete        ctermfg=1 ctermbg=None
 highlight GitGutterChangeDelete  ctermfg=3 ctermbg=None
 
 " General Settings
-let mapleader = ','
+let mapleader = ' '
 set clipboard=unnamed           " Wire up clipboard
 set cursorline                  " Show line
 set backspace=indent,eol,start  " Backspace for dummies
@@ -183,6 +184,24 @@ endif
 " Airline
 let g:airline_powerline_fonts=1
 let g:airline_theme = 'solarized'
+
+
+
+" EasyMotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+nmap f <Plug>(easymotion-s)
+nmap s <Plug>(easymotion-s2)
+
+" Turn on case sensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+
 
 " NerdTree
 map <C-e> :NERDTreeTabsToggle<CR>
