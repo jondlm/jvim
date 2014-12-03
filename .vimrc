@@ -132,7 +132,7 @@ nnoremap Y y$
 map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
 " Run jshint
-map <leader>j :JSHint<CR>
+map <C-j> :JSHint<CR>
 
 " JsDoc
 let g:jsdoc_default_mapping = 0
