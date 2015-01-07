@@ -120,7 +120,7 @@ nnoremap <C-n> :call NumberToggle()<cr>
 """"""""""""""""""""""""""""""""""""""""
 
 " Easy normal mode
-imap ii <Esc>
+imap jk <Esc>
 
 " Easy tabs
 map <S-H> gT
