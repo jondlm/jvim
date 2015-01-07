@@ -27,6 +27,7 @@ alias c='clear'
 alias ph='history | peco'
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
+alias bus='node ~/dev/busseur/index.js'
 
 # User configuration
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin"

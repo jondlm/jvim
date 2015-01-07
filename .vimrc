@@ -37,6 +37,7 @@ Plugin 'fatih/vim-go'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'editorconfig/editorconfig-vim'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -132,7 +133,7 @@ nnoremap Y y$
 map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
 " Run jshint
-map <C-j> :JSHint<CR>
+map <leader>h :JSHint<CR>
 
 " JsDoc
 let g:jsdoc_default_mapping = 0
