@@ -29,6 +29,10 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.ctags $HOME/.jvim/backups/.ctags > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.ctags $HOME/.ctags
 
+  echo "Backing up and symlinking .ackrc ..."
+  cp $HOME/.ackrc $HOME/.jvim/backups/.ackrc > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/.ackrc $HOME/.ackrc
+
   echo "Backing up and symlinking garybernhart/dotfiles binaries to $HOME/bin ..."
   mkdir -p $HOME/bin
   ln -sf $HOME/.jvim/bonus/garys-dotfiles/bin/* $HOME/bin

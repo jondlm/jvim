@@ -11,6 +11,7 @@ ZSH_THEME="jeeef"
 plugins=(git osx history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh
 
 # Aliases
 alias grep='ggrep' # TODO: only on mac...
