@@ -8,7 +8,7 @@ ZSH_THEME="jeeef"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx history-substring-search)
+plugins=(git osx)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh
@@ -32,6 +32,10 @@ alias bus='node ~/dev/busseur/index.js'
 
 # User configuration
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin"
+
+# History search
+bindkey -v
+bindkey '^R' history-incremental-search-backward
 
 # Setup brew paths if it exists
 if hash brew 2>/dev/null; then
