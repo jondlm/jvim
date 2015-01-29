@@ -64,3 +64,9 @@ export EDITOR='vim'
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 
+# This is for custom extensions to this rc file
+if [ -f "$HOME/.zshrc-extra"]; then
+  source $HOME/.zshrc-extra
+fi
+
+
