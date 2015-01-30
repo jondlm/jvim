@@ -49,7 +49,7 @@ fi
 
 # Setup boot2docker if it exists
 if hash boot2docker 2>/dev/null; then
-  $(boot2docker shellinit)
+  eval "$(boot2docker shellinit 2>/dev/null)"
 fi
 
 # Uber vi mode
