@@ -11,10 +11,8 @@ ZSH_THEME="jeeef"
 plugins=(git osx)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.oh-my-zsh/plugins/history-substring-search/history-substring-search.zsh
 
 # Aliases
-alias grep='ggrep' # TODO: only on mac...
 alias ll='ls -lah'
 alias grepp='ps -ef | grep $1'
 alias gs='git status'
@@ -30,12 +28,21 @@ alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
 
+# Mac only aliases
+if [ "`uname`" = "Darwin" ]; then
+  alias grep='ggrep'
+  alias sed='gsed'
+fi
+
+# Golang shiz
+export GOPATH=$HOME/go
+
 # User configuration
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin:$GOPATH/bin"
 
 # History search
 bindkey -v
-bindkey '^R' history-incremental-search-backward
+bindkey '^R' history-beginning-search-backward
 
 # Setup brew paths if it exists
 if hash brew 2>/dev/null; then
@@ -68,5 +75,4 @@ export PATH="$PATH:$HOME/.rvm/bin"
 if [ -f "$HOME/.zshrc-extra" ]; then
   source $HOME/.zshrc-extra
 fi
-
 
