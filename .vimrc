@@ -14,7 +14,6 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-surround'
@@ -38,6 +37,7 @@ Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'rking/ag.vim'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -310,4 +310,22 @@ function! NumberToggle()
     set relativenumber
   endif
 endfunc
+
+" fill rest of line with characters http://stackoverflow.com/a/3400528/895558
+" Call with :call FillLine('-')
+" Can also do `100A-<Esc>d80|` leveraging the column motion pipe character
+function! FillLine( str )
+    " set tw to the desired total length
+    let tw = &textwidth
+    if tw==0 | let tw = 80 | endif
+    " strip trailing spaces first
+    .s/[[:space:]]*$//
+    " calculate total number of 'str's to insert
+    let reps = (tw - col("$")) / len(a:str)
+    " insert them, if there's room, removing trailing spaces (though forcing
+    " there to be one)
+    if reps > 0
+        .s/$/\=(' '.repeat(a:str, reps))/
+    endif
+endfunction
 

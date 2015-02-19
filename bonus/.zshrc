@@ -32,6 +32,7 @@ alias bus='node ~/dev/busseur/index.js'
 if [ "`uname`" = "Darwin" ]; then
   alias grep='ggrep'
   alias sed='gsed'
+  alias date='gdate'
 fi
 
 # Golang shiz
