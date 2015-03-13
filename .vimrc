@@ -38,6 +38,9 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -119,8 +122,12 @@ nnoremap <C-n> :call NumberToggle()<CR>
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
 
+" Easier command history binding
+noremap  <leader>; q:
+noremap  <leader>/ q/
+
 " Easy normal mode
-imap jk <Esc>
+imap kj <Esc>
 
 " Easy tabs
 map <S-H> gT
@@ -167,6 +174,9 @@ autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWri
 
 " Insert date and time
 nnoremap <Leader>d "=strftime("%FT%T%z")<CR>P
+
+" Easier file formatting
+nnoremap <Leader>f gg=G
 
 
 """"""""""""""""""""""""""""""""""""""""
