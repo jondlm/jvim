@@ -128,6 +128,7 @@ noremap  <leader>/ q/
 
 " Easy normal mode
 imap kj <Esc>
+imap jk <Esc>
 
 " Easy tabs
 map <S-H> gT
@@ -178,6 +179,8 @@ nnoremap <Leader>d "=strftime("%FT%T%z")<CR>P
 " Easier file formatting
 nnoremap <Leader>f gg=G
 
+" Find and replace word under cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 """"""""""""""""""""""""""""""""""""""""
 " CtrlP
