@@ -14,6 +14,7 @@
 --ignore-dir=.idea/
 --ignore-dir=node_modules/
 --ignore-dir=bower_components/
+--ignore-dir=submodules/
 
 # Make sure ack knows how to search common filetypes used in rails projects
 --type-add=css=scss

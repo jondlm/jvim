@@ -15,22 +15,15 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-surround'
 Plugin 'spf13/vim-autoclose'
 Plugin 'kien/ctrlp.vim'
-Plugin 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
-Plugin 'bling/vim-bufferline'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'mbbill/undotree'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
-Plugin 'kchmck/vim-coffee-script'
 Plugin 'groenewege/vim-less'
-Plugin 'nono/vim-handlebars'
-Plugin 'heartsentwined/vim-emblem'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'fatih/vim-go'
 Plugin 'heavenshell/vim-jsdoc'
@@ -38,9 +31,18 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
-Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'bling/vim-airline'
+" snipmate related
+  Plugin 'MarcWeber/vim-addon-mw-utils'
+  Plugin 'tomtom/tlib_vim'
+  Plugin 'garbas/vim-snipmate'
+  Plugin 'honza/vim-snippets'
+Plugin 'rodjek/vim-puppet'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-notes'
+Plugin 'scrooloose/syntastic'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -183,6 +185,33 @@ nnoremap <Leader>f gg=G
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 """"""""""""""""""""""""""""""""""""""""
+" Tagbar
+""""""""""""""""""""""""""""""""""""""""
+map <Leader>b :TagbarToggle<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Note
+""""""""""""""""""""""""""""""""""""""""
+" Store notes on dropbox
+let g:notes_directories = ['~/Dropbox/notes']
+
+" Don't use unicode characters in notes
+let g:notes_unicode_enabled = 0
+
+" Don't do any funky replacing
+let g:notes_smart_quotes = 0
+
+" Don't do any funky indenting
+let g:notes_tab_indents = 0
+
+" Don't hide stuff, it doesn't behave quite right
+let g:notes_conceal_bold = 0
+let g:notes_conceal_italic = 0
+let g:notes_conceal_code = 0
+
+
+""""""""""""""""""""""""""""""""""""""""
 " CtrlP
 """"""""""""""""""""""""""""""""""""""""
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
@@ -237,7 +266,7 @@ map <Leader>k <Plug>(easymotion-k)
 """"""""""""""""""""""""""""""""""""""""
 " NerdTree
 """"""""""""""""""""""""""""""""""""""""
-map <C-e> :NERDTreeTabsToggle<CR>
+map <C-e> :NERDTreeToggle<CR>
 map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
 
@@ -296,9 +325,6 @@ let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_auto_delimiter = 1
 let g:neocomplcache_max_list = 15
 let g:neocomplcache_force_overwrite_completefunc = 1
-" <TAB>: completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
 
 
 """"""""""""""""""""""""""""""""""""""""
