@@ -4,7 +4,6 @@ filetype off                  " required
 """"""""""""""""""""""""""""""""""""""""
 " Vundle plugins
 """"""""""""""""""""""""""""""""""""""""
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.jvim/bundle/vundle
 call vundle#begin()
@@ -41,8 +40,8 @@ Plugin 'bling/vim-airline'
   Plugin 'honza/vim-snippets'
 Plugin 'rodjek/vim-puppet'
 Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-notes'
 Plugin 'scrooloose/syntastic'
+Plugin 'fmoralesc/vim-pad'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -123,7 +122,6 @@ nnoremap <C-n> :call NumberToggle()<CR>
 """"""""""""""""""""""""""""""""""""""""
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
-
 " Easier command history binding
 noremap  <leader>; q:
 noremap  <leader>/ q/
@@ -184,31 +182,21 @@ nnoremap <Leader>f gg=G
 " Find and replace word under cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
-""""""""""""""""""""""""""""""""""""""""
-" Tagbar
-""""""""""""""""""""""""""""""""""""""""
-map <Leader>b :TagbarToggle<CR>
-
 
 """"""""""""""""""""""""""""""""""""""""
 " Note
 """"""""""""""""""""""""""""""""""""""""
-" Store notes on dropbox
-let g:notes_directories = ['~/Dropbox/notes']
+" Save notes to dropbox
+let g:pad#dir = '/Users/jdelamotte/Dropbox/notes/'
 
-" Don't use unicode characters in notes
-let g:notes_unicode_enabled = 0
+" Make the quick window a little taller
+let g:pad#window_height = 15
 
-" Don't do any funky replacing
-let g:notes_smart_quotes = 0
+" Add an .md extension to new notes
+let g:pad#default_file_extension = '.md'
 
-" Don't do any funky indenting
-let g:notes_tab_indents = 0
-
-" Don't hide stuff, it doesn't behave quite right
-let g:notes_conceal_bold = 0
-let g:notes_conceal_italic = 0
-let g:notes_conceal_code = 0
+" Use ag for searching cause it's the best
+let g:pad#search_backend = 'ag'
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -223,7 +211,6 @@ map <Leader>p :CtrlPBuffer<CR>
 """"""""""""""""""""""""""""""""""""""""
 " Status Bar
 """"""""""""""""""""""""""""""""""""""""
-
 if has('statusline')
   set laststatus=2
 
@@ -288,8 +275,6 @@ nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:<CR>
 vmap <Leader>a: :Tabularize /:<CR>
-nmap <Leader>a:: :Tabularize /:\zs<CR>
-vmap <Leader>a:: :Tabularize /:\zs<CR>
 nmap <Leader>a, :Tabularize /,<CR>
 vmap <Leader>a, :Tabularize /,<CR>
 nmap <Leader>a,, :Tabularize /,\zs<CR>
