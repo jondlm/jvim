@@ -184,7 +184,7 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 
 """"""""""""""""""""""""""""""""""""""""
-" Note
+" Pad
 """"""""""""""""""""""""""""""""""""""""
 " Save notes to dropbox
 let g:pad#dir = '/Users/jdelamotte/Dropbox/notes/'
@@ -198,6 +198,12 @@ let g:pad#default_file_extension = '.md'
 " Use ag for searching cause it's the best
 let g:pad#search_backend = 'ag'
 
+" Disable default key bindings
+let g:pad#set_mappings = 0
+
+" Custom key bindings, the trailing whitespace here is intentional
+nmap <Leader>nl :Pad ls<CR>
+nmap <Leader>nn :Pad new 
 
 """"""""""""""""""""""""""""""""""""""""
 " CtrlP
@@ -254,8 +260,11 @@ map <Leader>k <Plug>(easymotion-k)
 " NerdTree
 """"""""""""""""""""""""""""""""""""""""
 map <C-e> :NERDTreeToggle<CR>
-map <leader>e :NERDTreeFind<CR>
-nmap <leader>nt :NERDTreeFind<CR>
+map <Leader>e :NERDTreeFind<CR>
+
+" Remove this mapping cause I don't like it. Normally running an `unmap` on an
+" already unmapped key throws an error, the `silent!` suppresses that.
+silent! nunmap <Leader>nt
 
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
