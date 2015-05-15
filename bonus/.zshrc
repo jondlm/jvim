@@ -24,6 +24,7 @@ alias gf='git fetch --all'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
 alias c='clear'
 alias ph='history | peco'
+alias phr="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | zsh"
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
@@ -34,6 +35,7 @@ if [ "`uname`" = "Darwin" ]; then
   alias grep='ggrep'
   alias sed='gsed'
   alias date='gdate'
+  alias cut='gcut'
 fi
 
 # Golang shiz
