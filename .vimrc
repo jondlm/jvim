@@ -42,6 +42,7 @@ Plugin 'rodjek/vim-puppet'
 Plugin 'xolox/vim-misc'
 Plugin 'scrooloose/syntastic'
 Plugin 'fmoralesc/vim-pad'
+Plugin 'derekwyatt/vim-scala'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -208,7 +209,7 @@ nmap <Leader>nn :Pad new
 """"""""""""""""""""""""""""""""""""""""
 " CtrlP
 """"""""""""""""""""""""""""""""""""""""
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components\|submodules\|v2\|dist'
 
 " CtrlP search through buffers
 map <Leader>p :CtrlPBuffer<CR>
@@ -245,8 +246,7 @@ let g:airline_theme = 'solarized'
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
-nmap f <Plug>(easymotion-s)
-nmap s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
@@ -309,6 +309,13 @@ nnoremap <silent> <leader>ge :Gedit<CR>
 " Mnemonic _i_nteractive
 nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Syntasic
+""""""""""""""""""""""""""""""""""""""""
+
+let g:syntastic_javascript_checkers = ['eslint']
 
 
 """"""""""""""""""""""""""""""""""""""""

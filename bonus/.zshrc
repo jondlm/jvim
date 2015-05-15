@@ -27,6 +27,7 @@ alias ph='history | peco'
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
+alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
