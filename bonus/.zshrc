@@ -32,10 +32,13 @@ alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
+  alias cut='gcut'
+  alias date='gdate'
   alias grep='ggrep'
   alias sed='gsed'
-  alias date='gdate'
-  alias cut='gcut'
+  alias sort='gsort'
+
+  alias phc="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | pbcopy"
 fi
 
 # Golang shiz
@@ -75,8 +78,8 @@ export EDITOR='vim'
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 
-# This is for custom extensions to this rc file
-if [ -f "$HOME/.zshrc-extra" ]; then
-  source $HOME/.zshrc-extra
+# Import the 'after' override file if it exists
+if [ -f "$HOME/.zshrc-after" ]; then
+  source $HOME/.zshrc-after
 fi
 

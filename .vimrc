@@ -33,16 +33,19 @@ Plugin 'rking/ag.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'bling/vim-airline'
-" snipmate related
-  Plugin 'MarcWeber/vim-addon-mw-utils'
-  Plugin 'tomtom/tlib_vim'
-  Plugin 'garbas/vim-snipmate'
-  Plugin 'honza/vim-snippets'
 Plugin 'rodjek/vim-puppet'
 Plugin 'xolox/vim-misc'
 Plugin 'scrooloose/syntastic'
 Plugin 'fmoralesc/vim-pad'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'tpope/vim-fireplace'
+Plugin 'terryma/vim-expand-region'
+" snipmate related
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+" end snipmate related
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -66,6 +69,7 @@ highlight GitGutterChangeDelete  ctermfg=3 ctermbg=None
 
 " Don't highlight special characters such as tabs and whitespace at EOL
 highlight SpecialKey ctermbg=None
+
 
 """"""""""""""""""""""""""""""""""""""""
 " General Settings
@@ -123,6 +127,10 @@ nnoremap <C-n> :call NumberToggle()<CR>
 """"""""""""""""""""""""""""""""""""""""
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
+
+" Clean trailing whitespace
+autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+
 " Easier command history binding
 noremap  <leader>; q:
 noremap  <leader>/ q/
@@ -144,9 +152,6 @@ map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 " Run jshint
 map <leader>h :JSHint<CR>
 
-" JsDoc
-let g:jsdoc_default_mapping = 0
-
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
@@ -155,11 +160,11 @@ vnoremap > >gv
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" For when you forget to sudo.. Really Write the file.
+" Force write the file for when you forget to use sudo
 cmap w!! w !sudo tee % >/dev/null
 
 " Adjust viewports to the same size
-map <Leader>= <C-w>=
+nmap <Leader>= <C-w>=
 
 " Easier pane navigation
 nmap <silent> <c-k> :wincmd k<CR>
@@ -169,19 +174,16 @@ nmap <silent> <c-l> :wincmd l<CR>
 nmap <silent> <leader>m :wincmd R<CR>
 
 " Execute contents of current line
-nnoremap <Leader>x :exec 'r! ' . getline('.')<CR>
-
-" Clean trailing whitespace
-autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-
-" Insert date and time
-nnoremap <Leader>d "=strftime("%FT%T%z")<CR>P
+nmap <Leader>x :exec 'r! ' . getline('.')<CR>
 
 " Easier file formatting
-nnoremap <Leader>f gg=G
+nmap <Leader>f gg=G
 
 " Find and replace word under cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+nmap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Make ' behave like ` for easier mark navigation
+nmap ' `
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -206,13 +208,33 @@ let g:pad#set_mappings = 0
 nmap <Leader>nl :Pad ls<CR>
 nmap <Leader>nn :Pad new 
 
+
 """"""""""""""""""""""""""""""""""""""""
 " CtrlP
 """"""""""""""""""""""""""""""""""""""""
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components\|submodules\|v2\|dist'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components\|submodules\|dist'
 
 " CtrlP search through buffers
 map <Leader>p :CtrlPBuffer<CR>
+
+" Make Ctrl-P plugin a lot faster for Git projects
+" http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity
+let g:ctrlp_use_caching = 0
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+  let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+    \ }
+endif
+
+
+""""""""""""""""""""""""""""""""""""""""
+" JsDoc
+""""""""""""""""""""""""""""""""""""""""
+let g:jsdoc_default_mapping = 0
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -231,13 +253,11 @@ if has('statusline')
 endif
 
 
-
 """"""""""""""""""""""""""""""""""""""""
 " Airline
 """"""""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts=1
 let g:airline_theme = 'solarized'
-
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -329,6 +349,21 @@ let g:neocomplcache_force_overwrite_completefunc = 1
 
 
 """"""""""""""""""""""""""""""""""""""""
+" Expand Region
+""""""""""""""""""""""""""""""""""""""""
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+
+""""""""""""""""""""""""""""""""""""""""
+" GitGutter
+""""""""""""""""""""""""""""""""""""""""
+nmap [h <Plug>GitGutterPrevHunk
+nmap ]h <Plug>GitGutterNextHunk
+nmap <Leader>r <Plug>GitGutterRevertHunk
+
+
+""""""""""""""""""""""""""""""""""""""""
 " Functions
 """"""""""""""""""""""""""""""""""""""""
 function! StripTrailingWhitespace()
@@ -355,17 +390,27 @@ endfunc
 " Call with :call FillLine('-')
 " Can also do `100A-<Esc>d80|` leveraging the column motion pipe character
 function! FillLine( str )
-    " set tw to the desired total length
-    let tw = &textwidth
-    if tw==0 | let tw = 80 | endif
-    " strip trailing spaces first
-    .s/[[:space:]]*$//
-    " calculate total number of 'str's to insert
-    let reps = (tw - col("$")) / len(a:str)
-    " insert them, if there's room, removing trailing spaces (though forcing
-    " there to be one)
-    if reps > 0
-        .s/$/\=(' '.repeat(a:str, reps))/
-    endif
+  " set tw to the desired total length
+  let tw = &textwidth
+  if tw==0 | let tw = 80 | endif
+  " strip trailing spaces first
+  .s/[[:space:]]*$//
+  " calculate total number of 'str's to insert
+  let reps = (tw - col("$")) / len(a:str)
+  " insert them, if there's room, removing trailing spaces (though forcing
+  " there to be one)
+  if reps > 0
+    .s/$/\=(' '.repeat(a:str, reps))/
+  endif
 endfunction
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Overrides
+""""""""""""""""""""""""""""""""""""""""
+
+" Import the 'after' override file if it exists
+if filereadable(expand('~/.vimrc-after'))
+  source ~/.vimrc-after
+endif
 
