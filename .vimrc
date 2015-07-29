@@ -46,6 +46,7 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " end snipmate related
+Plugin 'sotte/presenting.vim'
 
 " All plugins must be added before the following line
 call vundle#end()            " required

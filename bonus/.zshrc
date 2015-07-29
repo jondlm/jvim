@@ -38,14 +38,24 @@ if [ "`uname`" = "Darwin" ]; then
   alias sed='gsed'
   alias sort='gsort'
 
-  alias phc="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | pbcopy"
+  alias phc="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+\|\s\+$//g' | pbcopy"
 fi
 
 # Golang shiz
 export GOPATH=$HOME/go
 
-# User configuration
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:$HOME/bin:$GOPATH/bin"
+# PATH configuration
+export PATH="/usr/local/bin"
+export PATH="$PATH:/usr/local/sbin"
+export PATH="$PATH:/usr/bin"
+export PATH="$PATH:/bin"
+export PATH="$PATH:/usr/sbin"
+export PATH="$PATH:/sbin"
+export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:/usr/local/sbin"
+export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # History search
 bindkey -v
