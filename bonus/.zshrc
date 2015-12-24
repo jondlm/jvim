@@ -17,10 +17,11 @@ alias ll='ls -lah'
 alias grepp='ps -ef | grep $1'
 alias gs='git status'
 alias ga='git add -A'
-alias gc='git commit'
+alias gc='git commit -v'
 alias gpush='git push'
 alias gpull='git pull'
 alias gf='git fetch --all'
+alias gff='git fetch --all && git merge --ff-only'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
 alias c='clear'
 alias ph='history | peco'
@@ -71,9 +72,9 @@ if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
 
-# Setup boot2docker if it exists
-if hash boot2docker 2>/dev/null; then
-  eval "$(boot2docker shellinit 2>/dev/null)"
+# Setup docker-machine if it exists
+if hash docker-machine 2>/dev/null; then
+  eval "$(docker-machine env hbui 2>/dev/null)"
 fi
 
 # Uber vi mode
@@ -92,4 +93,8 @@ export PATH="$PATH:$HOME/.rvm/bin"
 if [ -f "$HOME/.zshrc-after" ]; then
   source $HOME/.zshrc-after
 fi
+
+# Setup nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 

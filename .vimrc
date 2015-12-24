@@ -47,6 +47,8 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " end snipmate related
 Plugin 'sotte/presenting.vim'
+Plugin 'vim-scripts/dbext.vim'
+Plugin 'elixir-lang/vim-elixir'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -109,7 +111,6 @@ set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set history=1000                " Store a ton of history (default is 20)
 set spell                       " Spell checking on
 set cursorcolumn                " Include a vertical line for your cursor
-set relativenumber              " Relative line numbers for easy motion command
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
 
@@ -118,11 +119,6 @@ autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
 autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 autocmd BufNewFile,BufRead *.emblem set filetype=emblem
-
-" Relative line number when normal mode
-autocmd InsertEnter * :set norelativenumber
-autocmd InsertLeave * :set relativenumber
-nnoremap <C-n> :call NumberToggle()<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -213,8 +209,6 @@ nmap <Leader>nn :Pad new
 """"""""""""""""""""""""""""""""""""""""
 " CtrlP
 """"""""""""""""""""""""""""""""""""""""
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components\|submodules\|dist'
-
 " CtrlP search through buffers
 map <Leader>p :CtrlPBuffer<CR>
 
