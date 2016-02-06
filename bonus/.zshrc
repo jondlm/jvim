@@ -30,6 +30,7 @@ alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
 alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
+alias pk="ps ax | peco | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
