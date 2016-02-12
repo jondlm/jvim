@@ -49,6 +49,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'sotte/presenting.vim'
 Plugin 'vim-scripts/dbext.vim'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -117,7 +118,6 @@ set directory=~/.vim/swp//      " Clean swaps that arent stored in your current 
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
-autocmd BufNewFile,BufRead *.hbs set filetype=handlebars
 autocmd BufNewFile,BufRead *.emblem set filetype=emblem
 
 
