@@ -18,6 +18,7 @@ alias grepp='ps -ef | grep $1'
 alias gs='git status'
 alias ga='git add -A'
 alias gc='git commit -v'
+alias gprs="git log --pretty=format:%s `git tag | tail -r | sed -n '1p'`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
 alias gpull='git pull'
 alias gf='git fetch --all'
@@ -31,6 +32,8 @@ alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
 alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias pk="ps ax | peco | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
+alias nr='npm run'
+alias vim='nvim'
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
@@ -39,6 +42,7 @@ if [ "`uname`" = "Darwin" ]; then
   alias grep='ggrep'
   alias sed='gsed'
   alias sort='gsort'
+  alias readlink='greadlink'
 
   alias phc="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+\|\s\+$//g' | pbcopy"
 fi
@@ -75,7 +79,7 @@ fi
 
 # Setup docker-machine if it exists
 if hash docker-machine 2>/dev/null; then
-  eval "$(docker-machine env hbui 2>/dev/null)"
+  eval "$(docker-machine env an-vm 2>/dev/null)"
 fi
 
 # Uber vi mode
@@ -85,7 +89,7 @@ set -o vi
 export LANG=en_US.UTF-8
 
 # Vim is the best editor
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
@@ -99,3 +103,6 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
+
+# added by travis gem
+[ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh

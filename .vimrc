@@ -22,23 +22,18 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
-Plugin 'groenewege/vim-less'
 Plugin 'Shutnik/jshint2.vim'
-Plugin 'fatih/vim-go'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
 Plugin 'bling/vim-airline'
 Plugin 'rodjek/vim-puppet'
 Plugin 'xolox/vim-misc'
 Plugin 'scrooloose/syntastic'
 Plugin 'fmoralesc/vim-pad'
 Plugin 'derekwyatt/vim-scala'
-Plugin 'tpope/vim-fireplace'
 Plugin 'terryma/vim-expand-region'
 " snipmate related
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -48,8 +43,19 @@ Plugin 'honza/vim-snippets'
 " end snipmate related
 Plugin 'sotte/presenting.vim'
 Plugin 'vim-scripts/dbext.vim'
-Plugin 'elixir-lang/vim-elixir'
+
+" Languages
+Plugin 'groenewege/vim-less'
+Plugin 'fatih/vim-go'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'tpope/vim-fireplace'
 Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'digitaltoad/vim-pug'
+Plugin 'wavded/vim-stylus'
+Plugin 'lambdatoast/elm.vim'
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -164,11 +170,16 @@ cmap w!! w !sudo tee % >/dev/null
 nmap <Leader>= <C-w>=
 
 " Easier pane navigation
-nmap <silent> <c-k> :wincmd k<CR>
-nmap <silent> <c-j> :wincmd j<CR>
-nmap <silent> <c-h> :wincmd h<CR>
-nmap <silent> <c-l> :wincmd l<CR>
-nmap <silent> <leader>m :wincmd R<CR>
+nnoremap <silent> <c-k> :wincmd k<CR>
+nnoremap <silent> <c-j> :wincmd j<CR>
+nnoremap <silent> <c-h> :wincmd h<CR>
+nnoremap <silent> <c-l> :wincmd l<CR>
+nnoremap <silent> <leader>m :wincmd R<CR>
+
+if has('nvim')
+  " Hack to get C-h working in NeoVim
+  nmap <BS> <C-W>h
+endif
 
 " Execute contents of current line
 nmap <Leader>x :exec 'r! ' . getline('.')<CR>

@@ -7,6 +7,11 @@ echo "Backing up and symlinking .vimrc ..."
 cp $HOME/.vimrc $HOME/.jvim/backups/.vimrc > /dev/null 2>&1
 ln -sf $HOME/.jvim/.vimrc $HOME/.vimrc
 
+echo "Setting up neovim..."
+mkdir -p $HOME/.config
+ln -sf $HOME/.vim $HOME/.config/nvim
+ln -sf $HOME/.jvim/.vimrc $HOME/.config/nvim/init.vim
+
 # Bonus
 if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking .gitconfig ..."
