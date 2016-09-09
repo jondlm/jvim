@@ -3,20 +3,20 @@
 	email = jdelamotte@appnexus.com
 [push]
 	default = current
+[mergetool]
+	prompt = false
+	keepBackup = false
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true
 [merge]
 	tool = vimdiff
-[difftool "Kaleidoscope"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [difftool]
 	prompt = false
-[mergetool]
-	prompt = false
-	keepBackup = false
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [diff]
-	tool = vimdiff
+	tool = Kaleidoscope
 [alias]
 	st = status
 	ci = commit --verbose

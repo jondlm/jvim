@@ -19,21 +19,17 @@ Plugin 'spf13/vim-autoclose'
 Plugin 'kien/ctrlp.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'Shougo/neocomplcache.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
-Plugin 'Shutnik/jshint2.vim'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
 Plugin 'bling/vim-airline'
-Plugin 'rodjek/vim-puppet'
 Plugin 'xolox/vim-misc'
 Plugin 'scrooloose/syntastic'
 Plugin 'fmoralesc/vim-pad'
-Plugin 'derekwyatt/vim-scala'
 Plugin 'terryma/vim-expand-region'
 " snipmate related
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -42,9 +38,9 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " end snipmate related
 Plugin 'sotte/presenting.vim'
-Plugin 'vim-scripts/dbext.vim'
 
 " Languages
+Plugin 'rodjek/vim-puppet'
 Plugin 'groenewege/vim-less'
 Plugin 'fatih/vim-go'
 Plugin 'pangloss/vim-javascript'
@@ -56,6 +52,12 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'digitaltoad/vim-pug'
 Plugin 'wavded/vim-stylus'
 Plugin 'lambdatoast/elm.vim'
+
+if has('nvim')
+  Plugin 'Shougo/deoplete.nvim'
+else
+  Plugin 'Shougo/neocomplcache.vim'
+endif
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -124,7 +126,6 @@ set directory=~/.vim/swp//      " Clean swaps that arent stored in your current 
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
-autocmd BufNewFile,BufRead *.emblem set filetype=emblem
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -137,10 +138,6 @@ autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWri
 " Easier command history binding
 noremap  <leader>; q:
 noremap  <leader>/ q/
-
-" Easy normal mode
-imap kj <Esc>
-imap jk <Esc>
 
 " Easy tabs
 map <S-H> gT
@@ -189,6 +186,9 @@ nmap <Leader>f gg=G
 
 " Find and replace word under cursor
 nmap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Open file under cursor in a new tab
+nmap <Leader>o <c-w>gf
 
 " Make ' behave like ` for easier mark navigation
 nmap ' `
@@ -347,11 +347,16 @@ let g:syntastic_javascript_checkers = ['eslint']
 """"""""""""""""""""""""""""""""""""""""
 " Neocomplcache
 """"""""""""""""""""""""""""""""""""""""
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_auto_delimiter = 1
-let g:neocomplcache_max_list = 15
-let g:neocomplcache_force_overwrite_completefunc = 1
+if has('nvim')
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_smart_case = 1
+else
+  let g:neocomplcache_enable_at_startup = 1
+  let g:neocomplcache_enable_smart_case = 1
+  let g:neocomplcache_enable_auto_delimiter = 1
+  let g:neocomplcache_max_list = 25
+  let g:neocomplcache_force_overwrite_completefunc = 1
+endif
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -409,7 +414,6 @@ function! FillLine( str )
     .s/$/\=(' '.repeat(a:str, reps))/
   endif
 endfunction
-
 
 """"""""""""""""""""""""""""""""""""""""
 " Overrides

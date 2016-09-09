@@ -18,20 +18,20 @@ alias grepp='ps -ef | grep $1'
 alias gs='git status'
 alias ga='git add -A'
 alias gc='git commit -v'
-alias gprs="git log --pretty=format:%s `git tag | tail -r | sed -n '1p'`..HEAD | grep 'Merge pull request'"
+alias gprs="git log --pretty=format:%s \`git tag --sort=version:refname | tail -r | sed -n '1p'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
 alias gpull='git pull'
 alias gf='git fetch --all'
 alias gff='git fetch --all && git merge --ff-only'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
 alias c='clear'
-alias ph='history | sort -r | peco'
-alias phr="history | sort -r | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | bash"
+alias ph='history | sort -r | fzf'
+alias phr="history | sort -r | fzf | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | bash"
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
 alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
-alias pk="ps ax | peco | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
+alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 alias nr='npm run'
 alias vim='nvim'
 
@@ -44,7 +44,7 @@ if [ "`uname`" = "Darwin" ]; then
   alias sort='gsort'
   alias readlink='greadlink'
 
-  alias phc="history | peco | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+\|\s\+$//g' | pbcopy"
+  alias phc="history | fzf | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+\|\s\+$//g' | pbcopy"
 fi
 
 # Golang shiz
@@ -62,10 +62,6 @@ export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
-
-# History search
-bindkey -v
-bindkey '^R' history-beginning-search-backward
 
 # Setup brew paths if it exists
 if hash brew 2>/dev/null; then
@@ -94,15 +90,18 @@ export EDITOR='nvim'
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 
+# Setup nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+# added by travis gem
+[ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
+
+# use fzf if it's available
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # Import the 'after' override file if it exists
 if [ -f "$HOME/.zshrc-after" ]; then
   source $HOME/.zshrc-after
 fi
 
-# Setup nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-
-
-# added by travis gem
-[ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
