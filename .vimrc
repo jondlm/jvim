@@ -27,31 +27,26 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'xolox/vim-misc'
-Plugin 'scrooloose/syntastic'
 Plugin 'fmoralesc/vim-pad'
 Plugin 'terryma/vim-expand-region'
+Plugin 'w0rp/ale'
+Plugin 'sheerun/vim-polyglot'
 " snipmate related
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " end snipmate related
-Plugin 'sotte/presenting.vim'
 
-" Languages
-Plugin 'rodjek/vim-puppet'
-Plugin 'groenewege/vim-less'
-Plugin 'fatih/vim-go'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'tpope/vim-fireplace'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'digitaltoad/vim-pug'
-Plugin 'wavded/vim-stylus'
-Plugin 'lambdatoast/elm.vim'
+" Old plugins I don't use much
+" Plugin 'sotte/presenting.vim'
+" Plugin 'fatih/vim-go'
+" Plugin 'wavded/vim-stylus'
+" Plugin 'tpope/vim-fireplace'
+" Plugin 'digitaltoad/vim-pug'
+" Plugin 'kchmck/vim-coffee-script'
 
 if has('nvim')
   Plugin 'Shougo/deoplete.nvim'
@@ -160,6 +155,9 @@ vnoremap > >gv
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
+" Search for visual selection
+vnoremap // y/<C-R>"<CR>
+
 " Force write the file for when you forget to use sudo
 cmap w!! w !sudo tee % >/dev/null
 
@@ -180,6 +178,7 @@ endif
 
 " Execute contents of current line
 nmap <Leader>x :exec 'r! ' . getline('.')<CR>
+nmap <Leader>xx :call ReplaceAndExecLine()<CR>
 
 " Easier file formatting
 nmap <Leader>f gg=G
@@ -192,6 +191,11 @@ nmap <Leader>o <c-w>gf
 
 " Make ' behave like ` for easier mark navigation
 nmap ' `
+
+""""""""""""""""""""""""""""""""""""""""
+" JSX
+""""""""""""""""""""""""""""""""""""""""
+let g:jsx_ext_required = 0
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -260,6 +264,12 @@ endif
 
 
 """"""""""""""""""""""""""""""""""""""""
+" Elm Format
+""""""""""""""""""""""""""""""""""""""""
+let g:elm_format_autosave = 1
+
+
+""""""""""""""""""""""""""""""""""""""""
 " Airline
 """"""""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts=1
@@ -299,6 +309,7 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
+let NERDTreeWinSize=60
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -338,14 +349,7 @@ nnoremap <silent> <leader>gg :SignifyToggle<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
-" Syntasic
-""""""""""""""""""""""""""""""""""""""""
-
-let g:syntastic_javascript_checkers = ['eslint']
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Neocomplcache
+" Neocomplcache & Deoplete
 """"""""""""""""""""""""""""""""""""""""
 if has('nvim')
   let g:deoplete#enable_at_startup = 1
@@ -371,12 +375,26 @@ vmap <C-v> <Plug>(expand_region_shrink)
 """"""""""""""""""""""""""""""""""""""""
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
-nmap <Leader>r <Plug>GitGutterRevertHunk
+nmap <Leader>r <Plug>GitGutterUndoHunk
 
 
 """"""""""""""""""""""""""""""""""""""""
 " Functions
 """"""""""""""""""""""""""""""""""""""""
+function! ReplaceAndExecLine()
+  let template = getline('.')
+
+  " This is hacky, but this line expects the first line if the file to have a
+  " `let vars = {}` statement
+  exec getline(1)
+
+  for key in keys(vars)
+    let template = substitute(template, key, get(vars, key), "g")
+  endfor
+
+  exec 'r! ' . template
+endfunction
+
 function! StripTrailingWhitespace()
   " Save last search, and cursor position.
   let _s=@/
@@ -414,6 +432,7 @@ function! FillLine( str )
     .s/$/\=(' '.repeat(a:str, reps))/
   endif
 endfunction
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Overrides

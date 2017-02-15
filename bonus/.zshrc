@@ -25,8 +25,6 @@ alias gf='git fetch --all'
 alias gff='git fetch --all && git merge --ff-only'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
 alias c='clear'
-alias ph='history | sort -r | fzf'
-alias phr="history | sort -r | fzf | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+//' | bash"
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
@@ -43,8 +41,6 @@ if [ "`uname`" = "Darwin" ]; then
   alias sed='gsed'
   alias sort='gsort'
   alias readlink='greadlink'
-
-  alias phc="history | fzf | sed 's/^\s\+//' | cut -f 1 -d ' ' --complement | sed 's/^\s\+\|\s\+$//g' | pbcopy"
 fi
 
 # Golang shiz
@@ -97,8 +93,10 @@ export NVM_DIR="$HOME/.nvm"
 # added by travis gem
 [ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
 
-# use fzf if it's available
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
 
 # Import the 'after' override file if it exists
 if [ -f "$HOME/.zshrc-after" ]; then

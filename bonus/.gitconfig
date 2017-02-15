@@ -34,7 +34,7 @@
 	ds = diff --stat=160,120
 	dh1 = diff HEAD~1
 	brr = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
-	rc = !git checkout $(git brr | peco)
+	rc = !git checkout $(git brr | fzf)
 	standup = !"git log --reverse --branches --since='$(if [[ "Mon" == "$(date +%a)" ]]; then echo "last friday"; else echo "yesterday"; fi)' --author=$(git config --get user.email) --format=format:'%C(cyan) %ad %C(yellow)%h %Creset %s %Cgreen%d' --date=local"
 
 	# Divergence (commits we added and commits remote added)
@@ -58,8 +58,6 @@
 	ra = !git r --all
 	l = "!. ~/.githelpers && pretty_git_log"
 	la = !git l --all
-[core]
-	editor = vim
 [filter "hawser"]
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
