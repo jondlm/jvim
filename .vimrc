@@ -33,20 +33,16 @@ Plugin 'fmoralesc/vim-pad'
 Plugin 'terryma/vim-expand-region'
 Plugin 'w0rp/ale'
 Plugin 'sheerun/vim-polyglot'
+Plugin 'vimwiki/vimwiki'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'sbdchd/neoformat'
+Plugin 'christoomey/vim-tmux-navigator'
 " snipmate related
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " end snipmate related
-
-" Old plugins I don't use much
-" Plugin 'sotte/presenting.vim'
-" Plugin 'fatih/vim-go'
-" Plugin 'wavded/vim-stylus'
-" Plugin 'tpope/vim-fireplace'
-" Plugin 'digitaltoad/vim-pug'
-" Plugin 'kchmck/vim-coffee-script'
 
 if has('nvim')
   Plugin 'Shougo/deoplete.nvim'
@@ -118,17 +114,22 @@ set cursorcolumn                " Include a vertical line for your cursor
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
 
+
+""""""""""""""""""""""""""""""""""""""""
+" Hooks
+""""""""""""""""""""""""""""""""""""""""
+
 " Syntax highlighting based on file extensions
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.less set filetype=less
+
+" Clean trailing whitespace
+autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
 
 """"""""""""""""""""""""""""""""""""""""
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
-
-" Clean trailing whitespace
-autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
 " Easier command history binding
 noremap  <leader>; q:
@@ -143,9 +144,6 @@ nnoremap Y y$
 
 " Find merge conflict markers
 map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
-
-" Run jshint
-map <leader>h :JSHint<CR>
 
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
@@ -191,6 +189,14 @@ nmap <Leader>o <c-w>gf
 
 " Make ' behave like ` for easier mark navigation
 nmap ' `
+
+" Makes * not jump to the next search item
+" http://stackoverflow.com/a/4257175/895558
+noremap * *``zz
+
+" Fill the current line with dashes to 80 characters
+noremap <Leader>- :call FillLine('-')<CR>
+
 
 """"""""""""""""""""""""""""""""""""""""
 " JSX
@@ -376,6 +382,16 @@ vmap <C-v> <Plug>(expand_region_shrink)
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
 nmap <Leader>r <Plug>GitGutterUndoHunk
+
+
+""""""""""""""""""""""""""""""""""""""""
+" VimWiki
+""""""""""""""""""""""""""""""""""""""""
+let wiki = {}
+let wiki.path = '~/Dropbox/wiki'
+let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
+let g:vimwiki_list = [wiki]
+let g:vimwiki_folding = 1
 
 
 """"""""""""""""""""""""""""""""""""""""
