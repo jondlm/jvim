@@ -12,7 +12,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'arcticicestudio/nord-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'spf13/vim-autoclose'
@@ -36,7 +36,9 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'vimwiki/vimwiki'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'sbdchd/neoformat'
-Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'ElmCast/elm-vim'
+Plugin 'fatih/vim-go'
+Plugin 'zchee/deoplete-go'
 " snipmate related
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
@@ -46,6 +48,7 @@ Plugin 'honza/vim-snippets'
 
 if has('nvim')
   Plugin 'Shougo/deoplete.nvim'
+  Plugin 'mhartington/nvim-typescript'
 else
   Plugin 'Shougo/neocomplcache.vim'
 endif
@@ -58,10 +61,10 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""
 " Colors
 """"""""""""""""""""""""""""""""""""""""
-let g:solarized_termcolors=16
-let g:solarized_termtrans=1
-set background=dark
-colorscheme solarized
+"let g:solarized_termcolors=16
+"let g:solarized_termtrans=1
+"set background=dark
+colorscheme nord
 syntax on
 
 highlight clear SignColumn
@@ -171,7 +174,7 @@ nnoremap <silent> <leader>m :wincmd R<CR>
 
 if has('nvim')
   " Hack to get C-h working in NeoVim
-  nmap <BS> <C-W>h
+  nnoremap <BS> <C-W>h
 endif
 
 " Execute contents of current line
@@ -270,16 +273,18 @@ endif
 
 
 """"""""""""""""""""""""""""""""""""""""
-" Elm Format
+" Elm
 """"""""""""""""""""""""""""""""""""""""
 let g:elm_format_autosave = 1
+
+map <Leader>d :ElmShowDocs<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
 " Airline
 """"""""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts=1
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'nord'
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -360,6 +365,10 @@ nnoremap <silent> <leader>gg :SignifyToggle<CR>
 if has('nvim')
   let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
+  inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("j"))
+  inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("k"))
+  inoremap <expr> <Tab> ((pumvisible())?("\<C-n>"):("\<Tab>"))
+  inoremap <expr> <S-Tab> ((pumvisible())?("\<C-p>"):("\<S-Tab>"))
 else
   let g:neocomplcache_enable_at_startup = 1
   let g:neocomplcache_enable_smart_case = 1
@@ -392,6 +401,13 @@ let wiki.path = '~/Dropbox/wiki'
 let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
 let g:vimwiki_list = [wiki]
 let g:vimwiki_folding = 1
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Polyglot
+""""""""""""""""""""""""""""""""""""""""
+let g:polyglot_disabled = ['elm']
+
 
 
 """"""""""""""""""""""""""""""""""""""""
