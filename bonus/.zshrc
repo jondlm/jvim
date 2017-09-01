@@ -58,6 +58,7 @@ export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # Setup brew paths if it exists
 if hash brew 2>/dev/null; then

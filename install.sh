@@ -45,6 +45,10 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking .githelpers ..."
   cp $HOME/.githelpers $HOME/.jvim/backups/.githelpers > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/garys-dotfiles/.githelpers $HOME/.githelpers
+
+  echo "Backing up and symlinking alacritty.yml ..."
+  cp $HOME/.config/alacritty/alacritty.yml $HOME/.jvim/backups/alacritty.yml > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 fi
 
 echo "Installation complete"

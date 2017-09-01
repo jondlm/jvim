@@ -40,10 +40,11 @@ Plugin 'ElmCast/elm-vim'
 Plugin 'fatih/vim-go'
 Plugin 'zchee/deoplete-go'
 " snipmate related
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
+Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+"Plugin 'MarcWeber/vim-addon-mw-utils'
+"Plugin 'tomtom/tlib_vim'
+"Plugin 'garbas/vim-snipmate'
 " end snipmate related
 
 if has('nvim')
@@ -277,8 +278,13 @@ endif
 """"""""""""""""""""""""""""""""""""""""
 let g:elm_format_autosave = 1
 
-map <Leader>d :ElmShowDocs<CR>
+autocmd FileType elm map <Leader>d :TSDef<CR>
 
+
+""""""""""""""""""""""""""""""""""""""""
+" Typescript
+""""""""""""""""""""""""""""""""""""""""
+autocmd FileType typescript map <Leader>d :TSDef<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 " Airline
@@ -409,6 +415,13 @@ let g:vimwiki_folding = 1
 let g:polyglot_disabled = ['elm']
 
 
+""""""""""""""""""""""""""""""""""""""""
+" UtiliSnip
+""""""""""""""""""""""""""""""""""""""""
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Functions
@@ -433,7 +446,7 @@ function! StripTrailingWhitespace()
   let l = line(".")
   let c = col(".")
   " do the business:
-  %s/\s\+$//e
+  %s/\(\|\s\)\+$//e
   " clean up: restore previous search history, and cursor position
   let @/=_s
   call cursor(l, c)
