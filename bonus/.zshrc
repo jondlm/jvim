@@ -30,6 +30,7 @@ alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
 alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
+alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
 alias nr='npm run'
 alias vim='nvim'
 
