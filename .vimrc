@@ -201,6 +201,8 @@ noremap * *``zz
 " Fill the current line with dashes to 80 characters
 noremap <Leader>- :call FillLine('-')<CR>
 
+" Insert the current date
+nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
 
 """"""""""""""""""""""""""""""""""""""""
 " JSX
