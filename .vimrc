@@ -16,7 +16,6 @@ Plugin 'arcticicestudio/nord-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'spf13/vim-autoclose'
-Plugin 'kien/ctrlp.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'godlygeek/tabular'
@@ -39,13 +38,19 @@ Plugin 'ElmCast/elm-vim'
 Plugin 'fatih/vim-go'
 Plugin 'zchee/deoplete-go'
 Plugin 'jremmen/vim-ripgrep'
-" snipmate related
+
+" fzf
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plugin 'junegunn/fzf.vim'
+" end fzf
+
+" snipmate
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 "Plugin 'MarcWeber/vim-addon-mw-utils'
 "Plugin 'tomtom/tlib_vim'
 "Plugin 'garbas/vim-snipmate'
-" end snipmate related
+" end snipmate
 
 if has('nvim')
   Plugin 'Shougo/deoplete.nvim'
@@ -134,10 +139,6 @@ autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWri
 """"""""""""""""""""""""""""""""""""""""
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
-
-" Easier command history binding
-noremap  <leader>; q:
-noremap  <leader>/ q/
 
 " Easy tabs
 map <S-H> gT
@@ -231,26 +232,6 @@ let g:pad#set_mappings = 0
 " Custom key bindings, the trailing whitespace here is intentional
 nmap <Leader>nl :Pad ls<CR>
 nmap <Leader>nn :Pad new 
-
-
-""""""""""""""""""""""""""""""""""""""""
-" CtrlP
-""""""""""""""""""""""""""""""""""""""""
-" CtrlP search through buffers
-map <Leader>p :CtrlPBuffer<CR>
-
-" Make Ctrl-P plugin a lot faster for Git projects
-" http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity
-let g:ctrlp_use_caching = 0
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-  let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-    \ }
-endif
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -384,6 +365,15 @@ else
   let g:neocomplcache_max_list = 25
   let g:neocomplcache_force_overwrite_completefunc = 1
 endif
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Fzf.vim
+""""""""""""""""""""""""""""""""""""""""
+nmap <C-p> :Files<CR>
+nmap <leader>p :Buffers<CR>
+nmap <leader>; :History:<CR>
+nmap <leader>/ :History/<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
