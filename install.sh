@@ -12,6 +12,11 @@ mkdir -p $HOME/.config
 ln -sf $HOME/.vim $HOME/.config/nvim
 ln -sf $HOME/.jvim/.vimrc $HOME/.config/nvim/init.vim
 
+echo "Backing up symlinking UltiSnips snippets..."
+cp -r $HOME/.vim/UltiSnips $HOME/.jvim/backups
+rm -rf $HOME/.vim/UltiSnips
+ln -sf $HOME/.jvim/bonus/UltiSnips $HOME/.vim
+
 # Bonus
 if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking .gitconfig ..."

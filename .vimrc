@@ -269,6 +269,13 @@ autocmd FileType elm map <Leader>d :TSDef<CR>
 """"""""""""""""""""""""""""""""""""""""
 autocmd FileType typescript map <Leader>d :TSDef<CR>
 
+
+""""""""""""""""""""""""""""""""""""""""
+" Go
+""""""""""""""""""""""""""""""""""""""""
+autocmd FileType go map <Leader>d :GoDef<CR>
+
+
 """"""""""""""""""""""""""""""""""""""""
 " Airline
 """"""""""""""""""""""""""""""""""""""""
@@ -370,7 +377,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""
 " Fzf.vim
 """"""""""""""""""""""""""""""""""""""""
-nmap <C-p> :Files<CR>
+nmap <C-p> :GFiles<CR>
 nmap <leader>p :Buffers<CR>
 nmap <leader>; :History:<CR>
 nmap <leader>/ :History/<CR>
