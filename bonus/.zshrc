@@ -24,7 +24,6 @@ alias gpull='git pull'
 alias gf='git fetch --all'
 alias gff='git fetch --all && git merge --ff-only'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
-alias c='clear'
 alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
@@ -104,4 +103,3 @@ fi
 if [ -f "$HOME/.zshrc-after" ]; then
   source $HOME/.zshrc-after
 fi
-

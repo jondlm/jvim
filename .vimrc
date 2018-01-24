@@ -38,6 +38,7 @@ Plugin 'ElmCast/elm-vim'
 Plugin 'fatih/vim-go'
 Plugin 'zchee/deoplete-go'
 Plugin 'jremmen/vim-ripgrep'
+Plugin 'junegunn/goyo.vim'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -205,6 +206,9 @@ noremap <Leader>- :call FillLine('-')<CR>
 " Insert the current date
 nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
 
+" Search for visual selection
+vnoremap // y/<C-R>"<CR>
+
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""
@@ -239,6 +243,22 @@ nmap <Leader>nn :Pad new
 """"""""""""""""""""""""""""""""""""""""
 let g:jsdoc_default_mapping = 0
 
+
+""""""""""""""""""""""""""""""""""""""""
+" Goyo
+""""""""""""""""""""""""""""""""""""""""
+function! s:goyo_enter()
+  silent !tmux set status off
+  call deoplete#disable()
+endfunction
+
+function! s:goyo_leave()
+  silent !tmux set status on
+  call deoplete#enable()
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 """"""""""""""""""""""""""""""""""""""""
 " Status Bar
