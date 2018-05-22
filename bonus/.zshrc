@@ -11,6 +11,11 @@ ZSH_THEME="jeeef"
 plugins=(git osx)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.zplug/init.zsh
+
+# Zplugs (https://github.com/zplug/zplug)
+zplug "changyuheng/fz", defer:1
+zplug "rupa/z", use:z.sh
 
 # Aliases
 alias ll='ls -lah'
@@ -53,8 +58,6 @@ export PATH="$PATH:/usr/bin"
 export PATH="$PATH:/bin"
 export PATH="$PATH:/usr/sbin"
 export PATH="$PATH:/sbin"
-export PATH="$PATH:/usr/local/bin"
-export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
@@ -98,6 +101,9 @@ export NVM_DIR="$HOME/.nvm"
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
 fi
+
+# Load zplugs at the bottom because of some conflict
+zplug load
 
 # Import the 'after' override file if it exists
 if [ -f "$HOME/.zshrc-after" ]; then

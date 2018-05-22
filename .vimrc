@@ -39,6 +39,7 @@ Plugin 'fatih/vim-go'
 Plugin 'zchee/deoplete-go'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
+Plugin 'racer-rust/vim-racer'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -209,6 +210,10 @@ nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
 " Search for visual selection
 vnoremap // y/<C-R>"<CR>
 
+" Base64 decode
+vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
+vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
+
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""
@@ -294,6 +299,12 @@ autocmd FileType typescript map <Leader>d :TSDef<CR>
 " Go
 """"""""""""""""""""""""""""""""""""""""
 autocmd FileType go map <Leader>d :GoDef<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Rust
+""""""""""""""""""""""""""""""""""""""""
+autocmd FileType rust map <Leader>d <Plug>(rust-def)
 
 
 """"""""""""""""""""""""""""""""""""""""
