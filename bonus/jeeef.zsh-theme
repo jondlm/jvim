@@ -10,6 +10,20 @@
 function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('$fg[blue]`basename $VIRTUAL_ENV`%{$reset_color%}') '
 }
+
+function kubectl_info {
+  k=""
+  a=""
+
+  if [ -f ~/.kube/config ]; then
+    k=`cat ~/.kube/config | grep current-context | sed 's/current-context: //g'`
+  fi
+  if [ -f ~/.ankh/config ]; then
+    a=`cat ~/.ankh/config | grep current-context | sed 's/current-context: //g'`
+  fi
+  echo "[$fg[blue]$k $a$reset_color]"
+}
+
 PR_GIT_UPDATE=1
 
 setopt prompt_subst
@@ -86,5 +100,5 @@ function jeeef_precmd {
 }
 add-zsh-hook precmd jeeef_precmd
 
-PROMPT=$'%{$limegreen%}%~%{$reset_color%} $vcs_info_msg_0_$(virtualenv_info)%{$reset_color%}
+PROMPT=$'%{$limegreen%}%~%{$reset_color%} $vcs_info_msg_0_$(virtualenv_info)$(kubectl_info)%{$reset_color%}
 $ '
