@@ -40,6 +40,7 @@ Plugin 'zchee/deoplete-go'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
 Plugin 'racer-rust/vim-racer'
+Plugin 'sotte/presenting.vim'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -305,7 +306,6 @@ autocmd FileType go map <Leader>d :GoDef<CR>
 " Rust
 """"""""""""""""""""""""""""""""""""""""
 autocmd FileType rust map <Leader>d <Plug>(rust-def)
-
 
 """"""""""""""""""""""""""""""""""""""""
 " Airline

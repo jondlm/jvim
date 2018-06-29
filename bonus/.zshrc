@@ -73,11 +73,6 @@ if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
 
-# Setup docker-machine if it exists
-if hash docker-machine 2>/dev/null; then
-  eval "$(docker-machine env an-vm 2>/dev/null)"
-fi
-
 # Uber vi mode
 set -o vi
 
@@ -101,6 +96,19 @@ export NVM_DIR="$HOME/.nvm"
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
 fi
+
+# ------------------------------------------------------------------------------
+# Utility Functions
+# ------------------------------------------------------------------------------
+
+# Show the commands ran yesterday
+history-yesterday () {
+  start=`date -d 'yesterday 00:00' +%s`
+  end=`date -d 'today 00:00' +%s`
+
+  sed -E 's/^: //g; s/:0;/\t/g' < .zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
+}
+
 
 # Load zplugs at the bottom because of some conflict
 zplug load

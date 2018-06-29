@@ -13,15 +13,11 @@ function virtualenv_info {
 
 function kubectl_info {
   k=""
-  a=""
 
   if [ -f ~/.kube/config ]; then
     k=`cat ~/.kube/config | grep current-context | sed 's/current-context: //g'`
   fi
-  if [ -f ~/.ankh/config ]; then
-    a=`cat ~/.ankh/config | grep current-context | sed 's/current-context: //g'`
-  fi
-  echo "[$fg[blue]$k $a$reset_color]"
+  echo "[$fg[blue]⎈$k$reset_color]"
 }
 
 PR_GIT_UPDATE=1
