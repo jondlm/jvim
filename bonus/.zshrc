@@ -106,7 +106,7 @@ history-yesterday () {
   start=`date -d 'yesterday 00:00' +%s`
   end=`date -d 'today 00:00' +%s`
 
-  sed -E 's/^: //g; s/:0;/\t/g' < .zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
+  sed -E 's/^: //g; s/:0;/\t/g' < ~/.zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
 }
 
 
