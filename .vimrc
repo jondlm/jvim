@@ -283,6 +283,13 @@ endif
 
 
 """"""""""""""""""""""""""""""""""""""""
+" Elixir
+""""""""""""""""""""""""""""""""""""""""
+autocmd BufWritePost *.exs silent :!mix format %
+autocmd BufWritePost *.ex silent :!mix format %
+
+
+""""""""""""""""""""""""""""""""""""""""
 " Elm
 """"""""""""""""""""""""""""""""""""""""
 let g:elm_format_autosave = 1
