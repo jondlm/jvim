@@ -8,7 +8,7 @@ ZSH_THEME="jeeef"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx)
+plugins=(git osx kubectl)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zplug/init.zsh
@@ -26,7 +26,7 @@ alias gc='git commit -v'
 alias gprs="git log --pretty=format:%s \`git tag --sort=version:refname | tail -r | sed -n '1p'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
 alias gpull='git pull'
-alias gf='git fetch --all'
+alias gf='git fetch --all --tags'
 alias gff='git fetch --all && git merge --ff-only'
 alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
 alias hbui='cd ~/dev/appnexus/hbui/'
