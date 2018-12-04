@@ -19,9 +19,14 @@ ln -sf $HOME/.jvim/bonus/UltiSnips $HOME/.vim
 
 # Bonus
 if [ "$1" = "bonus" ] ; then
-  echo "Backing up and symlinking .gitconfig ..."
-  cp $HOME/.gitconfig $HOME/.jvim/backups/.gitconfig > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.gitconfig $HOME/.gitconfig
+  read -p "Would you like to backup and symlink .gitconfig? It has some details tied to Jon de la Motte. (y/n) " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    echo "Backing up and symlinking .gitconfig ..."
+    cp $HOME/.gitconfig $HOME/.jvim/backups/.gitconfig > /dev/null 2>&1
+    ln -sf $HOME/.jvim/bonus/.gitconfig $HOME/.gitconfig
+  fi
 
   echo "Backing up and symlinking .tmux.conf ..."
   cp $HOME/.tmux.conf $HOME/.jvim/backups/.tmux.conf > /dev/null 2>&1

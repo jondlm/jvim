@@ -85,9 +85,11 @@ export EDITOR='nvim'
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 
-# Setup nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+# Setup asdf
+if [ -d ~/.asdf ]; then
+  source ~/.asdf/asdf.sh
+  source ~/.asdf/completions/asdf.bash
+fi
 
 # added by travis gem
 [ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh

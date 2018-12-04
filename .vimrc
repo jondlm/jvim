@@ -41,6 +41,7 @@ Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'sotte/presenting.vim'
+Plugin 'prettier/vim-prettier'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -121,7 +122,7 @@ set splitbelow                  " Puts new split windows to the bottom of the cu
 set matchpairs+=<:>             " Match, to be used with %
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set history=1000                " Store a ton of history (default is 20)
-set spell                       " Spell checking on
+set nospell                     " Spell checking off be default
 set cursorcolumn                " Include a vertical line for your cursor
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
