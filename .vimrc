@@ -36,10 +36,8 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'sbdchd/neoformat'
 Plugin 'ElmCast/elm-vim'
 Plugin 'fatih/vim-go'
-Plugin 'zchee/deoplete-go'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
-Plugin 'racer-rust/vim-racer'
 Plugin 'sotte/presenting.vim'
 Plugin 'prettier/vim-prettier'
 
@@ -55,13 +53,6 @@ Plugin 'honza/vim-snippets'
 "Plugin 'tomtom/tlib_vim'
 "Plugin 'garbas/vim-snipmate'
 " end snipmate
-
-if has('nvim')
-  Plugin 'Shougo/deoplete.nvim'
-  Plugin 'mhartington/nvim-typescript'
-else
-  Plugin 'Shougo/neocomplcache.vim'
-endif
 
 " All plugins must be added before the following line
 call vundle#end()            " required
@@ -223,6 +214,17 @@ let g:jsx_ext_required = 0
 
 
 """"""""""""""""""""""""""""""""""""""""
+" Ale
+""""""""""""""""""""""""""""""""""""""""
+let g:ale_linters = { 'rust': ['rls'] }
+let g:ale_fixers = { 'rust': ['rustfmt'], 'javascript': ['prettier'] }
+let g:ale_completion_enabled = 1
+let g:ale_fix_on_save = 1
+let g:ale_completion_delay = 300
+nmap <Leader>d :ALEGoToDefinition<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""
 " Pad
 """"""""""""""""""""""""""""""""""""""""
 " Save notes to dropbox
@@ -256,16 +258,15 @@ let g:jsdoc_default_mapping = 0
 """"""""""""""""""""""""""""""""""""""""
 function! s:goyo_enter()
   silent !tmux set status off
-  call deoplete#disable()
 endfunction
 
 function! s:goyo_leave()
   silent !tmux set status on
-  call deoplete#enable()
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Status Bar
@@ -289,31 +290,6 @@ endif
 autocmd BufWritePost *.exs silent :!mix format %
 autocmd BufWritePost *.ex silent :!mix format %
 
-
-""""""""""""""""""""""""""""""""""""""""
-" Elm
-""""""""""""""""""""""""""""""""""""""""
-let g:elm_format_autosave = 1
-
-autocmd FileType elm map <Leader>d :TSDef<CR>
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Typescript
-""""""""""""""""""""""""""""""""""""""""
-autocmd FileType typescript map <Leader>d :TSDef<CR>
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Go
-""""""""""""""""""""""""""""""""""""""""
-autocmd FileType go map <Leader>d :GoDef<CR>
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Rust
-""""""""""""""""""""""""""""""""""""""""
-autocmd FileType rust map <Leader>d <Plug>(rust-def)
 
 """"""""""""""""""""""""""""""""""""""""
 " Airline
@@ -392,25 +368,6 @@ nnoremap <silent> <leader>ge :Gedit<CR>
 " Mnemonic _i_nteractive
 nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Neocomplcache & Deoplete
-""""""""""""""""""""""""""""""""""""""""
-if has('nvim')
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#enable_smart_case = 1
-  inoremap <expr> <C-j> ((pumvisible())?("\<C-n>"):("j"))
-  inoremap <expr> <C-k> ((pumvisible())?("\<C-p>"):("k"))
-  inoremap <expr> <Tab> ((pumvisible())?("\<C-n>"):("\<Tab>"))
-  inoremap <expr> <S-Tab> ((pumvisible())?("\<C-p>"):("\<S-Tab>"))
-else
-  let g:neocomplcache_enable_at_startup = 1
-  let g:neocomplcache_enable_smart_case = 1
-  let g:neocomplcache_enable_auto_delimiter = 1
-  let g:neocomplcache_max_list = 25
-  let g:neocomplcache_force_overwrite_completefunc = 1
-endif
 
 
 """"""""""""""""""""""""""""""""""""""""

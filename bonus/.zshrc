@@ -63,11 +63,6 @@ export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
-# Setup brew paths if it exists
-if hash brew 2>/dev/null; then
-  export PATH=$(brew --prefix ruby)/bin:$PATH
-fi
-
 # Setup rbenv if it exists
 if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
@@ -110,7 +105,6 @@ history-yesterday () {
 
   sed -E 's/^: //g; s/:0;/\t/g' < ~/.zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
 }
-
 
 # Load zplugs at the bottom because of some conflict
 zplug load
