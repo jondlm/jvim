@@ -1,0 +1,23 @@
+snippet cm "Change Management Ticket"
+${1:app_name} ${2:old_version} -> ${3:new_version}
+
+*Version*: $2 -> $3
+*Chart Version*: ${4:old_chart_version} -> ${5:new_chart_version}
+*Deployment Date*: `gdate -d tomorrow +%Y-%m-%d`
+*User*: [~jdelamotte]
+*Affected application*: $1
+*Affected environments*: staging, production
+*Code Delta*: [https://stash.corp.appnexus.com/projects/${6:CONSOLE-CORE}/repos/app_$1/compare/diff?targetBranch=refs%2Ftags%2F$2&sourceBranch=refs%2Ftags%2F$3]
+*Pager group*: {{CXP}}
+*Related to*: $7
+
+*Deployment procedure*
+{code}ankh --set tag=$3 -e staging apply --chart $1@$5{code}
+{code}ankh --set tag=$3 -e production apply --chart $1@$5{code}
+
+*Rollback procedure*
+{code}ankh --set tag=$2 -e staging apply --chart $1@$4{code}
+{code}ankh --set tag=$2 -e production apply --chart $1@$4{code}
+
+endsnippet
+

@@ -18,24 +18,25 @@ zplug "changyuheng/fz", defer:1
 zplug "rupa/z", use:z.sh
 
 # Aliases
-alias ll='ls -lah'
-alias grepp='ps -ef | grep $1'
-alias gs='git status'
-alias ga='git add -A'
-alias gc='git commit -v'
-alias gprs="git log --pretty=format:%s \`git tag --sort=version:refname | tail -r | sed -n '1p'\`..HEAD | grep 'Merge pull request'"
-alias gpush='git push -u'
-alias gpull='git pull'
-alias gf='git fetch --all --tags'
-alias gff='git fetch --all && git merge --ff-only'
-alias gn="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open -a \"/Applications/Google Chrome.app\" \"https://github.com/\$GH/network\""
-alias hbui='cd ~/dev/appnexus/hbui/'
 alias an='cd ~/dev/appnexus/'
 alias bus='node ~/dev/busseur/index.js'
-alias conflicts='ag "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
+alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
+alias ga='git add -A'
+alias gc='git commit -v'
+alias gf='git fetch --all --tags'
+alias gff='git fetch --all && git merge --ff-only'
+alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
+alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
+alias gpull='git pull'
+alias gpush='git push -u'
+alias grepp='ps -ef | grep $1'
+alias gs='git status'
+alias hbui='cd ~/dev/appnexus/hbui/'
+alias ll='ls -lah'
+alias notify="osascript -e 'display notification \"Command line task finished\" with title \"Task Finished\"'"
+alias nr='npm run'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
-alias nr='npm run'
 alias vim='nvim'
 
 # Mac only aliases
@@ -50,6 +51,7 @@ fi
 
 # Golang shiz
 export GOPATH=$HOME/go
+export GO111MODULE=on
 
 # PATH configuration
 export PATH="/usr/local/bin"
@@ -105,6 +107,21 @@ history-yesterday () {
 
   sed -E 's/^: //g; s/:0;/\t/g' < ~/.zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
 }
+
+
+if [ "`uname`" = "Darwin" ]; then
+  # capture the stdout of a running process
+  capture() {
+    sudo dtrace -p "$1" -qn '
+      syscall::write*:entry
+      /pid == $target && arg0 == 1/ {
+        printf("%s", copyinstr(arg1, arg2));
+      }
+    '
+  }
+fi
+
+
 
 # Load zplugs at the bottom because of some conflict
 zplug load

@@ -16,11 +16,8 @@ Plugin 'arcticicestudio/nord-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'spf13/vim-autoclose'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
-Plugin 'heavenshell/vim-jsdoc'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
@@ -33,13 +30,9 @@ Plugin 'w0rp/ale'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'vimwiki/vimwiki'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'sbdchd/neoformat'
-Plugin 'ElmCast/elm-vim'
-Plugin 'fatih/vim-go'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
 Plugin 'sotte/presenting.vim'
-Plugin 'prettier/vim-prettier'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -49,9 +42,6 @@ Plugin 'junegunn/fzf.vim'
 " snipmate
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-"Plugin 'MarcWeber/vim-addon-mw-utils'
-"Plugin 'tomtom/tlib_vim'
-"Plugin 'garbas/vim-snipmate'
 " end snipmate
 
 " All plugins must be added before the following line
@@ -96,7 +86,7 @@ set smartcase                   " Case sensitive when uc present
 set wildmenu                    " Show list instead of just completing
 set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
 set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
-set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolljump=1                " Lines to scroll when cursor leaves screen
 set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
@@ -117,6 +107,7 @@ set nospell                     " Spell checking off be default
 set cursorcolumn                " Include a vertical line for your cursor
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
+set relativenumber              " Enable relative line numbers be default
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -129,6 +120,12 @@ autocmd BufNewFile,BufRead *.less set filetype=less
 
 " Clean trailing whitespace
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -197,8 +194,8 @@ noremap * *``zz
 " Fill the current line with dashes to 80 characters
 noremap <Leader>- :call FillLine('-')<CR>
 
-" Insert the current date
-nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
+" Insert the current date (removed in favor of using `t` to mean toggle)
+" nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
 
 " Search for visual selection
 vnoremap // y/<C-R>"<CR>
@@ -207,21 +204,38 @@ vnoremap // y/<C-R>"<CR>
 vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
 vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
 
+" Spelling
+nmap <Leader>ts :set spell!<CR>
+
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""
 let g:jsx_ext_required = 0
 
-
 """"""""""""""""""""""""""""""""""""""""
 " Ale
 """"""""""""""""""""""""""""""""""""""""
-let g:ale_linters = { 'rust': ['rls'] }
-let g:ale_fixers = { 'rust': ['rustfmt'], 'javascript': ['prettier'] }
+" tslint is busted with ALE at the moment, isn't respecting configs correctly
+let g:ale_linters = {
+\  'rust': ['rls'],
+\  'typescript': ['tsserver', 'typecheck', 'eslint'],
+\  'go': ['gopls'],
+\}
+let g:ale_fixers = {
+\  'rust': ['rustfmt'],
+\  'javascript': ['prettier'],
+\  'typescript': ['prettier'],
+\  'html': ['prettier'],
+\  'go': ['gofmt'],
+\  'elm': ['elm-format'],
+\}
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_completion_delay = 300
 nmap <Leader>d :ALEGoToDefinition<cr>
+nmap <Leader>dx :ALEGoToDefinitionInSplit<cr>
+nmap <Leader>dv :ALEGoToDefinitionInVSplit<cr>
+nmap <Leader>h :ALEHover<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -294,8 +308,12 @@ autocmd BufWritePost *.ex silent :!mix format %
 """"""""""""""""""""""""""""""""""""""""
 " Airline
 """"""""""""""""""""""""""""""""""""""""
-let g:airline_powerline_fonts=1
+let g:airline_powerline_fonts = 1
 let g:airline_theme = 'nord'
+let g:airline_section_b = ''
+let g:airline_section_y = ''
+let g:airline_section_z = ''
+let g:airline_skip_empty_sections = 1
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -392,6 +410,7 @@ vmap <C-v> <Plug>(expand_region_shrink)
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
 nmap <Leader>r <Plug>GitGutterUndoHunk
+autocmd BufWritePost * GitGutter
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -401,21 +420,22 @@ let wiki = {}
 let wiki.path = '~/Dropbox/wiki'
 let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
 let g:vimwiki_list = [wiki]
-let g:vimwiki_folding = 1
+" Disable table mapping so that UltiSnips can use <tab>
+let g:vimwiki_table_mappings = 0
 
 
 """"""""""""""""""""""""""""""""""""""""
 " Polyglot
 """"""""""""""""""""""""""""""""""""""""
-let g:polyglot_disabled = ['elm']
+"let g:polyglot_disabled = ['elm']
 
 
 """"""""""""""""""""""""""""""""""""""""
 " UtiliSnip
 """"""""""""""""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -446,14 +466,6 @@ function! StripTrailingWhitespace()
   let @/=_s
   call cursor(l, c)
 endfunction
-
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set norelativenumber
-  else
-    set relativenumber
-  endif
-endfunc
 
 " fill rest of line with characters http://stackoverflow.com/a/3400528/895558
 " Call with :call FillLine('-')
