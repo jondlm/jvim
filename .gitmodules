@@ -4,6 +4,3 @@
 [submodule "bonus/garys-dotfiles"]
 	path = bonus/garys-dotfiles
 	url = git://github.com/garybernhardt/dotfiles
-[submodule "bonus/pure"]
-	path = bonus/pure
-	url = git@github.com:sindresorhus/pure.git

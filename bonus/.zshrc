@@ -1,21 +1,24 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-
-# Load my custom zsh theme
-# Look in ~/.oh-my-zsh/themes/ for more options
-ZSH_THEME="jeeef"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx)
-
-source $ZSH/oh-my-zsh.sh
+# Zplugs (https://github.com/zplug/zplug)
+# You must run `zplug install`
 source $HOME/.zplug/init.zsh
 
-# Zplugs (https://github.com/zplug/zplug)
-zplug "changyuheng/fz", defer:1
-zplug "rupa/z", use:z.sh
+zplug changyuheng/fz, defer:1
+zplug rupa/z, use:z.sh
+zplug mafredri/zsh-async, from:github
+zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
+
+# Zsh settings (mostly select stuff taken from oh-my-zsh)
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=10000
+
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history data
 
 # Aliases
 alias an='cd ~/dev/appnexus/'
@@ -120,8 +123,6 @@ if [ "`uname`" = "Darwin" ]; then
     '
   }
 fi
-
-
 
 # Load zplugs at the bottom because of some conflict
 zplug load

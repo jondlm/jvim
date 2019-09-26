@@ -36,10 +36,6 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.zshrc $HOME/.jvim/backups/.zshrc > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.zshrc $HOME/.zshrc
 
-  echo "Backing up and symlinking jeeef zsh theme ..."
-  cp $HOME/.oh-my-zsh/themes/jeeef.zsh-theme $HOME/.jvim/backups/.oh-my-zsh/themes/jeeef.zsh-theme > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/jeeef.zsh-theme $HOME/.oh-my-zsh/themes/jeeef.zsh-theme
-
   echo "Backing up and symlinking .ctags ..."
   cp $HOME/.ctags $HOME/.jvim/backups/.ctags > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.ctags $HOME/.ctags
