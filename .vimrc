@@ -194,9 +194,6 @@ noremap * *``zz
 " Fill the current line with dashes to 80 characters
 noremap <Leader>- :call FillLine('-')<CR>
 
-" Insert the current date (removed in favor of using `t` to mean toggle)
-" nmap <Leader>t "=strftime('%Y-%m-%d')<CR>P
-
 " Search for visual selection
 vnoremap // y/<C-R>"<CR>
 
@@ -206,6 +203,9 @@ vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
 
 " Spelling
 nmap <Leader>ts :set spell!<CR>
+
+" Clear highlighting
+nmap <Leader>n :noh<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 " JSX

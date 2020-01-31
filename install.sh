@@ -44,14 +44,6 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.ackrc $HOME/.jvim/backups/.ackrc > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.ackrc $HOME/.ackrc
 
-  echo "Backing up and symlinking garybernhart/dotfiles binaries to $HOME/bin ..."
-  mkdir -p $HOME/bin
-  ln -sf $HOME/.jvim/bonus/garys-dotfiles/bin/* $HOME/bin
-
-  echo "Backing up and symlinking .githelpers ..."
-  cp $HOME/.githelpers $HOME/.jvim/backups/.githelpers > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/garys-dotfiles/.githelpers $HOME/.githelpers
-
   echo "Backing up and symlinking alacritty.yml ..."
   cp $HOME/.config/alacritty/alacritty.yml $HOME/.jvim/backups/alacritty.yml > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/alacritty.yml $HOME/.config/alacritty/alacritty.yml

@@ -21,22 +21,22 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
 # Aliases
-alias an='cd ~/dev/appnexus/'
-alias bus='node ~/dev/busseur/index.js'
-alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
+alias g='git'
 alias ga='git add -A'
 alias gc='git commit -v'
+alias gco='git checkout'
+alias gd='git diff'
 alias gf='git fetch --all --tags'
 alias gff='git fetch --all && git merge --ff-only'
 alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
-alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
-alias gpull='git pull'
+alias gl='git pull --ff-only'
+alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match '[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
-alias grepp='ps -ef | grep $1'
+alias gr='git branch --sort=-committerdate --format "%(refname:lstrip=2)" | fzf | xargs git checkout'
 alias gs='git status'
-alias hbui='cd ~/dev/appnexus/hbui/'
+
+alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias ll='ls -lah'
-alias notify="osascript -e 'display notification \"Command line task finished\" with title \"Task Finished\"'"
 alias nr='npm run'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
@@ -50,6 +50,7 @@ if [ "`uname`" = "Darwin" ]; then
   alias sed='gsed'
   alias sort='gsort'
   alias readlink='greadlink'
+  alias notify="osascript -e 'display notification with title \"Task Finished\"'"
 fi
 
 # Golang shiz
@@ -81,9 +82,6 @@ export LANG=en_US.UTF-8
 
 # Vim is the best editor
 export EDITOR='nvim'
-
-# Add RVM to PATH for scripting
-export PATH="$PATH:$HOME/.rvm/bin"
 
 # Setup asdf
 if [ -d ~/.asdf ]; then
