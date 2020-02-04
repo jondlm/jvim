@@ -407,9 +407,9 @@ vmap <C-v> <Plug>(expand_region_shrink)
 """"""""""""""""""""""""""""""""""""""""
 " GitGutter
 """"""""""""""""""""""""""""""""""""""""
-nmap [h <Plug>GitGutterPrevHunk
-nmap ]h <Plug>GitGutterNextHunk
-nmap <Leader>r <Plug>GitGutterUndoHunk
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap <Leader>r <Plug>(GitGutterUndoHunk)
 autocmd BufWritePost * GitGutter
 
 
