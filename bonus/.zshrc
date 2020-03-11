@@ -19,6 +19,7 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
+set -o vi                     # vi mode
 
 # Aliases
 alias g='git'
@@ -73,9 +74,6 @@ export PATH="$PATH:$HOME/.cargo/bin"
 if hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
-
-# Uber vi mode
-set -o vi
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8

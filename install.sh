@@ -47,6 +47,10 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking alacritty.yml ..."
   cp $HOME/.config/alacritty/alacritty.yml $HOME/.jvim/backups/alacritty.yml > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+
+  echo "Backing up and symlinking init.lua ..."
+  cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
 fi
 
 echo "Installation complete"

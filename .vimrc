@@ -220,11 +220,13 @@ let g:ale_linters = {
 \  'rust': ['rls'],
 \  'typescript': ['tsserver', 'typecheck', 'eslint'],
 \  'go': ['gopls'],
+\  'scala': ['metals'],
 \}
 let g:ale_fixers = {
 \  'rust': ['rustfmt'],
 \  'javascript': ['prettier'],
 \  'typescript': ['prettier'],
+\  'typescriptreact': ['prettier'],
 \  'html': ['prettier'],
 \  'go': ['gofmt'],
 \  'elm': ['elm-format'],
