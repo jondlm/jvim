@@ -18,6 +18,14 @@ GROUP BY
   app_name;
 --]]
 
+-- Utilities
+
+function Set (list)
+  local set = {}
+  for _, l in ipairs(list) do set[l] = true end
+  return set
+end
+
 local db = hs.sqlite3.open(os.getenv("HOME") .. "/.hammerspoon/app-stats.db")
 
 -- Bootstrap the database table if it's missing
@@ -30,29 +38,31 @@ db:exec([[
   ]])
 
 function onAppChange(appName, eventType, appObject)
-  if (eventType == hs.application.watcher.activated) then
+  if (eventType == hs.application.watcher.activated and appName ~= "loginwindow") then
     db:exec("INSERT INTO activations(app_name) VALUES (\"" .. appName .. "\");")
 
-    if (appName == "Slack") then
-      hs.alert.show("Are you really sure you want to use this app?", hs.alert.defaultStyle, hs.screen.mainScreen(), 10)
-    end
+    -- if (appName == "Slack") then
+    --   hs.alert.show("Are you really sure you want to use this app?", hs.alert.defaultStyle, hs.screen.mainScreen(), 10)
+    -- end
   end
 end
 
 appWatcher = hs.application.watcher.new(onAppChange)
 appWatcher:start()
 
-function reloadConfig(files)
-  doReload = false
-  for _,file in pairs(files) do
-    if file:sub(-4) == ".lua" then
-      doReload = true
-    end
-  end
-  if doReload then
-    hs.reload()
+local deactivateEvents = Set {
+  hs.caffeinate.watcher.screensDidLock,
+  hs.caffeinate.watcher.screensDidSleep,
+  hs.caffeinate.watcher.systemWillPowerOff
+}
+function onCaffeinate(eventType)
+  if deactivateEvents[eventType] then
+    db:exec("INSERT INTO activations(app_name) VALUES (\"Deactivate\");")
   end
 end
 
-configWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
+caffeineWatcher = hs.caffeinate.watcher.new(onCaffeinate)
+caffeineWatcher:start()
+
 hs.alert.show("Config loaded")
+
