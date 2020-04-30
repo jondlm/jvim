@@ -30,7 +30,6 @@ Plugin 'w0rp/ale'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'vimwiki/vimwiki'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'jremmen/vim-ripgrep'
 Plugin 'junegunn/goyo.vim'
 Plugin 'sotte/presenting.vim'
 
@@ -52,9 +51,6 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""
 " Colors
 """"""""""""""""""""""""""""""""""""""""
-"let g:solarized_termcolors=16
-"let g:solarized_termtrans=1
-"set background=dark
 colorscheme nord
 syntax on
 
@@ -121,6 +117,7 @@ autocmd BufNewFile,BufRead *.less set filetype=less
 " Clean trailing whitespace
 autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
+" Use absolute line number in insert mode
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
@@ -132,15 +129,11 @@ augroup END
 " Custom mappings
 """"""""""""""""""""""""""""""""""""""""
 
-" Easy tabs
-map <S-H> gT
-map <S-L> gt
-
 " Be consistent with C and D
 nnoremap Y y$
 
 " Find merge conflict markers
-map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+noremap <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
@@ -150,14 +143,11 @@ vnoremap > >gv
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" Search for visual selection
-vnoremap // y/<C-R>"<CR>
-
 " Force write the file for when you forget to use sudo
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Adjust viewports to the same size
-nmap <Leader>= <C-w>=
+nnoremap <Leader>= <C-w>=
 
 " Easier pane navigation
 nnoremap <silent> <c-k> :wincmd k<CR>
@@ -172,20 +162,23 @@ if has('nvim')
 endif
 
 " Execute contents of current line
-nmap <Leader>x :exec 'r! ' . getline('.')<CR>
-nmap <Leader>xx :call ReplaceAndExecLine()<CR>
+nnoremap <Leader>x :exec 'r! ' . getline('.')<CR>
+nnoremap <Leader>xx :call ReplaceAndExecLine()<CR>
 
 " Easier file formatting
-nmap <Leader>f gg=G
+nnoremap <Leader>f gg=G
 
 " Find and replace word under cursor
-nmap <Leader>s :%s/\<<C-r><C-w>\>/
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Global search/replace for selection
+vnoremap s "sy:%s/<C-R>"/
 
 " Open file under cursor in a new tab
-nmap <Leader>o <c-w>gf
+nnoremap <Leader>o <c-w>gf
 
 " Make ' behave like ` for easier mark navigation
-nmap ' `
+nnoremap ' `
 
 " Makes * not jump to the next search item
 " http://stackoverflow.com/a/4257175/895558
@@ -202,15 +195,17 @@ vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
 vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
 
 " Spelling
-nmap <Leader>ts :set spell!<CR>
+nnoremap <Leader>ts :set spell!<CR>
 
 " Clear highlighting
-nmap <Leader>n :noh<CR>
+nnoremap <Leader>n :noh<CR>
+
 
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""
 let g:jsx_ext_required = 0
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Ale
@@ -230,14 +225,17 @@ let g:ale_fixers = {
 \  'html': ['prettier'],
 \  'go': ['gofmt'],
 \  'elm': ['elm-format'],
+\  'scala': ['scalafmt'],
+\  'php': ['php_cs_fixer'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_completion_delay = 300
-nmap <Leader>d :ALEGoToDefinition<cr>
-nmap <Leader>dx :ALEGoToDefinitionInSplit<cr>
-nmap <Leader>dv :ALEGoToDefinitionInVSplit<cr>
-nmap <Leader>h :ALEHover<cr>
+let g:ale_rust_rustfmt_options = "--edition 2018"
+nnoremap <Leader>d :ALEGoToDefinition<cr>
+nnoremap <Leader>dx :ALEGoToDefinitionInSplit<cr>
+nnoremap <Leader>dv :ALEGoToDefinitionInVSplit<cr>
+nnoremap <Leader>h :ALEHover<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -259,8 +257,8 @@ let g:pad#search_backend = 'ag'
 let g:pad#set_mappings = 0
 
 " Custom key bindings, the trailing whitespace here is intentional
-nmap <Leader>nl :Pad ls<CR>
-nmap <Leader>nn :Pad new 
+nnoremap <Leader>nl :Pad ls<CR>
+nnoremap <Leader>nn :Pad new 
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -274,10 +272,22 @@ let g:jsdoc_default_mapping = 0
 """"""""""""""""""""""""""""""""""""""""
 function! s:goyo_enter()
   silent !tmux set status off
+  set nonumber
+  set norelativenumber
+  augroup numbertoggle
+    autocmd!
+  augroup END
+
 endfunction
 
 function! s:goyo_leave()
   silent !tmux set status on
+  set number
+  augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+  augroup END
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -324,21 +334,21 @@ let g:airline_skip_empty_sections = 1
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
-nmap s <Plug>(easymotion-s)
+nnoremap s <Plug>(easymotion-s)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+noremap <Leader>j <Plug>(easymotion-j)
+noremap <Leader>k <Plug>(easymotion-k)
 
 
 """"""""""""""""""""""""""""""""""""""""
 " NerdTree
 """"""""""""""""""""""""""""""""""""""""
-map <C-e> :NERDTreeToggle<CR>
-map <Leader>e :NERDTreeFind<CR>
+noremap <C-e> :NERDTreeToggle<CR>
+noremap <Leader>e :NERDTreeFind<CR>
 
 " Remove this mapping cause I don't like it. Normally running an `unmap` on an
 " already unmapped key throws an error, the `silent!` suppresses that.
@@ -357,20 +367,20 @@ let NERDTreeWinSize=60
 """"""""""""""""""""""""""""""""""""""""
 " Tabularize
 """"""""""""""""""""""""""""""""""""""""
-nmap <Leader>a& :Tabularize /&<CR>
-vmap <Leader>a& :Tabularize /&<CR>
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:<CR>
-vmap <Leader>a: :Tabularize /:<CR>
-nmap <Leader>a, :Tabularize /,<CR>
-vmap <Leader>a, :Tabularize /,<CR>
-nmap <Leader>a,, :Tabularize /,\zs<CR>
-vmap <Leader>a,, :Tabularize /,\zs<CR>
-nmap <Leader>a" :Tabularize /\"<CR>
-vmap <Leader>a" :Tabularize /\"<CR>
-nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+nnoremap <Leader>a& :Tabularize /&<CR>
+vnoremap <Leader>a& :Tabularize /&<CR>
+nnoremap <Leader>a= :Tabularize /=<CR>
+vnoremap <Leader>a= :Tabularize /=<CR>
+nnoremap <Leader>a: :Tabularize /:<CR>
+vnoremap <Leader>a: :Tabularize /:<CR>
+nnoremap <Leader>a, :Tabularize /,<CR>
+vnoremap <Leader>a, :Tabularize /,<CR>
+nnoremap <Leader>a,, :Tabularize /,\zs<CR>
+vnoremap <Leader>a,, :Tabularize /,\zs<CR>
+nnoremap <Leader>a" :Tabularize /\"<CR>
+vnoremap <Leader>a" :Tabularize /\"<CR>
+nnoremap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vnoremap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -393,25 +403,25 @@ nnoremap <silent> <leader>gg :SignifyToggle<CR>
 """"""""""""""""""""""""""""""""""""""""
 " Fzf.vim
 """"""""""""""""""""""""""""""""""""""""
-nmap <C-p> :GFiles<CR>
-nmap <leader>p :Buffers<CR>
-nmap <leader>; :History:<CR>
-nmap <leader>/ :History/<CR>
+nnoremap <C-p> :GFiles<CR>
+nnoremap <leader>p :Buffers<CR>
+nnoremap <leader>; :History:<CR>
+nnoremap <leader>/ :History/<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
 " Expand Region
 """"""""""""""""""""""""""""""""""""""""
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+vnoremap v <Plug>(expand_region_expand)
+vnoremap <C-v> <Plug>(expand_region_shrink)
 
 
 """"""""""""""""""""""""""""""""""""""""
 " GitGutter
 """"""""""""""""""""""""""""""""""""""""
-nmap [h <Plug>(GitGutterPrevHunk)
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap <Leader>r <Plug>(GitGutterUndoHunk)
+nnoremap [h <Plug>(GitGutterPrevHunk)
+nnoremap ]h <Plug>(GitGutterNextHunk)
+nnoremap <Leader>r <Plug>(GitGutterUndoHunk)
 autocmd BufWritePost * GitGutter
 
 
@@ -424,12 +434,8 @@ let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
 let g:vimwiki_list = [wiki]
 " Disable table mapping so that UltiSnips can use <tab>
 let g:vimwiki_table_mappings = 0
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Polyglot
-""""""""""""""""""""""""""""""""""""""""
-"let g:polyglot_disabled = ['elm']
+" Hide code blocks for cleanliness
+let g:vimwiki_conceal_pre = 1
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -487,6 +493,19 @@ function! FillLine( str )
   endif
 endfunction
 
+" source: https://stackoverflow.com/a/6271254/895558
+function! s:get_visual_selection()
+  let [line_start, column_start] = getpos("'<")[1:2]
+  let [line_end, column_end] = getpos("'>")[1:2]
+  let lines = getline(line_start, line_end)
+  if len(lines) == 0
+    return ''
+  endif
+  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][column_start - 1:]
+  return join(lines, "\n")
+endfunction
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Overrides
@@ -496,4 +515,3 @@ endfunction
 if filereadable(expand('~/.vimrc-after'))
   source ~/.vimrc-after
 endif
-
