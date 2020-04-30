@@ -19,7 +19,7 @@ Plugin 'spf13/vim-autoclose'
 Plugin 'godlygeek/tabular'
 Plugin 'mattn/emmet-vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'Lokaltog/vim-easymotion'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -32,6 +32,7 @@ Plugin 'vimwiki/vimwiki'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'junegunn/goyo.vim'
 Plugin 'sotte/presenting.vim'
+Plugin 'bccalc.vim'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -334,14 +335,14 @@ let g:airline_skip_empty_sections = 1
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
-nnoremap s <Plug>(easymotion-s)
+nmap s <Plug>(easymotion-s)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-noremap <Leader>j <Plug>(easymotion-j)
-noremap <Leader>k <Plug>(easymotion-k)
+nmap <Leader>j <Plug>(easymotion-j)
+nmap <Leader>k <Plug>(easymotion-k)
 
 
 """"""""""""""""""""""""""""""""""""""""
