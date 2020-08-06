@@ -12,10 +12,10 @@ ${1:app_name} ${2:old_version} -> ${3:new_version}
 *Related to*: $7
 
 *Deployment procedure*
-{code}ankh --set tag=$3 -e staging apply --chart $1@$5{code}
-{code}ankh --set tag=$3 -e production apply --chart $1@$5{code}
+{code}ankh --set tag=$3 -e migration-staging apply --chart $1@$5{code}
+{code}ankh --set tag=$3 -e migration-production apply --chart $1@$5{code}
 
 *Rollback procedure*
-{code}ankh --set tag=$2 -e staging apply --chart $1@$4{code}
-{code}ankh --set tag=$2 -e production apply --chart $1@$4{code}
+{code}ankh --set tag=$2 -e migration-staging apply --chart $1@$4{code}
+{code}ankh --set tag=$2 -e migration-production apply --chart $1@$4{code}
 endsnippet

@@ -24,7 +24,6 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'xolox/vim-misc'
-Plugin 'fmoralesc/vim-pad'
 Plugin 'terryma/vim-expand-region'
 Plugin 'w0rp/ale'
 Plugin 'sheerun/vim-polyglot'
@@ -150,12 +149,20 @@ cnoremap w!! w !sudo tee % >/dev/null
 " Adjust viewports to the same size
 nnoremap <Leader>= <C-w>=
 
-" Easier pane navigation
+" Easier pane/tab navigation
 nnoremap <silent> <c-k> :wincmd k<CR>
 nnoremap <silent> <c-j> :wincmd j<CR>
 nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
 nnoremap <silent> <leader>m :wincmd R<CR>
+nnoremap <silent> H :tabprev<CR>
+nnoremap <silent> L :tabnext<CR>
+
+" Easier pane resizing TODO: alt not working
+nnoremap <silent> <A-h> <C-w><
+nnoremap <silent> <A-j> <C-W>-
+nnoremap <silent> <A-k> <C-W>+
+nnoremap <silent> <A-l> <C-w>>
 
 if has('nvim')
   " Hack to get C-h working in NeoVim
@@ -234,38 +241,22 @@ let g:ale_fix_on_save = 1
 let g:ale_completion_delay = 300
 let g:ale_rust_rustfmt_options = "--edition 2018"
 nnoremap <Leader>d :ALEGoToDefinition<cr>
-nnoremap <Leader>dx :ALEGoToDefinitionInSplit<cr>
-nnoremap <Leader>dv :ALEGoToDefinitionInVSplit<cr>
+nnoremap <Leader>dx :ALEGoToDefinition -split<cr>
+nnoremap <Leader>dv :ALEGoToDefinition -vsplit<cr>
 nnoremap <Leader>h :ALEHover<cr>
-
-
-""""""""""""""""""""""""""""""""""""""""
-" Pad
-""""""""""""""""""""""""""""""""""""""""
-" Save notes to dropbox
-let g:pad#dir = '/Users/jdelamotte/Dropbox/notes/'
-
-" Make the quick window a little taller
-let g:pad#window_height = 15
-
-" Add an .md extension to new notes
-let g:pad#default_file_extension = '.md'
-
-" Use ag for searching cause it's the best
-let g:pad#search_backend = 'ag'
-
-" Disable default key bindings
-let g:pad#set_mappings = 0
-
-" Custom key bindings, the trailing whitespace here is intentional
-nnoremap <Leader>nl :Pad ls<CR>
-nnoremap <Leader>nn :Pad new 
 
 
 """"""""""""""""""""""""""""""""""""""""
 " JsDoc
 """"""""""""""""""""""""""""""""""""""""
 let g:jsdoc_default_mapping = 0
+
+
+""""""""""""""""""""""""""""""""""""""""
+" NERDCommenter
+""""""""""""""""""""""""""""""""""""""""
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -420,9 +411,9 @@ vnoremap <C-v> <Plug>(expand_region_shrink)
 """"""""""""""""""""""""""""""""""""""""
 " GitGutter
 """"""""""""""""""""""""""""""""""""""""
-nnoremap [h <Plug>(GitGutterPrevHunk)
-nnoremap ]h <Plug>(GitGutterNextHunk)
-nnoremap <Leader>r <Plug>(GitGutterUndoHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap <Leader>r <Plug>(GitGutterUndoHunk)
 autocmd BufWritePost * GitGutter
 
 

@@ -51,6 +51,10 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking init.lua ..."
   cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
+
+  echo "Backing up and symlinking .p10k.zsh ..."
+  cp $HOME/.p10k.zsh $HOME/.jvim/backups/.p10k.zsh > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/.p10k.zsh $HOME/.p10k.zsh
 fi
 
 echo "Installation complete"

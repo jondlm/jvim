@@ -1,11 +1,20 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Zplugs (https://github.com/zplug/zplug)
 # You must run `zplug install`
 source $HOME/.zplug/init.zsh
 
 zplug changyuheng/fz, defer:1
 zplug rupa/z, use:z.sh
-zplug mafredri/zsh-async, from:github
-zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
+zplug romkatv/powerlevel10k, as:theme, depth:1
+zplug Aloxaf/fzf-tab, use:fzf-tab.plugin.zsh
+
+zplug load
 
 # Zsh settings (mostly select stuff taken from oh-my-zsh)
 HISTFILE="$HOME/.zsh_history"
@@ -24,6 +33,7 @@ set -o vi                     # vi mode
 # Aliases
 alias g='git'
 alias ga='git add -A'
+alias gb='git branch'
 alias gc='git commit -v'
 alias gco='git checkout'
 alias gd='git diff'
@@ -31,10 +41,12 @@ alias gf='git fetch --all --tags'
 alias gff='git fetch --all && git merge --ff-only'
 alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
 alias gl='git pull --ff-only'
-alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match '[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
+alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
+alias gpn='git push -u --no-verify'
 alias gr='git branch --sort=-committerdate --format "%(refname:lstrip=2)" | fzf | xargs git checkout'
 alias gs='git status'
+alias t='task'
 
 alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias ll='ls -lah'
@@ -120,8 +132,8 @@ if [ "`uname`" = "Darwin" ]; then
   }
 fi
 
-# Load zplugs at the bottom because of some conflict
-zplug load
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Import the 'after' override file if it exists
 if [ -f "$HOME/.zshrc-after" ]; then
