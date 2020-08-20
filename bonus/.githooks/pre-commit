@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+#
+# This pre-commit hook looks for the magic string "FIXME" anywhere in your
+# commit and will abort if found.
+
+clean_exit() {
+	# Run local pre-commit hook if exists
+	if [ -e ./.git/hooks/pre-commit ]; then
+		./.git/hooks/pre-commit "$@"
+	else
+		exit 0
+	fi
+}
+
+if ! git rev-parse --verify HEAD >/dev/null 2>&1
+then
+	# Case: initial commit
+	clean_exit "$@"
+fi
+
+if git diff --cached --diff-filter=AM | grep 'FIXME' >/dev/null 2>&1
+then
+	printf "\e[31mTrying to commit something with FIXME in it. Tsk tsk tsk... No commit for you!\e[0m\n" >&2
+	exit 1
+else
+	clean_exit "$@"
+fi

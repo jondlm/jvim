@@ -1,6 +1,8 @@
 [user]
 	name = Jon de la Motte
 	email = jon.de.la.motte@xandr.com
+[core]
+	hooksPath = ~/.githooks
 [push]
 	default = current
 [mergetool]

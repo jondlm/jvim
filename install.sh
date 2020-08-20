@@ -48,6 +48,7 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.config/alacritty/alacritty.yml $HOME/.jvim/backups/alacritty.yml > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 
+  # TODO: also allow modules
   echo "Backing up and symlinking init.lua ..."
   cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
@@ -55,6 +56,10 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking .p10k.zsh ..."
   cp $HOME/.p10k.zsh $HOME/.jvim/backups/.p10k.zsh > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.p10k.zsh $HOME/.p10k.zsh
+
+  echo "Backing up and symlinking .githooks ..."
+  cp -r $HOME/.githooks $HOME/.jvim/backups/.githooks > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/.githooks $HOME/.githooks
 fi
 
 echo "Installation complete"
