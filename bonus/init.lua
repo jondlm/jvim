@@ -18,7 +18,10 @@ GROUP BY
   app_name;
 --]]
 
-require "pomodoro"
+pomodoroTimer = hs.loadSpoon("PomodoroTimer")
+pomodoroTimer:bindHotkeys({
+  toggle = {{"ctrl", "cmd"}, "p"}
+})
 
 -- Utilities
 
@@ -36,13 +39,6 @@ db:exec([[
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     app_name TEXT NOT NULL,
     created TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ'))
-  );
-  ]])
-db:exec([[
-  CREATE TABLE IF NOT EXISTS pomodoros (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    started TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ')),
-    completed INTEGER DEFAULT 0
   );
   ]])
 
@@ -72,25 +68,6 @@ end
 
 caffeineWatcher = hs.caffeinate.watcher.new(onCaffeinate)
 caffeineWatcher:start()
-
--- Pomodoro timer
-runningTimer = nil
-breakingTimer = nil
-
-function activateTimer()
-  if runningTimer == nil then
-    hs.alert.show("Pomodoro started")
-    db:exec("INSERT INTO pomodoros DEFAULT VALUES;")
-    runningTimer = hs.timer.doAfter(25 * 60, function()
-      runningTimer = nil
-      db:exec("UPDATE pomodoros SET completed = 1 WHERE id = (SELECT id FROM pomodoros ORDER BY id DESC LIMIT 1);")
-      hs.alert.show("Pomodoro finished")
-    end)
-  else
-    remainingSeconds = runningTimer:nextTrigger()
-    hs.alert.show("Pomodoro in progress. " .. remainingSeconds / 60 .. " min")
-  end
-end
 
 hs.hotkey.bind({"cmd", "ctrl"}, "R", function() hs.reload() end)
 
