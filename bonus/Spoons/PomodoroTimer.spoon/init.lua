@@ -33,8 +33,8 @@ function obj:init()
   self.timer = hs.timer.new(1, hs.fnutils.partial(self.tick, self)):start()
   self.seconds_elapsed = 0
   self.seconds_by_mode = {
-    working = 5, -- 25 * 60,
-    resting = 3, -- 3 * 60,
+    working = 25 * 60,
+    resting = 3 * 60,
   }
   self.colors_by_mode = {
     working = { alpha = 0.75, red = 0.09, green = 0.48, blue = 0.32 },
