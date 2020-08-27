@@ -51,8 +51,9 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking hammerspoon's init.lua & Spoons ..."
   cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
   cp -r $HOME/.hammerspoon/Spoons $HOME/.jvim/backups/ > /dev/null 2>&1
+  rm -rf $HOME/.hammerspoon/Spoons > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
-  ln -sf $HOME/.jvim/bonus/Spoons $HOME/.hammerspoon/Spoons/
+  ln -sf $HOME/.jvim/bonus/Spoons $HOME/.hammerspoon/Spoons
 
   echo "Backing up and symlinking .p10k.zsh ..."
   cp $HOME/.p10k.zsh $HOME/.jvim/backups/.p10k.zsh > /dev/null 2>&1

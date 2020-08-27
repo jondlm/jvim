@@ -6,16 +6,6 @@
 
 -- TODO: Add the ability to write to sqlite. Some sample code:
 --
--- local db = hs.sqlite3.open(os.getenv("HOME") .. "/.hammerspoon/app-stats.db")
--- db:exec([[
---   CREATE TABLE IF NOT EXISTS pomodoros (
---     id INTEGER PRIMARY KEY AUTOINCREMENT,
---     started TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ')),
---     completed INTEGER DEFAULT 0
---   );
---   ]])
--- db:exec("INSERT INTO pomodoros DEFAULT VALUES;")
--- db:exec("UPDATE pomodoros SET completed = 1 WHERE id = (SELECT id FROM pomodoros ORDER BY id DESC LIMIT 1);")
 
 local obj = {}
 obj.__index = obj
@@ -31,6 +21,7 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 --- Method
 --- Initialize the spoon
 function obj:init()
+  self.db = hs.sqlite3.open(os.getenv("HOME") .. "/.hammerspoon/app-stats.db")
   self.mode = "idle" -- idle, working, or resting
   self.logger = hs.logger.new("PomodoroTimer", "debug")
   self.canvas = hs.canvas.new({
@@ -42,14 +33,23 @@ function obj:init()
   self.timer = hs.timer.new(1, hs.fnutils.partial(self.tick, self)):start()
   self.seconds_elapsed = 0
   self.seconds_by_mode = {
-    working = 25 * 60,
-    resting = 3 * 60,
+    working = 5, -- 25 * 60,
+    resting = 3, -- 3 * 60,
   }
   self.colors_by_mode = {
     working = { alpha = 0.75, red = 0.09, green = 0.48, blue = 0.32 },
     resting = { alpha = 0.75, red = 0.58, green = 0.47, blue = 0.86 },
     background = { alpha = 0.5, red = 0.96, green = 0.98, blue = 0.99 },
   }
+
+  -- Initialize the database table
+  self.db:exec([[
+    CREATE TABLE IF NOT EXISTS pomodoros (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      started TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ')),
+      completed INTEGER DEFAULT 0
+    );
+  ]])
 end
 
 -- State diagram
@@ -71,6 +71,7 @@ function obj:toggle()
     self.mode = "working"
     self.seconds_elapsed = 0
     self.canvas:show()
+    self.db:exec("INSERT INTO pomodoros DEFAULT VALUES;")
     hs.alert.show("PomodoroTimer: start")
   elseif self.mode == "working" then
     -- Working -> Interrupt -> Idle
@@ -111,12 +112,12 @@ function obj:tick()
       -- Working -> Complete -> Resting
       self.mode = "resting"
       self.seconds_elapsed = 0
+      self.db:exec("UPDATE pomodoros SET completed = 1 WHERE id = (SELECT id FROM pomodoros ORDER BY id DESC LIMIT 1);")
       hs.alert.show("PomodoroTimer: work complete, time to rest!")
     elseif self.mode == "resting" then
       -- Resting -> Complete -> Idle
       self.mode = "idle"
       self.seconds_elapsed = 0
-      self.timer:stop()
       self.canvas:hide()
       hs.alert.show("PomodoroTimer: rest complete, toggle the timer to start working again.")
     end
