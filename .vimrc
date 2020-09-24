@@ -32,6 +32,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'junegunn/goyo.vim'
 Plugin 'sotte/presenting.vim'
 Plugin 'bccalc.vim'
+Plugin 'vim-scripts/DrawIt'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
