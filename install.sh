@@ -1,3 +1,11 @@
+#!/usr/bin/env bash
+
+case "$(uname -s)" in
+  Linux*)   os=linux;;
+  Darwin*)  os=mac;;
+  *)        echo "Unknown operating system" && exit 1
+esac
+
 echo "Adding vim backup and swap folders..."
 mkdir -p ~/.vim/{backup,swp}
 echo "Adding general backups folder..."
@@ -36,24 +44,9 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.zshrc $HOME/.jvim/backups/.zshrc > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.zshrc $HOME/.zshrc
 
-  echo "Backing up and symlinking .ctags ..."
-  cp $HOME/.ctags $HOME/.jvim/backups/.ctags > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.ctags $HOME/.ctags
-
-  echo "Backing up and symlinking .ackrc ..."
-  cp $HOME/.ackrc $HOME/.jvim/backups/.ackrc > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.ackrc $HOME/.ackrc
-
   echo "Backing up and symlinking alacritty.yml ..."
-  cp $HOME/.config/alacritty/alacritty.yml $HOME/.jvim/backups/alacritty.yml > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/alacritty.yml $HOME/.config/alacritty/alacritty.yml
-
-  echo "Backing up and symlinking hammerspoon's init.lua & Spoons ..."
-  cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
-  cp -r $HOME/.hammerspoon/Spoons $HOME/.jvim/backups/ > /dev/null 2>&1
-  rm -rf $HOME/.hammerspoon/Spoons > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
-  ln -sf $HOME/.jvim/bonus/Spoons $HOME/.hammerspoon/Spoons
+  cp $HOME/.alacritty.yml $HOME/.jvim/backups/.alacritty.yml > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/.alacritty.yml $HOME/.alacritty.yml
 
   echo "Backing up and symlinking .p10k.zsh ..."
   cp $HOME/.p10k.zsh $HOME/.jvim/backups/.p10k.zsh > /dev/null 2>&1
@@ -62,6 +55,15 @@ if [ "$1" = "bonus" ] ; then
   echo "Backing up and symlinking .githooks ..."
   cp -r $HOME/.githooks $HOME/.jvim/backups/.githooks > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.githooks $HOME/.githooks
+
+  if [ os = "mac" ]; then
+    echo "Backing up and symlinking hammerspoon's init.lua & Spoons ..."
+    cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
+    cp -r $HOME/.hammerspoon/Spoons $HOME/.jvim/backups/ > /dev/null 2>&1
+    rm -rf $HOME/.hammerspoon/Spoons > /dev/null 2>&1
+    ln -sf $HOME/.jvim/bonus/init.lua $HOME/.hammerspoon/init.lua
+    ln -sf $HOME/.jvim/bonus/Spoons $HOME/.hammerspoon/Spoons
+  fi
 fi
 
 echo "Installation complete"

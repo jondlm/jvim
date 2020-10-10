@@ -25,9 +25,9 @@ window:
   # (change requires restart)
   padding:
     x: 6
-    y: 2
+    y: 8
 
-  decorations: buttonless
+  decorations: none
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: true
@@ -54,7 +54,7 @@ font:
     # Style can be specified to pick a specific face.
 
   # Point size of the font
-  size: 12.0
+  size: 9.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -142,8 +142,7 @@ _   black:   '0x333333'
 #
 # To completely disable the visual bell, set its duration to 0.
 #
-visual_bell:
-  animation: EaseOutExpo
+bell:
   duration: 0
 
 # Background opacity
@@ -196,7 +195,7 @@ key_bindings:
   - { key: Insert,   mods: Shift,   action: PasteSelection               }
   - { key: Key0,     mods: Control, action: ResetFontSize                }
   - { key: Equals,   mods: Control, action: IncreaseFontSize             }
-  - { key: Subtract, mods: Control, action: DecreaseFontSize             }
+  - { key: Minus,    mods: Control, action: DecreaseFontSize             }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }
@@ -331,6 +330,11 @@ live_config_reload: true
 # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
 # Entries in shell.args are passed unmodified as arguments to the shell.
 shell:
-  program: /usr/local/bin/tmux
+  program: /usr/bin/env
   args:
-    - attach
+    - tmux
+    - new-session
+    - -A
+    - -s
+    - main
+
