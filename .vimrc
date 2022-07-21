@@ -503,7 +503,6 @@ function! BytesToHuman()
   let l:numBytes = str2nr(expand("<cword>"), 10)
 
   let l:k = 1024
-  let l:dm = 2
   let l:sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
   let l:i = float2nr(floor(log10(l:numBytes) / log10(l:k)))
 
