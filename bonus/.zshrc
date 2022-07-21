@@ -7,7 +7,8 @@ fi
 
 # Zplugs (https://github.com/zplug/zplug)
 # You must run `zplug install`
-source $HOME/.zplug/init.zsh
+export ZPLUG_HOME=/opt/homebrew/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
 zplug changyuheng/fz, defer:1
 zplug rupa/z, use:z.sh
@@ -41,11 +42,13 @@ alias gf='git fetch --all --tags'
 alias gff='git fetch --all && git merge --ff-only'
 alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
 alias gl='git pull --ff-only'
+alias gpn='git push -u --no-verify'
 alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
-alias gpn='git push -u --no-verify'
 alias gr='git branch --sort=-committerdate --format "%(refname:lstrip=2)" | fzf | xargs git checkout'
 alias gs='git status'
+alias gunwip='git log -n 1 | grep -q -c "\-\-wip\-\-" && git reset HEAD~1'
+alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"'
 alias t='task'
 
 alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
@@ -54,6 +57,7 @@ alias nr='npm run'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
 alias vim='nvim'
+alias td='pushd $(mktemp -d)'
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
@@ -72,12 +76,14 @@ export GO111MODULE=on
 
 # PATH configuration
 export PATH="/usr/local/bin"
+export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/bin"
 export PATH="$PATH:/bin"
 export PATH="$PATH:/usr/sbin"
 export PATH="$PATH:/sbin"
 export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.jvim/bonus/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
@@ -105,6 +111,10 @@ fi
 # fzf
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
+fi
+
+if [ -f /opt/homebrew/Cellar/fzf/0.28.0/shell/key-bindings.zsh ]; then
+  source /opt/homebrew/Cellar/fzf/0.28.0/shell/key-bindings.zsh
 fi
 
 # ------------------------------------------------------------------------------

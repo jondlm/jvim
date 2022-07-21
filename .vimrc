@@ -105,6 +105,7 @@ set cursorcolumn                " Include a vertical line for your cursor
 set backupdir=~/.vim/backup//   " Clean backups that arent stored in your current dir
 set directory=~/.vim/swp//      " Clean swaps that arent stored in your current dir
 set relativenumber              " Enable relative line numbers be default
+set mouse=a                     " Enable mouse support in all modes. Particularly useful to resize windows.
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -183,8 +184,10 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 " Global search/replace for selection
 vnoremap s "sy:%s/<C-R>"/
 
-" Open file under cursor in a new tab
-nnoremap <Leader>o <c-w>gf
+" Open file under cursor respecting :<line>:<col> if present
+nnoremap <Leader>of gF
+" Open in GitHub
+nnoremap <leader>og :!echo `git-url`/blob/`git rev-parse HEAD`/%\#L<C-R>=line('.')<CR> \| xargs open<CR><CR>
 
 " Make ' behave like ` for easier mark navigation
 nnoremap ' `
@@ -209,6 +212,11 @@ nnoremap <Leader>ts :set spell!<CR>
 " Clear highlighting
 nnoremap <Leader>n :noh<CR>
 
+" Copy current location to clipboard
+nnoremap <Leader>l :call system('pbcopy', @% . ":" . line('.'))<CR>
+
+" Convert number under cursor to human readable"
+nnoremap <Leader>b :call BytesToHuman()<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 " JSX
@@ -379,15 +387,15 @@ vnoremap <Leader>a<Bar> :Tabularize /<Bar><CR>
 """"""""""""""""""""""""""""""""""""""""
 " Fugitive
 """"""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gs :Git status<CR>
+nnoremap <silent> <leader>gd :Git diff<CR>
+nnoremap <silent> <leader>gc :Git commit<CR>
+nnoremap <silent> <leader>gb :Git blame<CR>
+nnoremap <silent> <leader>gl :Git log<CR>
+nnoremap <silent> <leader>gp :Git it push<CR>
 nnoremap <silent> <leader>gr :Gread<CR>
-nnoremap <silent> <leader>gw :Gwrite<CR>
-nnoremap <silent> <leader>ge :Gedit<CR>
+nnoremap <silent> <leader>gw :Git write<CR>
+nnoremap <silent> <leader>ge :Git edit<CR>
 " Mnemonic _i_nteractive
 nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
@@ -424,6 +432,8 @@ autocmd BufWritePost * GitGutter
 let wiki = {}
 let wiki.path = '~/Dropbox/wiki'
 let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
+let wiki.syntax = 'markdown'
+let wiki.ext = 'md'
 let g:vimwiki_list = [wiki]
 " Disable table mapping so that UltiSnips can use <tab>
 let g:vimwiki_table_mappings = 0
@@ -484,6 +494,22 @@ function! FillLine( str )
   if reps > 0
     .s/$/\=(' '.repeat(a:str, reps))/
   endif
+endfunction
+
+" This function reads the number under the cursor and transforms it into
+" something human readable
+function! BytesToHuman()
+  " Get text under cursor
+  let l:numBytes = str2nr(expand("<cword>"), 10)
+
+  let l:k = 1024
+  let l:dm = 2
+  let l:sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+  let l:i = float2nr(floor(log10(l:numBytes) / log10(l:k)))
+
+  let l:humanReadable = printf("%.2f%s", l:numBytes / pow(l:k, l:i), l:sizes[l:i])
+
+  call setline(".", substitute(getline("."), l:numBytes, l:humanReadable, ""))
 endfunction
 
 

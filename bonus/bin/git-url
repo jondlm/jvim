@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git config --get remote.origin.url     |\
+  sed -E "s#@git##"                    |\
+  sed -E "s#\.git##"                   |\
+  sed -E "s#(.+):(.+)#https://\1/\2#g"

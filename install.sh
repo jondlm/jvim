@@ -56,7 +56,11 @@ if [ "$1" = "bonus" ] ; then
   cp -r $HOME/.githooks $HOME/.jvim/backups/.githooks > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.githooks $HOME/.githooks
 
-  if [ os = "mac" ]; then
+  echo "Backing up and symlinking ranger rc.conf ..."
+  cp -r $HOME/.config/ranger/rc.conf $HOME/.jvim/backups/rc.conf > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/rc.conf $HOME/.config/ranger/rc.conf
+
+  if [ "$os" = "mac" ]; then
     echo "Backing up and symlinking hammerspoon's init.lua & Spoons ..."
     cp $HOME/.hammerspoon/init.lua $HOME/.jvim/backups/init.lua > /dev/null 2>&1
     cp -r $HOME/.hammerspoon/Spoons $HOME/.jvim/backups/ > /dev/null 2>&1
