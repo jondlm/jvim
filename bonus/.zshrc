@@ -42,6 +42,7 @@ alias gf='git fetch --all --tags'
 alias gff='git fetch --all && git merge --ff-only'
 alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
 alias gl='git pull --ff-only'
+alias gm='git fetch origin master:master && git checkout master'
 alias gpn='git push -u --no-verify'
 alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'
@@ -56,8 +57,8 @@ alias ll='ls -lah'
 alias nr='npm run'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
 alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
-alias vim='nvim'
 alias td='pushd $(mktemp -d)'
+alias vim='nvim'
 
 # Mac only aliases
 if [ "`uname`" = "Darwin" ]; then
@@ -100,10 +101,11 @@ export LANG=en_US.UTF-8
 export EDITOR='nvim'
 
 # Setup asdf
-if [ -d ~/.asdf ]; then
-  source ~/.asdf/asdf.sh
-  source ~/.asdf/completions/asdf.bash
-fi
+# if [ -d ~/.asdf ]; then
+#   source ~/.asdf/asdf.sh
+#   source ~/.asdf/completions/asdf.bash
+# fi
+eval "$(nodenv init -)"
 
 # added by travis gem
 [ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
@@ -127,6 +129,13 @@ history-yesterday () {
   end=`date -d 'today 00:00' +%s`
 
   sed -E 's/^: //g; s/:0;/\t/g' < ~/.zsh_history | awk -F '\t' "{if (\$1 > $start && \$1 < $end) {print \$2}}"
+}
+
+# "git co worker"
+gcw () {
+  git fetch origin "$1"
+  git checkout FETCH_HEAD
+  git checkout -b "$1"
 }
 
 
