@@ -68,7 +68,6 @@ if [ "`uname`" = "Darwin" ]; then
   alias sed='gsed'
   alias sort='gsort'
   alias readlink='greadlink'
-  alias notify="osascript -e 'display notification with title \"Task Finished\"'"
 fi
 
 # Golang shiz
@@ -148,6 +147,11 @@ if [ "`uname`" = "Darwin" ]; then
         printf("%s", copyinstr(arg1, arg2));
       }
     '
+  }
+
+  # send a little pop notification
+  notify() {
+    osascript -e "display notification with title \"${1:-Task finished}\""
   }
 fi
 
