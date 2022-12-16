@@ -256,12 +256,6 @@ nnoremap <Leader>h :ALEHover<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""
-" JsDoc
-""""""""""""""""""""""""""""""""""""""""
-let g:jsdoc_default_mapping = 0
-
-
-""""""""""""""""""""""""""""""""""""""""
 " NERDCommenter
 """"""""""""""""""""""""""""""""""""""""
 " Add spaces after comment delimiters by default

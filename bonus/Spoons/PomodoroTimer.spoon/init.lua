@@ -41,6 +41,11 @@ function obj:init()
     resting = { alpha = 0.75, red = 0.58, green = 0.47, blue = 0.86 },
     background = { alpha = 0.5, red = 0.96, green = 0.98, blue = 0.99 },
   }
+  self.watcher = hs.screen.watcher.new(function()
+    self.canvas:topLeft({x = 0, y = 0})
+    self.canvas:size({w = hs.screen.mainScreen():fullFrame().w, h = 5})
+    self.canvas:show()
+  end):start()
 
   -- Initialize the database table
   self.db:exec([[

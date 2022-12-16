@@ -48,9 +48,8 @@ alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]
 alias gpush='git push -u'
 alias gr='git branch --sort=-committerdate --format "%(refname:lstrip=2)" | fzf | xargs git checkout'
 alias gs='git status'
-alias gunwip='git log -n 1 | grep -q -c "\-\-wip\-\-" && git reset HEAD~1'
+alias gunwip='git log -n 1 | ggrep -qc "\--wip--" && git reset HEAD~1'
 alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"'
-alias t='task'
 
 alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias ll='ls -lah'
@@ -114,8 +113,8 @@ if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
 fi
 
-if [ -f /opt/homebrew/Cellar/fzf/0.28.0/shell/key-bindings.zsh ]; then
-  source /opt/homebrew/Cellar/fzf/0.28.0/shell/key-bindings.zsh
+if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 fi
 
 # ------------------------------------------------------------------------------
@@ -135,6 +134,34 @@ gcw () {
   git fetch origin "$1"
   git checkout FETCH_HEAD
   git checkout -b "$1"
+}
+
+# "git resolve conflicts"
+grc () {
+  for f in `git diff --name-only --diff-filter=U --relative`; do
+    vim "$f"
+    echo "Is $f resolved? [yn]"
+    read response
+    if [[ "$response" = "y" ]]; then
+      git add "$f"
+    fi
+
+    if [[ "$response" = "n" ]]; then
+      echo "Aborting the resolve process"
+      return 1
+    fi
+  done
+}
+
+# Convert mp4 to gif. Requires `ffmpeg` and `imagemagick`
+mp4togif() {
+  out="$(echo $1 | sed 's/\.mp4$/\.gif/')"
+  max_width="650"
+  frames_per_second="20"
+  ffmpeg -i $1 -vf "scale=min(iw\,$max_width):-1" -r "$frames_per_second" -sws_flags lanczos -f image2pipe -vcodec ppm - \
+    | convert -delay 5 -layers Optimize -loop 0 - "$out" &&
+  echo "$(tput setaf 2)output file: $out$(tput sgr 0)" &&
+  open -a "Google Chrome" "$out"
 }
 
 
