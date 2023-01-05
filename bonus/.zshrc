@@ -7,7 +7,8 @@ fi
 
 # Zplugs (https://github.com/zplug/zplug)
 # You must run `zplug install`
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
+[ -d /opt/homebrew/opt/zplug ]   && export ZPLUG_HOME=/opt/homebrew/opt/zplug
+[ -d "$HOME/.zplug" ]            && export ZPLUG_HOME="$HOME/.zplug"
 source $ZPLUG_HOME/init.zsh
 
 zplug changyuheng/fz, defer:1
@@ -99,11 +100,13 @@ export LANG=en_US.UTF-8
 export EDITOR='nvim'
 
 # Setup asdf
-# if [ -d ~/.asdf ]; then
-#   source ~/.asdf/asdf.sh
-#   source ~/.asdf/completions/asdf.bash
-# fi
-eval "$(nodenv init -)"
+if [ -d ~/.asdf ]; then
+  source ~/.asdf/asdf.sh
+  source ~/.asdf/completions/asdf.bash
+fi
+
+# Setup nodenv
+hash nodenv 2>/dev/null && eval "$(nodenv init -)"
 
 # added by travis gem
 [ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
