@@ -30,10 +30,7 @@ ln -sf $HOME/.jvim/bonus/UltiSnips $HOME/.vim
 
 # Bonus
 if [ "$1" = "bonus" ] ; then
-  read -p "Would you like to backup and symlink .gitconfig? It has some details tied to Jon de la Motte. (y/n) " -n 1 -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
+  if [ "$2" = "gitconfig" ] ; then
     echo "Backing up and symlinking .gitconfig ..."
     cp $HOME/.gitconfig $BACKUP_DIR/.gitconfig > /dev/null 2>&1
     ln -sf $HOME/.jvim/bonus/.gitconfig $HOME/.gitconfig

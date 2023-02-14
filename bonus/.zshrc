@@ -61,7 +61,7 @@ alias td='pushd $(mktemp -d)'
 alias vim='nvim'
 
 # Mac only aliases
-if [ "`uname`" = "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
   alias cut='gcut'
   alias date='gdate'
   alias grep='ggrep'
@@ -88,16 +88,34 @@ export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
-# Setup rbenv if it exists
-if hash rbenv 2>/dev/null; then
-  eval "$(rbenv init -)"
+# Mac only exports
+if [ "$(uname)" = "Darwin" ]; then
+  export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
-# Vim is the best editor
+# Neovim is ma fave
 export EDITOR='nvim'
+
+# fzf helpers
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
+
+if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+fi
+
+# ------------------------------------------------------------------------------
+# Language runtimes
+# ------------------------------------------------------------------------------
+
+# Setup rbenv if it exists
+if hash rbenv 2>/dev/null; then
+  eval "$(rbenv init -)"
+fi
 
 # Setup asdf
 if [ -d ~/.asdf ]; then
@@ -106,18 +124,8 @@ if [ -d ~/.asdf ]; then
 fi
 
 # Setup nodenv
-hash nodenv 2>/dev/null && eval "$(nodenv init -)"
-
-# added by travis gem
-[ -f /Users/jdelamotte/.travis/travis.sh ] && source /Users/jdelamotte/.travis/travis.sh
-
-# fzf
-if [ -f ~/.fzf.zsh ]; then
-  source ~/.fzf.zsh
-fi
-
-if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
-  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+if hash nodenv 2>/dev/null; then
+  eval "$(nodenv init -)"
 fi
 
 # ------------------------------------------------------------------------------
@@ -168,6 +176,7 @@ mp4togif() {
 }
 
 
+# Mac only utils
 if [ "`uname`" = "Darwin" ]; then
   # capture the stdout of a running process
   capture() {
@@ -188,7 +197,8 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Import the 'after' override file if it exists
+# Import the 'after' override file if it exists. Used for customizations that
+# shouldn't be checked into git
 if [ -f "$HOME/.zshrc-after" ]; then
   source $HOME/.zshrc-after
 fi
