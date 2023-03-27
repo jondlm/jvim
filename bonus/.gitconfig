@@ -16,3 +16,5 @@
 	required = true
 [init]
 	defaultBranch = main
+[index]
+	skipHash = false
