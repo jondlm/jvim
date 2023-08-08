@@ -187,7 +187,7 @@ vnoremap s "sy:%s/<C-R>"/
 " Open file under cursor respecting :<line>:<col> if present
 nnoremap <Leader>of gF
 " Open in GitHub
-nnoremap <leader>og :!echo `git-url`/blob/`git rev-parse HEAD`/%\#L<C-R>=line('.')<CR> \| xargs open<CR><CR>
+nnoremap <leader>og :!echo `git-url`/blob/`git rev-parse HEAD`/<C-R>=expand('%')<CR>\#L<C-R>=line('.')<CR> \| xargs open<CR><CR>
 
 " Make ' behave like ` for easier mark navigation
 nnoremap ' `
@@ -229,7 +229,7 @@ let g:jsx_ext_required = 0
 """"""""""""""""""""""""""""""""""""""""
 " tslint is busted with ALE at the moment, isn't respecting configs correctly
 let g:ale_linters = {
-\  'rust': ['rls'],
+\  'rust': ['analyzer'],
 \  'typescript': ['tsserver', 'typecheck', 'eslint'],
 \  'go': ['gopls'],
 \  'scala': ['metals'],

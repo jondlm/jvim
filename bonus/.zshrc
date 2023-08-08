@@ -56,6 +56,7 @@ alias conflicts='rg "^(<<<<<<<|>>>>>>>|=======)[^<>=]"'
 alias ll='ls -lah'
 alias nr='npm run'
 alias pk="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill"
+alias pk9="ps ax | fzf | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs kill -9"
 alias pks="ps ax | fzf --multi | sed 's/^\s\+//' | cut -d ' ' -f 1 | xargs sudo kill"
 alias td='pushd $(mktemp -d)'
 alias vim='nvim'
@@ -162,6 +163,11 @@ grc () {
       return 1
     fi
   done
+}
+
+# percentage change
+pc () {
+  echo "scale=4; ( ($1 - $2) / $1 ) * 100" | bc
 }
 
 # Convert mp4 to gif. Requires `ffmpeg` and `imagemagick`
