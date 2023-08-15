@@ -202,6 +202,10 @@ noremap <Leader>- :call FillLine('-')<CR>
 " Search for visual selection
 vnoremap // y/<C-R>"<CR>
 
+" Cause paste to behavior like a normal clipboard where the replaced contents
+" are not added back into the register
+vnoremap p "_dP
+
 " Base64 decode
 vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
 vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
