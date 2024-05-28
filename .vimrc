@@ -222,6 +222,10 @@ nnoremap <Leader>l :call system('pbcopy', @% . ":" . line('.'))<CR>
 " Convert number under cursor to human readable"
 nnoremap <Leader>b :call BytesToHuman()<CR>
 
+" Makes `j` and `k` behave like you'd expect when `wrap` mode is turned on
+nnoremap j gj
+nnoremap k gk
+
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""

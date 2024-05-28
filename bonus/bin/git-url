@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-git config --get remote.origin.url     |\
-  sed -E "s#@git##"                    |\
-  sed -E "s#\.git##"                   |\
-  sed -E "s#(.+):(.+)#https://\1/\2#g"
+url=$(git config --get remote.origin.url)
+
+if [[ "$url" = http* ]]; then
+  printf "%s" "$url"                     |\
+    sed -E "s#\.git##"
+else
+  printf "%s" "$url"                     |\
+    sed -E "s#@git##"                    |\
+    sed -E "s#\.git##"                   |\
+    sed -E "s#(.+):(.+)#https://\1/\2#g"
+fi
+

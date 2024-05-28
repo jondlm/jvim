@@ -45,8 +45,8 @@ if [ "$1" = "bonus" ] ; then
   ln -sf $HOME/.jvim/bonus/.zshrc $HOME/.zshrc
 
   echo "Backing up and symlinking alacritty.yml ..."
-  cp $HOME/.alacritty.yml $BACKUP_DIR/.alacritty.yml > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.alacritty.yml $HOME/.alacritty.yml
+  cp $HOME/.alacritty.toml $BACKUP_DIR/.alacritty.toml > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/.alacritty.toml $HOME/.alacritty.toml
 
   echo "Backing up and symlinking .p10k.zsh ..."
   cp $HOME/.p10k.zsh $BACKUP_DIR/.p10k.zsh > /dev/null 2>&1

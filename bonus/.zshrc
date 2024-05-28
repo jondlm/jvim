@@ -44,6 +44,7 @@ alias gff='git fetch --all && git merge --ff-only'
 alias github="git remote -v | sed 's/origin.*:\([^.]*\).*/\1/' | head -n1 | read GH; /usr/bin/open \"https://github.com/\$GH\""
 alias gl='git pull --ff-only'
 alias gm='git fetch origin master:master && git checkout master'
+alias gmpt='git fetch origin master-passing-tests:master-passing-tests && git checkout master-passing-tests'
 alias gpn='git push -u --no-verify'
 alias gprs="git log --pretty=format:%s \`git describe --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'\`..HEAD | grep 'Merge pull request'"
 alias gpush='git push -u'

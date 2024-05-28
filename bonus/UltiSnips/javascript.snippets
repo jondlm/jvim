@@ -1,6 +1,33 @@
 snippet cr "console.random" w
 console.log('jdlm-`!p
 import random, string
+nouns = [
+    'cat', 'dog', 'fish', 'bottle', 'apple',
+    'computer', 'keyboard', 'mouse', 'pen', 'book',
+    'desk', 'chair', 'table', 'door', 'window',
+    'phone', 'car', 'bus', 'tree', 'flower',
+    'grass', 'shoe', 'shirt', 'pocket', 'hat',
+    'bird', 'sky', 'star', 'moon', 'sun',
+    'cloud', 'rain', 'snow', 'wind', 'river',
+    'mountain', 'sea', 'ocean', 'beach', 'sand',
+    'rock', 'forest', 'jungle', 'city', 'country',
+    'road', 'building', 'house', 'room', 'kitchen',
+    'bathroom', 'bed', 'sofa', 'lamp', 'picture'
+]
+
+adjectives = [
+    'happy', 'sad', 'angry', 'funny', 'serious',
+    'silly', 'romantic', 'mysterious', 'nervous', 'lazy',
+    'busy', 'bored', 'excited', 'scared', 'relieved',
+    'huge', 'tiny', 'beautiful', 'ugly', 'creepy',
+    'hot', 'cold', 'warm', 'cool', 'expensive',
+    'cheap', 'free', 'quiet', 'loud', 'noisy',
+    'dangerous', 'safe', 'strong', 'weak', 'healthy',
+    'sick', 'easy', 'difficult', 'fancy', 'plain',
+    'light', 'dark', 'open', 'closed', 'early',
+    'late', 'empty', 'full', 'dirty', 'clean'
+]
+
 if not snip.c:
-  snip.rv = ''.join(random.sample(string.ascii_letters+string.digits, 8))`'$1); // FIXME
+  snip.rv = '-'.join([random.choice(adjectives), random.choice(nouns)])`'$1); // FIXME
 endsnippet
