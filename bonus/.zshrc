@@ -18,6 +18,10 @@ zplug Aloxaf/fzf-tab, use:fzf-tab.plugin.zsh
 
 zplug load
 
+# Bash completion interop
+autoload -U +X bashcompinit && bashcompinit
+autoload -U +X compinit && compinit
+
 # Zsh settings (mostly select stuff taken from oh-my-zsh)
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000

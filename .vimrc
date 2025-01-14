@@ -64,6 +64,7 @@ highlight GitGutterChangeDelete  ctermfg=3 ctermbg=None
 " Don't highlight special characters such as tabs and whitespace at EOL
 highlight SpecialKey ctermbg=None
 
+set termguicolors
 
 """"""""""""""""""""""""""""""""""""""""
 " General Settings
@@ -241,6 +242,10 @@ let g:ale_linters = {
 \  'typescript': ['tsserver', 'typecheck', 'eslint'],
 \  'go': ['gopls'],
 \  'scala': ['metals'],
+\}
+let g:ale_linters_ignore = {
+\  'javascript': ['jshint'],
+\  'javascriptreact': ['jshint'],
 \}
 let g:ale_fixers = {
 \  'rust': ['rustfmt'],
