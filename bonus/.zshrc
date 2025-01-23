@@ -114,6 +114,12 @@ if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
   source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 fi
 
+# python virtual env
+if [ -f ~/venv/main/bin/activate ]; then
+  source ~/venv/main/bin/activate
+fi
+
+
 # ------------------------------------------------------------------------------
 # Language runtimes
 # ------------------------------------------------------------------------------
