@@ -176,9 +176,6 @@ endif
 nnoremap <Leader>x :exec 'r! ' . getline('.')<CR>
 nnoremap <Leader>xx :call ReplaceAndExecLine()<CR>
 
-" Easier file formatting
-nnoremap <Leader>f gg=G
-
 " Find and replace word under cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
@@ -220,6 +217,9 @@ nnoremap <Leader>n :noh<CR>
 " Copy current location to clipboard
 nnoremap <Leader>l :call system('pbcopy', @% . ":" . line('.'))<CR>
 
+" Copy current file full path to clipboard
+nnoremap <Leader>f :let @+=expand('%:p')<CR>
+
 " Convert number under cursor to human readable"
 nnoremap <Leader>b :call BytesToHuman()<CR>
 
@@ -250,6 +250,7 @@ let g:ale_linters_ignore = {
 let g:ale_fixers = {
 \  'rust': ['rustfmt'],
 \  'javascript': ['prettier'],
+\  'javascriptreact': ['prettier'],
 \  'typescript': ['prettier'],
 \  'typescriptreact': ['prettier'],
 \  'html': ['prettier'],
