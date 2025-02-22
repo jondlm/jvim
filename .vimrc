@@ -41,8 +41,8 @@ Plugin 'junegunn/fzf.vim'
 " end fzf
 
 " snipmate
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
 " end snipmate
 
 " All plugins must be added before the following line
