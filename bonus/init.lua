@@ -71,4 +71,29 @@ caffeineWatcher:start()
 
 hs.hotkey.bind({"cmd", "ctrl"}, "R", function() hs.reload() end)
 
+function resize(height)
+    local win = hs.window.focusedWindow()
+    if win then
+        win:setSize(hs.geometry.size(1.6 * height, height))
+
+        local screen = win:screen()  -- Get the screen the window is on
+        local max = screen:frame()   -- Get the screen frame dimensions
+
+        -- Calculate the centered frame for the window
+        local f = win:frame()
+        f.x = (max.w - f.w) / 2 + max.x
+        f.y = (max.h - f.h) / 2 + max.y
+
+        win:setFrame(f)  -- Move the window to the centered frame
+    else
+        hs.alert.show("No active window")
+    end
+end
+
+-- 16:10, 1.6x
+hs.hotkey.bind({"cmd", "ctrl"}, "1", function() resize(400) end)
+hs.hotkey.bind({"cmd", "ctrl"}, "2", function() resize(600) end)
+hs.hotkey.bind({"cmd", "ctrl"}, "3", function() resize(800) end)
+hs.hotkey.bind({"cmd", "ctrl"}, "4", function() resize(1000) end)
+
 hs.alert.show("Config loaded")

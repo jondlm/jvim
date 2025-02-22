@@ -93,6 +93,7 @@ export PATH="$PATH:$HOME/.jvim/bonus/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/.npm-global/bin"
 
 # Mac only exports
 if [ "$(uname)" = "Darwin" ]; then
@@ -124,20 +125,9 @@ fi
 # Language runtimes
 # ------------------------------------------------------------------------------
 
-# Setup rbenv if it exists
-if hash rbenv 2>/dev/null; then
-  eval "$(rbenv init -)"
-fi
-
-# Setup asdf
-if [ -d ~/.asdf ]; then
-  source ~/.asdf/asdf.sh
-  source ~/.asdf/completions/asdf.bash
-fi
-
-# Setup nodenv
-if hash nodenv 2>/dev/null; then
-  eval "$(nodenv init -)"
+# Setup mise
+if [ -f ~/.local/bin/mise ]; then
+  eval "$($HOME/.local/bin/mise activate zsh)"
 fi
 
 # ------------------------------------------------------------------------------

@@ -33,6 +33,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'sotte/presenting.vim'
 Plugin 'bccalc.vim'
 Plugin 'vim-scripts/DrawIt'
+Plugin 'wuelnerdotexe/vim-astro'
 
 " fzf
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -251,6 +252,7 @@ let g:ale_fixers = {
 \  'rust': ['rustfmt'],
 \  'javascript': ['prettier'],
 \  'javascriptreact': ['prettier'],
+\  'astro': ['prettier'],
 \  'typescript': ['prettier'],
 \  'typescriptreact': ['prettier'],
 \  'html': ['prettier'],
