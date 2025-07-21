@@ -11,8 +11,6 @@ fi
 [ -d "$HOME/.zplug" ]            && export ZPLUG_HOME="$HOME/.zplug"
 source $ZPLUG_HOME/init.zsh
 
-zplug changyuheng/fz, defer:1
-zplug rupa/z, use:z.sh
 zplug romkatv/powerlevel10k, as:theme, depth:1
 zplug Aloxaf/fzf-tab, use:fzf-tab.plugin.zsh
 
@@ -120,6 +118,17 @@ if [ -f ~/venv/main/bin/activate ]; then
   source ~/venv/main/bin/activate
 fi
 
+# atuin provides fuzzy search shell history
+if [ -f "$HOME/.atuin/bin/env" ]; then
+  source "$HOME/.atuin/bin/env"
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
+
+# zoxide replaces `z` and uses a frecency algorithm to jump to different
+# directories
+if hash zoxide 2>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi
 
 # ------------------------------------------------------------------------------
 # Language runtimes

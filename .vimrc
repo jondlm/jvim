@@ -228,11 +228,22 @@ nnoremap <Leader>b :call BytesToHuman()<CR>
 nnoremap j gj
 nnoremap k gk
 
+" Grep for the word under cursor
+nnoremap <leader>g :grep! <cword><CR>:copen<CR>
+
 """"""""""""""""""""""""""""""""""""""""
 " JSX
 """"""""""""""""""""""""""""""""""""""""
 let g:jsx_ext_required = 0
 
+
+""""""""""""""""""""""""""""""""""""""""
+" RipGrep
+""""""""""""""""""""""""""""""""""""""""
+if executable("rg")
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden
+  set grepformat=%f:%l:%c:%m
+endif
 
 """"""""""""""""""""""""""""""""""""""""
 " Ale
@@ -259,6 +270,7 @@ let g:ale_fixers = {
 \  'go': ['gofmt'],
 \  'elm': ['elm-format'],
 \  'scala': ['scalafmt'],
+\  'python': ['ruff_format'],
 \  'php': ['php_cs_fixer'],
 \}
 let g:ale_completion_enabled = 1
@@ -440,7 +452,7 @@ autocmd BufWritePost * GitGutter
 " VimWiki
 """"""""""""""""""""""""""""""""""""""""
 let wiki = {}
-let wiki.path = '~/Dropbox/wiki'
+let wiki.path = '~/work_notes'
 let wiki.nested_syntaxes = {'javascript': 'javascript', 'yaml': 'yaml'}
 let wiki.syntax = 'markdown'
 let wiki.ext = 'md'
