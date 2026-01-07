@@ -48,15 +48,6 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.alacritty.toml $BACKUP_DIR/.alacritty.toml > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.alacritty.toml $HOME/.alacritty.toml
 
-  echo "Backing up and symlinking .githooks ..."
-  cp -r $HOME/.githooks $BACKUP_DIR/.githooks > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.githooks $HOME/.githooks
-
-  echo "Backing up and symlinking ranger rc.conf ..."
-  cp -r $HOME/.config/ranger/rc.conf $BACKUP_DIR/rc.conf > /dev/null 2>&1
-  mkdir -p $HOME/.config/ranger
-  ln -sf $HOME/.jvim/bonus/rc.conf $HOME/.config/ranger/rc.conf
-
   if [ "$os" = "mac" ]; then
     echo "Backing up and symlinking hammerspoon's init.lua & Spoons ..."
     cp $HOME/.hammerspoon/init.lua $BACKUP_DIR/init.lua > /dev/null 2>&1
