@@ -1,0 +1,15 @@
+# Standard terminal colors:
+# black, red, green, blue, yellow, purple, cyan, white
+
+[directory]
+
+style = "blue"
+
+[git_branch]
+
+symbol = ""
+style = "cyan"
+
+[git_status]
+
+style = "cyan bold"

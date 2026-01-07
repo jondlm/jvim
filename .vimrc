@@ -109,6 +109,9 @@ set directory=~/.vim/swp//      " Clean swaps that arent stored in your current 
 set relativenumber              " Enable relative line numbers be default
 set mouse=a                     " Enable mouse support in all modes. Particularly useful to resize windows.
 
+if executable('bash')
+  set shell=/bin/bash
+endif
 
 """"""""""""""""""""""""""""""""""""""""
 " Hooks

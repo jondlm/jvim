@@ -40,17 +40,13 @@ if [ "$1" = "bonus" ] ; then
   cp $HOME/.tmux.conf $BACKUP_DIR/.tmux.conf > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.tmux.conf $HOME/.tmux.conf
 
-  echo "Backing up and symlinking .zshrc ..."
-  cp $HOME/.zshrc $BACKUP_DIR/.zshrc > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.zshrc $HOME/.zshrc
+  echo "Backing up and symlinking nu config ..."
+  cp "$(nu -c '$nu.config-path')" $BACKUP_DIR/config.nu > /dev/null 2>&1
+  ln -sf $HOME/.jvim/bonus/config.nu "$(nu -c '$nu.config-path')"
 
   echo "Backing up and symlinking alacritty.yml ..."
   cp $HOME/.alacritty.toml $BACKUP_DIR/.alacritty.toml > /dev/null 2>&1
   ln -sf $HOME/.jvim/bonus/.alacritty.toml $HOME/.alacritty.toml
-
-  echo "Backing up and symlinking .p10k.zsh ..."
-  cp $HOME/.p10k.zsh $BACKUP_DIR/.p10k.zsh > /dev/null 2>&1
-  ln -sf $HOME/.jvim/bonus/.p10k.zsh $HOME/.p10k.zsh
 
   echo "Backing up and symlinking .githooks ..."
   cp -r $HOME/.githooks $BACKUP_DIR/.githooks > /dev/null 2>&1
