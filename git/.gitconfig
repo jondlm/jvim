@@ -1,14 +1,17 @@
 [user]
 	name = Jon de la Motte
-	email = jondlm@gmail.com
 [core]
 	hooksPath = ~/.githooks
 [push]
 	default = current
+[pull]
+	rebase = true
+[column]
+	ui = auto
 [alias]
 	brr = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
 	rc = !git checkout $(git brr | fzf)
-	standup = !"git log --reverse --branches --since='$(if [[ "Mon" == "$(date +%a)" ]]; then echo "last friday"; else echo "yesterday"; fi)' --author=$(git config --get user.email) --format=format:'%C(cyan) %ad %C(yellow)%h %Creset %s %Cgreen%d' --date=local"
+	standup = !"git log --reverse --branches --since='$(if [[ \"Mon\" == \"$(date +%a)\" ]]; then echo \"last friday\"; else echo \"yesterday\"; fi)' --author=$(git config --get user.email) --format=format:'%C(cyan) %ad %C(yellow)%h %Creset %s %Cgreen%d' --date=local"
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -16,5 +19,5 @@
 	required = true
 [init]
 	defaultBranch = main
-[index]
-	skipHash = false
+[rerere]
+	enabled = true

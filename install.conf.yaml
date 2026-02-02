@@ -1,0 +1,39 @@
+- defaults:
+    link:
+      relink: true # ensures up-to-date links are present
+      create: true # like `mkdir -p` on the parent dir
+      backup: true
+
+- link:
+    # Git
+    ~/.gitconfig: git/.gitconfig
+
+    # Neovim
+    ~/.config/nvim/init.lua: neovim/init.lua
+    # TODO: Migrate snippets to something neovim/lua native
+    # ~/.config/nvim/UltiSnips: neovim/UltiSnips
+
+    # Ghostty
+    ~/.config/ghostty/config: ghostty/config
+
+    # Nushell
+    ~/.config/nushell/config.nu: nushell/config.nu
+
+    # Tmux
+    ~/.tmux.conf: tmux/.tmux.conf
+
+    # Yabai (window manager)
+    ~/.yabairc: yabai/.yabairc
+
+    # SKHD (hotkey daemon)
+    ~/.skhdrc: skhc/.skhdrc
+
+    # Hammerspoon
+    ~/.hammerspoon/init.lua: hammerspoon/init.lua
+    ~/.hammerspoon/Spoons: hammerspoon/Spoons
+
+    # Starship (prompt)
+    ~/.config/starship.toml: starship/starship.toml
+
+    # Bin scripts
+    ~/bin/git-url: bin/git-url

@@ -1,7 +1,8 @@
 # Nu config
-$env.config.edit_mode = "vi"          # modal shell editing
-$env.config.show_banner = "short"     # only show startup time
-$env.config.filesize.unit = "binary"  # 5TB (bad) is actually 4.5TiB (good)
+$env.config.edit_mode = "vi" # ftw
+$env.config.show_banner = "short" # just startup time
+$env.config.filesize.unit = "binary" # 5TB (bad) is actually 4.5TiB (good)
+$env.config.completions.algorithm = "fuzzy" # better tab completions
 
 # Environment variables
 $env.EDITOR = "nvim"
@@ -9,24 +10,26 @@ $env.LANG = "en_US.UTF-8"
 
 if (uname | get kernel-name) == Darwin {
   $env.HOMEBREW_NO_AUTO_UPDATE = 1
+  $env.SSH_AUTH_SOCK = (ls /private/tmp/com.apple.launchd.*/Listeners | get name | first)
 }
 
 # Variables
 let vendor_autoload_dir = ($nu.default-config-dir | path join "vendor/autoload")
 
 $env.PATH = [
-    "/usr/local/bin",
-    "/opt/homebrew/bin",
-    "/usr/local/sbin",
-    "/usr/bin",
-    "/bin",
-    "/usr/sbin",
-    "/sbin",
-    ($env.HOME | path join "bin"),
-    ($env.HOME | path join ".jvim/bonus/bin"),
-    ($env.HOME | path join ".local/bin"),
-    ($env.HOME | path join ".cargo/bin"),
-    ($env.HOME | path join ".npm-global/bin")
+  "/usr/local/bin",
+  "/opt/homebrew/bin",
+  "/usr/local/sbin",
+  "/usr/bin",
+  "/bin",
+  "/usr/sbin",
+  "/sbin",
+  "/opt/homebrew/opt/postgresql@15/bin",
+  ($env.HOME | path join "bin"),
+  ($env.HOME | path join ".jvim/bonus/bin"),
+  ($env.HOME | path join ".local/bin"),
+  ($env.HOME | path join ".cargo/bin"),
+  ($env.HOME | path join ".npm-global/bin")
 ]
 
 if ('GOPATH' in $env) {
@@ -38,13 +41,23 @@ mkdir $vendor_autoload_dir
 mkdir $nu.cache-dir
 
 # Load 3rd party modules
-zoxide init nushell              | save -f ($vendor_autoload_dir | path join "zoxide.nu")    # directory recall
-starship init nu                 | save -f ($vendor_autoload_dir | path join "starship.nu")  # better prompt
-atuin init nu --disable-up-arrow | save -f ($vendor_autoload_dir | path join "atuin.nu")     # ctrl-r fuzzy history
-carapace _carapace nushell       | save -f ($vendor_autoload_dir | path join "carapace.nu")  # built in completions
-mise activate nu                                                                             # lang runtime management
-  | str replace -a "--ignore-errors" "-o" # prevent deprecation warning
-  | save -f ($vendor_autoload_dir | path join "mise.nu")
+let tools = [
+  { cmd: "zoxide init nushell",              name: "zoxide.nu" },
+  { cmd: "starship init nu",                 name: "starship.nu" },
+  { cmd: "atuin init nu --disable-up-arrow", name: "atuin.nu" },
+  { cmd: "carapace _carapace nushell",       name: "carapace.nu" },
+  { cmd: "mise activate nu",                 name: "mise.nu" }
+]
+
+for tool in $tools {
+  let path = ($vendor_autoload_dir | path join $tool.name)
+  # Only generate the file if it doesn't exist. To force an update, just
+  # delete the files in vendor/autoload.
+  if not ($path | path exists) {
+    run-external ...(echo $tool.cmd | split row " ")
+      | save -f $path
+  }
+}
 
 # Aliases & Functions
 ## Git
@@ -53,8 +66,12 @@ alias gc = git commit -v
 alias gco = git checkout
 alias gd = git diff
 alias gf = git fetch --all --tags
+alias gl = git pull
 alias gpush = git push -u
 alias gs = git status
+## General
+alias vim = nvim
+alias r = bin/rails
 
 ### Fuzzy checkout an old branch
 def gr [] {

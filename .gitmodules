@@ -1,3 +1,4 @@
-[submodule "bonus/garys-dotfiles"]
-	path = bonus/garys-dotfiles
-	url = git://github.com/garybernhardt/dotfiles
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	ignore = dirty
