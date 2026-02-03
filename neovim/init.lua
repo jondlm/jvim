@@ -20,6 +20,7 @@ require("lazy").setup({
   { "ibhagwan/fzf-lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "easymotion/vim-easymotion" },
   { "terryma/vim-expand-region" },
+  { "andymass/vim-matchup" },
 
   -- Coding tools
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", lazy = false },
@@ -212,7 +213,6 @@ window = {
   },
 })
 
-
 -------------------------------------------------------------------------------
 -- Core settings
 -------------------------------------------------------------------------------
@@ -402,7 +402,6 @@ keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
 vim.keymap.set({ "n" }, "<leader>f", function()
   conform.format({ async = true, lsp_fallback = true })
 end, { desc = "Format buffer" })
-
 
 -------------------------------------------------------------------------------
 -- Auto commands (hooks)
