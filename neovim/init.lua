@@ -14,7 +14,6 @@ require("lazy").setup({
   { "airblade/vim-gitgutter" },
   { "junegunn/goyo.vim" },
 
-
   -- Navigation & search
   { "nvim-neo-tree/neo-tree.nvim", branch = "v3.x", dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim", "nvim-tree/nvim-web-devicons" }, lazy = false },
   { "ibhagwan/fzf-lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
@@ -371,6 +370,7 @@ keymap("n", "<leader>n", ":noh<CR>")
 -- [g] Git
 keymap("n", "<leader>gr", ":GitGutterUndoHunk<CR>")
 keymap("n", "<leader>gb", ":Git blame<CR>")
+keymap("n", "<leader>gh", ":Gvsplit HEAD:%<CR>", { desc = "Open file at HEAD in vsplit" })
 keymap("n", "]h", ":GitGutterNextHunk<CR>")
 keymap("n", "[h", ":GitGutterPrevHunk<CR>")
 
@@ -380,9 +380,9 @@ keymap("n", "<C-b>", fzf.buffers)
 keymap("n", "<leader>fg", fzf.live_grep)
 keymap("n", "<leader>fm", fzf.marks)
 keymap("n", "<leader>ft", fzf.treesitter)
+keymap("n", "<leader>fw", fzf.grep_cword)
 keymap("n", "<leader>;", fzf.command_history)
 keymap("n", "<leader>/", fzf.search_history)
-keymap("n", "<leader>g", fzf.grep_cword)
 
 -- Diagnostics (replaces ALE keymaps)
 keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
