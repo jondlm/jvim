@@ -106,6 +106,27 @@ def grc [] {
     }
 }
 
+### Create a WIP commit (bypassing hooks and signing)
+def gwip [] {
+    git add -A
+    # Remove deleted files from index
+    let deleted_files = (git ls-files --deleted | lines)
+    if not ($deleted_files | is-empty) {
+        git rm ...$deleted_files
+    }
+    git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"
+}
+
+### Undo the last commit if it's a WIP commit
+def gunwip [] {
+    let last_commit = (git log -n 1 --format=%B)
+    if ($last_commit | str contains "--wip--") {
+        git reset HEAD~1
+    } else {
+        print "Last commit is not a WIP commit"
+    }
+}
+
 ## Processes
 ### Kill a process
 def pk [] {
