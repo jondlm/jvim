@@ -220,10 +220,13 @@ window = {
 })
 
 ----------------------------------------
--- Completion (nvim-cmp)
+-- Completion & Snippets
 ----------------------------------------
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+
+-- Load custom snippets from luasnippets directory
+require("luasnip.loaders.from_lua").lazy_load({ paths = "~/.config/nvim/luasnippets" })
 
 cmp.setup({
   snippet = {

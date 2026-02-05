@@ -10,8 +10,7 @@
 
     # Neovim
     ~/.config/nvim/init.lua: neovim/init.lua
-    # TODO: Migrate snippets to something neovim/lua native
-    # ~/.config/nvim/UltiSnips: neovim/UltiSnips
+    ~/.config/nvim/luasnippets: neovim/luasnippets
 
     # Ghostty
     ~/.config/ghostty/config: ghostty/config
