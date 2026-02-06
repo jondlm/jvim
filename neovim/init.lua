@@ -417,8 +417,9 @@ keymap("n", "<leader>cl", copy_location)
 keymap("n", "<leader>ct", copy_rails_test_command)
 keymap("n", "<leader>ot", open_rails_test)
 
--- Find and Replace word under cursor
-keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/]])
+-- Search stuff
+keymap("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/]])
+keymap("n", "<leader>sc", "/^\\(<<<<<<<\\|=======\\|>>>>>>>\\)<CR>", { desc = "Search for git conflict markers" })
 
 -- Neotree
 keymap("n", "<C-e>", ":Neotree toggle<CR>")
