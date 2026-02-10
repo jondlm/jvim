@@ -334,6 +334,102 @@ end
 
 vim.api.nvim_create_user_command('StripTrailingWhitespace', strip_trailing_whitespace, {})
 
+-- I'm still on the fence about this implementation of AI functionality. It
+-- "works" but definitely leaves a lot to be desired.
+local function ai_location()
+  vim.ui.input({ prompt = "AI Query: " }, function(query)
+    if not query or query == "" then return end
+
+    -- Prepend current file location so the agent knows where we are
+    local location = vim.fn.expand('%:.') .. ':' .. vim.fn.line('.')
+    query = "[Location: " .. location .. "] " .. query
+
+    -- Create a scratch buffer
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[buf].buftype = "nofile"
+    vim.bo[buf].bufhidden = "wipe"
+    vim.bo[buf].filetype = "markdown"
+
+    -- Calculate floating window dimensions
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    local win = vim.api.nvim_open_win(buf, true, {
+      relative = "editor",
+      width = width,
+      height = height,
+      row = row,
+      col = col,
+      style = "minimal",
+      border = "rounded",
+      title = " AI: " .. query:sub(1, 60) .. " ",
+      title_pos = "center",
+    })
+
+    -- Seed the buffer with a loading line
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "Running agent..." })
+
+    -- Close with q or <Esc>
+    vim.keymap.set("n", "q", function()
+      if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+    end, { buffer = buf })
+    vim.keymap.set("n", "<Esc>", function()
+      if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+    end, { buffer = buf })
+
+    -- Run agent asynchronously and stream output into the buffer
+    local lines = { "" }
+    vim.fn.jobstart({ "agent", "--print", "--model", "composer-1.5", query }, {
+      stdout_buffered = false,
+      stdin = "null",
+      on_stdout = function(_, data)
+        if not data then return end
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_valid(buf) then return end
+          for i, chunk in ipairs(data) do
+            if i == 1 then
+              -- Append to the last line
+              lines[#lines] = lines[#lines] .. chunk
+            else
+              -- New line
+              table.insert(lines, chunk)
+            end
+          end
+          vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+          -- Scroll to bottom
+          if vim.api.nvim_win_is_valid(win) then
+            vim.api.nvim_win_set_cursor(win, { #lines, 0 })
+          end
+        end)
+      end,
+      on_stderr = function(_, data)
+        if not data then return end
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_valid(buf) then return end
+          for i, chunk in ipairs(data) do
+            if i == 1 then
+              lines[#lines] = lines[#lines] .. chunk
+            else
+              table.insert(lines, chunk)
+            end
+          end
+          vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+        end)
+      end,
+      on_exit = function(_, code)
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_valid(buf) then return end
+          table.insert(lines, "")
+          table.insert(lines, "--- agent exited with code " .. code .. " ---")
+          vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+        end)
+      end,
+    })
+  end)
+end
+
 local function copy_location()
   local path = vim.fn.expand('%:.')
   local line = vim.fn.line('.')
@@ -412,6 +508,9 @@ keymap("n", "L", ":tabnext<CR>")
 -- Visual Shifting (Stay in visual mode)
 keymap("v", "<", "<gv")
 keymap("v", ">", ">gv")
+
+-- [a] AI
+keymap("n", "<leader>al", ai_location, { desc = "AI location: ask agent a question" })
 
 -- Clipboard stuff
 keymap("n", "<leader>cl", copy_location)
