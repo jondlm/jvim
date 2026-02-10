@@ -153,10 +153,11 @@ conform.setup({
     ruby = { "rubocop" },
     -- eslint_d may need to be installed globally as some projects may not have
     -- it in node_modules, but it will work with the local eslint setup.
-    javascript = { "eslint_d" },
-    javascriptreact = { "eslint_d" },
-    typescript = { "eslint_d" },
-    typescriptreact = { "eslint_d" },
+    -- Prettier is the fallback when eslint_d fails (e.g. not available).
+    javascript = { "eslint_d", "prettier" },
+    javascriptreact = { "eslint_d", "prettier" },
+    typescript = { "eslint_d", "prettier" },
+    typescriptreact = { "eslint_d", "prettier" },
     html = { "prettier" },
     go = { "gofmt" },
     elm = { "elm_format" },
