@@ -1,4 +1,4 @@
-theme = Catppuccin Frappe
+theme = light:Catppuccin Latte,dark:Catppuccin Frappe
 
 font-family = "MesloLGS NF"
 font-size = 12
@@ -6,5 +6,5 @@ font-size = 12
 window-decoration = false
 window-padding-x = 10
 window-padding-y = 5
-command = tmux new-session -A -s main
+command = /opt/homebrew/bin/tmux new-session -A -s main
 confirm-close-surface = false

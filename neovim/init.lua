@@ -145,19 +145,28 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
 -- Fixing
 ----------------------------------------
 local conform = require("conform")
+
+-- Returns formatters based on current directory
+-- Uses eslint_d in ~/thatch-health, prettier everywhere else
+local function js_formatters()
+  local cwd = vim.fn.getcwd()
+  local thatch_path = vim.fn.expand("~/thatch-health")
+  if cwd:find(thatch_path, 1, true) == 1 then
+    return { "eslint_d" }
+  end
+  return { "prettier" }
+end
+
 conform.setup({
   formatters_by_ft = {
     rust = { "rustfmt" },
 
     astro = { "prettier" },
     ruby = { "rubocop" },
-    -- eslint_d may need to be installed globally as some projects may not have
-    -- it in node_modules, but it will work with the local eslint setup.
-    -- Prettier is the fallback when eslint_d fails (e.g. not available).
-    javascript = { "eslint_d", "prettier" },
-    javascriptreact = { "eslint_d", "prettier" },
-    typescript = { "eslint_d", "prettier" },
-    typescriptreact = { "eslint_d", "prettier" },
+    javascript = js_formatters,
+    javascriptreact = js_formatters,
+    typescript = js_formatters,
+    typescriptreact = js_formatters,
     html = { "prettier" },
     go = { "gofmt" },
     elm = { "elm_format" },
@@ -182,9 +191,35 @@ lualine.setup()
 -- Catppuccin
 ----------------------------------------
 local catppuccin = require("catppuccin")
+
+-- Detect macOS dark mode
+local function is_dark_mode()
+  local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+  if handle then
+    local result = handle:read("*a")
+    handle:close()
+    return result:match("Dark") ~= nil
+  end
+  return false
+end
+
 catppuccin.setup({
-  flavour = "frappe",
+  flavour = is_dark_mode() and "frappe" or "latte",
+  custom_highlights = function(colors)
+    return {
+      -- Git gutter signs
+      GitGutterAdd = { fg = colors.green },
+      GitGutterChange = { fg = colors.yellow },
+      GitGutterDelete = { fg = colors.red },
+      GitGutterChangeDelete = { fg = colors.peach },
+    }
+  end,
 })
+
+vim.api.nvim_create_user_command('UpdateColorscheme', function()
+  local flavour = is_dark_mode() and "frappe" or "latte"
+  vim.cmd("Catppuccin " .. flavour)
+end, {})
 
 ----------------------------------------
 -- Fzf
@@ -490,6 +525,16 @@ local function open_rails_test()
   vim.cmd('edit ' .. test_path)
 end
 
+local function copy_github_url()
+  local file = vim.fn.expand('%')
+  local line = vim.fn.line('.')
+  local git_url = vim.fn.system('git-url'):gsub('%s+$', '')
+  local commit_hash = vim.fn.system('git rev-parse HEAD'):gsub('%s+$', '')
+  local url = string.format('%s/blob/%s/%s#L%s', git_url, commit_hash, file, line)
+  vim.fn.setreg('+', url)
+  vim.notify('Copied: ' .. url)
+end
+
 -------------------------------------------------------------------------------
 -- Keybindings
 -------------------------------------------------------------------------------
@@ -515,6 +560,9 @@ keymap("n", "<leader>al", ai_location, { desc = "AI location: ask agent a questi
 -- Clipboard stuff
 keymap("n", "<leader>cl", copy_location)
 keymap("n", "<leader>ct", copy_rails_test_command)
+keymap("n", "<leader>cg", copy_github_url, { desc = "Open in GitHub" })
+
+-- Open
 keymap("n", "<leader>ot", open_rails_test)
 
 -- Search stuff
@@ -541,6 +589,7 @@ keymap("n", "<C-p>", fzf.git_files)
 keymap("n", "<C-b>", fzf.buffers)
 keymap("n", "<leader>fg", fzf.live_grep)
 keymap("n", "<leader>fm", fzf.marks)
+keymap("n", "<leader>fr", fzf.resume)
 keymap("n", "<leader>ft", fzf.treesitter)
 keymap("n", "<leader>fw", fzf.grep_cword)
 keymap("n", "<leader>;", fzf.command_history)
