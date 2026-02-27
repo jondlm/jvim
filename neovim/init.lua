@@ -238,12 +238,12 @@ fzf.setup({
 ----------------------------------------
 local nt = require("neo-tree")
 nt.setup({
-window = {
-  mappings = {
-    ["/"] = "none",      -- Use native search (or change to "fuzzy_finder")
-    ["zz"] = function()  -- Ensure zz centers the screen
-      vim.cmd("normal! zz")
-    end,
+  window = {
+    mappings = {
+      ["/"] = "none",
+      ["zz"] = function() vim.cmd("normal! zz") end,
+      ["zt"] = function() vim.cmd("normal! zt") end,
+      ["zb"] = function() vim.cmd("normal! zb") end,
     },
   },
   filesystem = {
