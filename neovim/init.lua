@@ -192,19 +192,11 @@ lualine.setup()
 ----------------------------------------
 local catppuccin = require("catppuccin")
 
--- Detect macOS dark mode
-local function is_dark_mode()
-  local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
-  if handle then
-    local result = handle:read("*a")
-    handle:close()
-    return result:match("Dark") ~= nil
-  end
-  return false
-end
+-- Track current flavour
+vim.g.catppuccin_flavour = "frappe"
 
 catppuccin.setup({
-  flavour = is_dark_mode() and "frappe" or "latte",
+  flavour = vim.g.catppuccin_flavour,
   custom_highlights = function(colors)
     return {
       -- Git gutter signs
@@ -216,10 +208,16 @@ catppuccin.setup({
   end,
 })
 
-vim.api.nvim_create_user_command('UpdateColorscheme', function()
-  local flavour = is_dark_mode() and "frappe" or "latte"
-  vim.cmd("Catppuccin " .. flavour)
-end, {})
+-- Toggle between frappe and latte
+function toggle_catppuccin()
+  if vim.g.catppuccin_flavour == "frappe" then
+    vim.g.catppuccin_flavour = "latte"
+  else
+    vim.g.catppuccin_flavour = "frappe"
+  end
+  vim.cmd("Catppuccin " .. vim.g.catppuccin_flavour)
+  vim.notify("Catppuccin: " .. vim.g.catppuccin_flavour)
+end
 
 ----------------------------------------
 -- Fzf
@@ -613,6 +611,9 @@ keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
 vim.keymap.set({ "n" }, "<leader>f", function()
   conform.format({ async = true, lsp_fallback = true })
 end, { desc = "Format buffer" })
+
+-- [t] Toggle
+keymap("n", "<leader>tc", toggle_catppuccin, { desc = "Toggle Catppuccin frappe/latte" })
 
 -------------------------------------------------------------------------------
 -- Auto commands (hooks)

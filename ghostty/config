@@ -1,4 +1,5 @@
-theme = light:Catppuccin Latte,dark:Catppuccin Frappe
+theme = Catppuccin Frappe
+# theme = Catppuccin Latte
 
 font-family = "MesloLGS NF"
 font-size = 12
