@@ -107,14 +107,19 @@ def grc [] {
 }
 
 ### Create a WIP commit (bypassing hooks and signing)
-def gwip [] {
+def gwip [message?: string] {
     git add -A
     # Remove deleted files from index
     let deleted_files = (git ls-files --deleted | lines)
     if not ($deleted_files | is-empty) {
         git rm ...$deleted_files
     }
-    git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"
+    let commit_msg = if ($message | is-empty) {
+        "--wip-- [skip ci]"
+    } else {
+        $"--wip-- ($message) [skip ci]"
+    }
+    git commit --no-verify --no-gpg-sign -m $commit_msg
 }
 
 ### Undo the last commit if it's a WIP commit

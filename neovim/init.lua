@@ -174,11 +174,16 @@ conform.setup({
     python = { "ruff_format" },
     php = { "php_cs_fixer" },
   },
-  -- Format on save
-  format_on_save = {
-    timeout_ms = 2500,
-    lsp_fallback = true,
-  },
+  -- Format on save (can be disabled per-buffer with vim.b.disable_autoformat)
+  format_on_save = function(bufnr)
+    if vim.b[bufnr].disable_autoformat then
+      return
+    end
+    return {
+      timeout_ms = 2500,
+      lsp_fallback = true,
+    }
+  end,
 })
 
 ----------------------------------------
@@ -497,6 +502,24 @@ local function get_rails_test_path()
   return test_path
 end
 
+local function get_rails_source_path()
+  local path = vim.fn.expand('%:.')
+
+  if not path:match('^test/') then
+    return nil
+  end
+
+  -- Handle test/lib/ files -> lib/ files
+  if path:match('^test/lib/') then
+    return path:gsub('^test/lib/', 'lib/')
+               :gsub('_test%.rb$', '.rb')
+  end
+
+  -- Handle test/ files -> app/ files
+  return path:gsub('^test/', 'app/')
+             :gsub('_test%.rb$', '.rb')
+end
+
 local function copy_rails_test_command()
   local test_path = get_rails_test_path()
 
@@ -512,10 +535,23 @@ local function copy_rails_test_command()
 end
 
 local function open_rails_test()
+  local path = vim.fn.expand('%:.')
+
+  -- If we're in a test file, go back to the source file
+  if path:match('^test/') then
+    local source_path = get_rails_source_path()
+    if source_path then
+      vim.cmd('edit ' .. source_path)
+    else
+      vim.notify('Cannot determine source file for: ' .. path, vim.log.levels.WARN)
+    end
+    return
+  end
+
+  -- Otherwise, go to the test file
   local test_path = get_rails_test_path()
 
   if not test_path then
-    local path = vim.fn.expand('%:.')
     vim.notify('Cannot determine test file for: ' .. path, vim.log.levels.WARN)
     return
   end
@@ -531,6 +567,22 @@ local function copy_github_url()
   local url = string.format('%s/blob/%s/%s#L%s', git_url, commit_hash, file, line)
   vim.fn.setreg('+', url)
   vim.notify('Copied: ' .. url)
+end
+
+local function toggle_dianostics_current_buffer()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = vim.diagnostic.is_enabled({ bufnr = bufnr })
+  vim.diagnostic.enable(not enabled, { bufnr = bufnr })
+  vim.notify("Diagnostics " .. (enabled and "disabled" or "enabled") .. " for buffer")
+end
+
+local function toggle_format_current_buffer()
+  vim.b.disable_autoformat = not vim.b.disable_autoformat
+  vim.notify("Format on save " .. (vim.b.disable_autoformat and "disabled" or "enabled") .. " for buffer")
+end
+
+local function conform_format()
+  conform.format({ async = true, lsp_fallback = true })
 end
 
 -------------------------------------------------------------------------------
@@ -552,29 +604,33 @@ keymap("n", "L", ":tabnext<CR>")
 keymap("v", "<", "<gv")
 keymap("v", ">", ">gv")
 
--- [a] AI
-keymap("n", "<leader>al", ai_location, { desc = "AI location: ask agent a question" })
-
--- Clipboard stuff
-keymap("n", "<leader>cl", copy_location)
-keymap("n", "<leader>ct", copy_rails_test_command)
-keymap("n", "<leader>cg", copy_github_url, { desc = "Open in GitHub" })
-
--- Open
-keymap("n", "<leader>ot", open_rails_test)
-
--- Search stuff
-keymap("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/]])
-keymap("n", "<leader>sc", "/^\\(<<<<<<<\\|=======\\|>>>>>>>\\)<CR>", { desc = "Search for git conflict markers" })
-
 -- Neotree
 keymap("n", "<C-e>", ":Neotree toggle<CR>")
 keymap("n", "<leader>e", ":Neotree reveal<CR>")
 
+-- Conform
+keymap("n", "<leader>f", conform_format, { desc = "Format buffer" })
+
 -- Clear Highlights
 keymap("n", "<leader>n", ":noh<CR>")
 
+-- [a] AI
+keymap("n", "<leader>al", ai_location, { desc = "AI location: ask agent a question" })
+
+-- [c] Clipboard stuff
+keymap("n", "<leader>cl", copy_location)
+keymap("n", "<leader>ct", copy_rails_test_command)
+keymap("n", "<leader>cg", copy_github_url, { desc = "Open in GitHub" })
+
+-- [o] Open
+keymap("n", "<leader>ot", open_rails_test)
+
+-- [s] Search stuff
+keymap("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/]])
+keymap("n", "<leader>sc", "/^\\(<<<<<<<\\|=======\\|>>>>>>>\\)<CR>", { desc = "Search for git conflict markers" })
+
 -- [g] Git
+keymap("n", "<leader>g", ":Git<CR>")
 keymap("n", "<leader>gr", ":GitGutterUndoHunk<CR>")
 keymap("n", "<leader>gb", ":Git blame<CR>")
 keymap("n", "<leader>gh", ":Gvsplit HEAD:%<CR>", { desc = "Open file at HEAD in vsplit" })
@@ -593,7 +649,7 @@ keymap("n", "<leader>fw", fzf.grep_cword)
 keymap("n", "<leader>;", fzf.command_history)
 keymap("n", "<leader>/", fzf.search_history)
 
--- Diagnostics (replaces ALE keymaps)
+-- [d] Diagnostics (replaces ALE keymaps)
 keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
 keymap("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
@@ -607,13 +663,10 @@ keymap("n", "<leader>lr", vim.lsp.buf.references, { desc = "Show references" })
 keymap("n", "<leader>lR", vim.lsp.buf.rename, { desc = "Rename symbol" })
 keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
 
--- Conform
-vim.keymap.set({ "n" }, "<leader>f", function()
-  conform.format({ async = true, lsp_fallback = true })
-end, { desc = "Format buffer" })
-
 -- [t] Toggle
 keymap("n", "<leader>tc", toggle_catppuccin, { desc = "Toggle Catppuccin frappe/latte" })
+keymap("n", "<leader>td", toggle_dianostics_current_buffer, { desc = "Toggle diagnostics for current buffer" })
+keymap("n", "<leader>tf", toggle_format_current_buffer, { desc = "Toggle format on save for current buffer" })
 
 -------------------------------------------------------------------------------
 -- Auto commands (hooks)
