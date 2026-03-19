@@ -2,7 +2,6 @@
     link:
       relink: true # ensures up-to-date links are present
       create: true # like `mkdir -p` on the parent dir
-      backup: true
 
 - link:
     # Git
