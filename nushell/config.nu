@@ -10,7 +10,8 @@ $env.LANG = "en_US.UTF-8"
 
 if (uname | get kernel-name) == Darwin {
   $env.HOMEBREW_NO_AUTO_UPDATE = 1
-  $env.SSH_AUTH_SOCK = (ls /private/tmp/com.apple.launchd.*/Listeners | get name | first)
+  # For some reason this broke after updating my system
+  # $env.SSH_AUTH_SOCK = (ls /private/tmp/com.apple.launchd.*/Listeners | get name | first)
 }
 
 # Variables

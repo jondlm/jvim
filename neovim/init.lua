@@ -419,7 +419,7 @@ local function ai_location()
 
     -- Run agent asynchronously and stream output into the buffer
     local lines = { "" }
-    vim.fn.jobstart({ "agent", "--print", "--model", "composer-1.5", query }, {
+    vim.fn.jobstart({ "agent", "--print", "--model", "claude-4.6-sonnet-medium", query }, {
       stdout_buffered = false,
       stdin = "null",
       on_stdout = function(_, data)
@@ -479,8 +479,49 @@ local function copy_location()
   vim.notify('Copied: ' .. result)
 end
 
+local function get_project_root()
+  local current_file = vim.fn.expand('%:p')
+  if current_file == '' then
+    return vim.fn.getcwd()
+  end
+
+  -- Prefer the nearest Rails app root in monorepos.
+  local rails_bin = vim.fs.find('bin/rails', { path = current_file, upward = true, type = 'file' })[1]
+  if rails_bin then
+    return vim.fs.dirname(vim.fs.dirname(rails_bin))
+  end
+
+  local git_dir = vim.fs.find('.git', { path = current_file, upward = true })[1]
+  if git_dir then
+    return vim.fs.dirname(git_dir)
+  end
+
+  return vim.fn.getcwd()
+end
+
+local function get_path_from_project_root()
+  local absolute_path = vim.fn.expand('%:p')
+  if absolute_path == '' then
+    return nil, nil
+  end
+
+  local project_root = get_project_root()
+  local prefix = vim.pesc(project_root .. '/')
+  local relative_path = absolute_path:gsub('^' .. prefix, '')
+
+  if relative_path == absolute_path then
+    return nil, project_root
+  end
+
+  return relative_path, project_root
+end
+
 local function get_rails_test_path()
-  local path = vim.fn.expand('%:.')
+  local path, project_root = get_path_from_project_root()
+  if not path then
+    return nil, project_root
+  end
+
   local test_path = path
 
   -- If we're in a test file, use it directly
@@ -495,53 +536,105 @@ local function get_rails_test_path()
       test_path = path:gsub('^lib/', 'test/lib/')
                       :gsub('%.rb$', '_test.rb')
     else
-      return nil
+      return nil, project_root
     end
   end
 
-  return test_path
+  return test_path, project_root
 end
 
 local function get_rails_source_path()
-  local path = vim.fn.expand('%:.')
+  local path, project_root = get_path_from_project_root()
+  if not path then
+    return nil, project_root
+  end
 
   if not path:match('^test/') then
-    return nil
+    return nil, project_root
   end
 
   -- Handle test/lib/ files -> lib/ files
   if path:match('^test/lib/') then
     return path:gsub('^test/lib/', 'lib/')
-               :gsub('_test%.rb$', '.rb')
+               :gsub('_test%.rb$', '.rb'), project_root
   end
 
   -- Handle test/ files -> app/ files
   return path:gsub('^test/', 'app/')
-             :gsub('_test%.rb$', '.rb')
+             :gsub('_test%.rb$', '.rb'), project_root
+end
+
+local function get_rails_test_target()
+  local test_path, project_root = get_rails_test_path()
+  if not test_path then
+    return nil, project_root
+  end
+
+  local relative_path, _ = get_path_from_project_root()
+  local target = test_path
+
+  -- If cursor is on a test example declaration, run only that example.
+  if relative_path and relative_path:match('^test/') then
+    local current_line = vim.api.nvim_get_current_line()
+    if current_line:match('^%s*it%s') then
+      target = test_path .. ':' .. vim.fn.line('.')
+    end
+  end
+
+  return target, project_root
 end
 
 local function copy_rails_test_command()
-  local test_path = get_rails_test_path()
+  local test_target = get_rails_test_target()
 
-  if not test_path then
+  if not test_target then
     local path = vim.fn.expand('%:.')
     vim.notify('Cannot determine test file for: ' .. path, vim.log.levels.WARN)
     return
   end
 
-  local command = 'bin/rails test ' .. test_path
+  local command = 'bin/rails test ' .. test_target
   vim.fn.setreg('+', command)
   vim.notify('Copied: ' .. command)
 end
 
+local function run_rails_test_in_tmux_pane()
+  local test_target, project_root = get_rails_test_target()
+
+  if not test_target then
+    local path = vim.fn.expand('%:p')
+    vim.notify('Cannot determine test file for: ' .. path, vim.log.levels.WARN)
+    return
+  end
+
+  if not vim.env.TMUX or vim.env.TMUX == '' then
+    vim.notify('Not running inside tmux', vim.log.levels.WARN)
+    return
+  end
+
+  local cwd = project_root or vim.fn.getcwd()
+  local command = 'watchexec -e rb bin/rails test ' .. vim.fn.shellescape(test_target)
+  local pane_command = 'cd ' .. vim.fn.shellescape(cwd) .. ' && ' .. command
+
+  vim.fn.system({ 'tmux', 'split-window', '-v', pane_command })
+  if vim.v.shell_error ~= 0 then
+    vim.notify('Failed to open tmux pane for Rails test', vim.log.levels.ERROR)
+    return
+  end
+
+  vim.notify('Opened tmux pane: ' .. command)
+end
+
 local function open_rails_test()
-  local path = vim.fn.expand('%:.')
+  local path = vim.fn.expand('%:p')
+  local project_root = get_project_root()
 
   -- If we're in a test file, go back to the source file
-  if path:match('^test/') then
+  local relative_path, _ = get_path_from_project_root()
+  if relative_path and relative_path:match('^test/') then
     local source_path = get_rails_source_path()
     if source_path then
-      vim.cmd('edit ' .. source_path)
+      vim.cmd('edit ' .. vim.fn.fnameescape(project_root .. '/' .. source_path))
     else
       vim.notify('Cannot determine source file for: ' .. path, vim.log.levels.WARN)
     end
@@ -556,7 +649,7 @@ local function open_rails_test()
     return
   end
 
-  vim.cmd('edit ' .. test_path)
+  vim.cmd('edit ' .. vim.fn.fnameescape(project_root .. '/' .. test_path))
 end
 
 local function copy_github_url()
@@ -584,6 +677,8 @@ end
 local function conform_format()
   conform.format({ async = true, lsp_fallback = true })
 end
+
+vim.api.nvim_create_user_command('RailsTestPane', run_rails_test_in_tmux_pane, {})
 
 -------------------------------------------------------------------------------
 -- Keybindings
@@ -624,6 +719,7 @@ keymap("n", "<leader>cg", copy_github_url, { desc = "Open in GitHub" })
 
 -- [o] Open
 keymap("n", "<leader>ot", open_rails_test)
+keymap("n", "<leader>rt", run_rails_test_in_tmux_pane, { desc = "Run Rails test in tmux pane" })
 
 -- [s] Search stuff
 keymap("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/]])
@@ -634,6 +730,7 @@ keymap("n", "<leader>g", ":Git<CR>")
 keymap("n", "<leader>gr", ":GitGutterUndoHunk<CR>")
 keymap("n", "<leader>gb", ":Git blame<CR>")
 keymap("n", "<leader>gh", ":Gvsplit HEAD:%<CR>", { desc = "Open file at HEAD in vsplit" })
+keymap("n", "<leader>gm", ":Gvsplit main:%<CR>", { desc = "Open file at main in vsplit" })
 keymap("n", "<leader>gu", ":Git checkout HEAD -- %<CR>", { desc = "Reset current file to HEAD" })
 keymap("n", "]h", ":GitGutterNextHunk<CR>")
 keymap("n", "[h", ":GitGutterPrevHunk<CR>")
@@ -657,13 +754,29 @@ keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
 -- [l] LSP
 keymap("n", "<leader>ld", vim.lsp.buf.definition, { desc = "Go to definition" })
+keymap("n", "<leader>lD", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
 keymap("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Show hover info" })
 keymap("n", "<leader>li", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 keymap("n", "<leader>lr", vim.lsp.buf.references, { desc = "Show references" })
 keymap("n", "<leader>lR", vim.lsp.buf.rename, { desc = "Rename symbol" })
 keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
+keymap("n", "<leader>lp", function()
+  local node = vim.treesitter.get_node()
+  if not node then return end
+  local cur_row, cur_col = unpack(vim.api.nvim_win_get_cursor(0))
+  local parent = node:parent()
+  while parent do
+    local start_row, start_col = parent:range()
+    if start_row + 1 ~= cur_row or start_col ~= cur_col then
+      vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+      return
+    end
+    parent = parent:parent()
+  end
+end, { desc = "Jump to parent Tree-sitter node" })
 
 -- [t] Toggle
+keymap("n", "<leader>ts", function() vim.opt.spell = not vim.opt.spell:get() end, { desc = "Toggle spell check" })
 keymap("n", "<leader>tc", toggle_catppuccin, { desc = "Toggle Catppuccin frappe/latte" })
 keymap("n", "<leader>td", toggle_dianostics_current_buffer, { desc = "Toggle diagnostics for current buffer" })
 keymap("n", "<leader>tf", toggle_format_current_buffer, { desc = "Toggle format on save for current buffer" })
