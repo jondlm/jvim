@@ -74,6 +74,26 @@ alias gs = git status
 alias vim = nvim
 alias r = bin/rails
 
+## Visidata last download
+def vld [] {
+  ls ~/Downloads
+  | where name =~ "\\.csv$"
+  | sort-by modified -r
+  | first
+  | get name
+  | vd $in
+}
+
+# Copy last download
+def cld [] {
+  ls ~/Downloads
+  | sort-by modified -r
+  | first
+  | get name
+  | cat $in
+  | pbcopy
+}
+
 ### Fuzzy checkout an old branch
 def gr [] {
   git branch --sort=-committerdate --format "%(refname:lstrip=2)"
