@@ -1,0 +1,122 @@
+# Vim-style half-page scrolling: cursor moves with the view
+Sheet.addCommand('^D', 'scroll-halfpage-down', 'cursorDown(nScreenRows//2); sheet.topRowIndex += nScreenRows//2')
+Sheet.addCommand('^U', 'scroll-halfpage-up', 'cursorDown(-nScreenRows//2); sheet.topRowIndex -= nScreenRows//2')
+
+# Catppuccin Frappe theme for VisiData
+# Uses exact hex colors (VisiData 3.x supports #rrggbb natively)
+
+FRAPPE = {
+    # Accents
+    "rosewater":  "#f2d5cf",
+    "flamingo":   "#eebebe",
+    "pink":       "#f4b8e4",
+    "mauve":      "#ca9ee6",
+    "red":        "#e78284",
+    "maroon":     "#ea999c",
+    "peach":      "#ef9f76",
+    "yellow":     "#e5c890",
+    "green":      "#a6d189",
+    "teal":       "#81c8be",
+    "sky":        "#99d1db",
+    "sapphire":   "#85c1dc",
+    "blue":       "#8caaee",
+    "lavender":   "#babbf1",
+    # Text / foreground scale
+    "text":       "#c6d0f5",
+    "subtext1":   "#b5bfe2",
+    "subtext0":   "#a5adce",
+    # Overlay scale
+    "overlay2":   "#949cbb",
+    "overlay1":   "#838ba7",
+    "overlay0":   "#737994",
+    # Surface scale
+    "surface2":   "#626880",
+    "surface1":   "#51576d",
+    "surface0":   "#414559",
+    # Base scale
+    "base":       "#303446",
+    "mantle":     "#292c3c",
+    "crust":      "#232634",
+}
+
+F = FRAPPE  # shorthand
+
+vd.themes["catppuccin-frappe"] = dict(
+    # Default text / background
+    color_default           = f'{F["text"]} on {F["base"]}',
+
+    # # Column headers
+    # color_default_hdr       = f'bold {F["lavender"]} on {F["mantle"]}',
+    # color_bottom_hdr        = f'underline {F["subtext1"]} on {F["mantle"]}',
+
+    # # Cursor row — dark text on soft blue so it's clearly highlighted but readable
+    # color_current_row       = f'bold {F["crust"]} on {F["sapphire"]}',
+    # color_current_col       = f'{F["subtext1"]} on {F["sapphire"]}',
+    # color_current_hdr       = f'bold {F["crust"]} on {F["lavender"]}',
+    # color_current_cell      = f'bold {F["crust"]} on {F["blue"]}',
+
+    # # Selected rows — dark bg text on yellow-green so they pop without being harsh
+    # color_selected_row      = f'bold {F["crust"]} on {F["yellow"]}',
+
+    # # Key columns
+    # color_key_col           = f'{F["teal"]} on {F["base"]}',
+
+    # # Column separator
+    color_column_sep        = f'{F["text"]} on {F["base"]}',
+
+    # # Hidden columns (metasheets)
+    # color_hidden_col        = f'{F["overlay0"]}',
+
+    # # Editing a cell
+    # color_edit_cell         = f'{F["text"]} on {F["surface0"]}',
+
+    # # Status bar
+    # color_status            = f'{F["subtext0"]} on {F["crust"]}',
+    # color_active_status     = f'{F["text"]} on {F["mantle"]}',
+    # color_keystrokes        = f'bold {F["rosewater"]}',
+
+    # # Error / warning
+    # color_error             = f'bold {F["red"]} on {F["crust"]}',
+    # color_warning           = f'{F["yellow"]} on {F["crust"]}',
+
+    # # Cell type notes
+    # color_note_type         = f'{F["peach"]}',
+    # color_note_row          = f'{F["sky"]} on {F["base"]}',
+    # color_note_pending      = f'bold {F["mauve"]}',
+
+    # # Diff colours
+    # color_diff              = f'{F["yellow"]}',
+    # color_diff_add          = f'{F["green"]}',
+
+    # # Pending edits
+    # color_add_pending       = f'{F["green"]} on {F["base"]}',
+    # color_change_pending    = f'{F["yellow"]} on {F["base"]}',
+    # color_delete_pending    = f'{F["red"]} on {F["base"]}',
+
+    # # Sidebar / guide panel
+    # color_sidebar           = f'{F["text"]} on {F["surface0"]}',
+    # color_sidebar_title     = f'bold {F["peach"]} on {F["surface0"]}',
+    # color_longname_guide    = f'{F["overlay2"]} on {F["surface0"]}',
+    # color_heading           = f'bold {F["mauve"]} on {F["surface0"]}',
+
+    # # Clickable items
+    # color_clickable         = f'underline {F["blue"]}',
+
+    # # Code samples
+    # color_code              = f'bold {F["text"]} on {F["surface1"]}',
+
+    # # Aggregator row
+    # color_aggregator        = f'bold {F["rosewater"]} on {F["mantle"]}',
+
+    # # Graph
+    # color_graph_hidden      = f'{F["overlay1"]}',
+    # color_graph_selected    = f'{F["peach"]}',
+
+    # # Command palette / menus
+    # color_cmdpalette        = f'{F["text"]} on {F["surface1"]}',
+    # color_menu              = f'{F["text"]} on {F["surface1"]}',
+    # color_menu_active       = f'bold {F["crust"]} on {F["blue"]}',
+    # color_menu_help         = f'italic {F["subtext0"]} on {F["mantle"]}',
+)
+
+options.theme = "catppuccin-frappe"

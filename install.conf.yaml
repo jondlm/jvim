@@ -33,5 +33,8 @@
     # Starship (prompt)
     ~/.config/starship.toml: starship/starship.toml
 
+    # VisiData
+    ~/.visidatarc: visidata/.visidatarc
+
     # Bin scripts
     ~/bin/git-url: bin/git-url

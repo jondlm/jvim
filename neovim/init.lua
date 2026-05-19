@@ -625,6 +625,41 @@ local function run_rails_test_in_tmux_pane()
   vim.notify('Opened tmux pane: ' .. command)
 end
 
+local function open_file_under_cursor()
+  -- Grab the WORD under the cursor (includes colons and slashes)
+  local word = vim.fn.expand("<cWORD>")
+
+  -- Parse optional trailing :<line> (and optional :<col>)
+  local filepath, lnum = word:match('^(.+):(%d+)%:?%d*$')
+  if not filepath then
+    filepath = word
+    lnum = nil
+  end
+
+  -- Resolve relative to the current file's directory, then cwd
+  local resolved
+  if vim.fn.filereadable(filepath) == 1 then
+    resolved = filepath
+  else
+    local dir = vim.fn.expand('%:p:h')
+    local candidate = dir .. '/' .. filepath
+    if vim.fn.filereadable(candidate) == 1 then
+      resolved = candidate
+    end
+  end
+
+  if not resolved then
+    vim.notify('File not found: ' .. filepath, vim.log.levels.WARN)
+    return
+  end
+
+  vim.cmd('vnew ' .. vim.fn.fnameescape(resolved))
+  if lnum then
+    vim.api.nvim_win_set_cursor(0, { tonumber(lnum), 0 })
+    vim.cmd('normal! zz')
+  end
+end
+
 local function open_rails_test()
   local path = vim.fn.expand('%:p')
   local project_root = get_project_root()
@@ -719,6 +754,7 @@ keymap("n", "<leader>cg", copy_github_url, { desc = "Open in GitHub" })
 
 -- [o] Open
 keymap("n", "<leader>ot", open_rails_test)
+keymap("n", "<leader>of", open_file_under_cursor, { desc = "Open file under cursor (supports :line#)" })
 keymap("n", "<leader>rt", run_rails_test_in_tmux_pane, { desc = "Run Rails test in tmux pane" })
 
 -- [s] Search stuff
