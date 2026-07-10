@@ -18,8 +18,10 @@ end
 return {
   -- Debug print with random identifier
   s("jdlm", {
-    t('print("jdlm-find-'),
+    t('puts("jdlm-find-'),
     f(function() return random_string() end, {}),
-    t('")'),
+    t(' #{'),
+    i(1),
+    t('}")'),
   }),
 }
